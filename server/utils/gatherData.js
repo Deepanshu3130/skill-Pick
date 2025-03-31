@@ -7,9 +7,9 @@ const {youtubeCourses} = require('../youtubeData');
  const updateUdemyQuery = (query) =>{
     return query.trim().replace(/\s+/g,'-');
  }
-const gatherData = async(query) =>{
+exports.gatherData = async(query) =>{
     try{
-        let result =[]
+        let result={}
        
         //get the data from the udemy scrapper
         const udemyResult = await getUdemyCourses(updateUdemyQuery(query));
@@ -21,10 +21,12 @@ const gatherData = async(query) =>{
         // combine the results
 
        result=[...udemyResult,...courseraResult, ...youtubeResult];
-      console.log(result);
+      //console.log(result);
        return result;
     }catch(error){
         return error;
     }
 }
-gatherData();
+// gatherData("data structures");
+
+

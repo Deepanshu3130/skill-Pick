@@ -1,18 +1,24 @@
-const express = require('express'); 
-const {connect} = require('./config/database');
+require('dotenv').config();
+const { connect } = require('./config/database');
+const cookieParser = require('cookie-parser');
 const courseRoute = require('./Routes/courseDataRoute');
+const cors = require('cors');
+const { app, server, io, getReceiverSocketId } = require('./config/socket');
+const express = require('express');
+app.use(express.json()); 
+app.use(cookieParser());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
 
-const app = express();
-
-const PORT = process.env.PORT ||3000; 
-app.get('/',(req,res) =>{
-    res.send('your app is running here');
-
-})
+app.use('/api/v1/courseData', courseRoute);
+app.get('/', (req, res) => res.send('Your app is running here'));
 connect();
-app.use('/api/v1/courseData',courseRoute )
 
-app.listen(PORT, ()=>{
-    console.log(`Server is running on port ${PORT}`);
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
 });
 
+// module.exports = { io, app, server, getReceiverSocketId };

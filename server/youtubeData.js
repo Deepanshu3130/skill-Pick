@@ -117,7 +117,7 @@
 const axios = require('axios');
 require('dotenv').config();
 
-exports. youtubeCourses = async(query)=>{
+exports.youtubeCourses = async(query)=>{
     
 const youtubeVideos = async (query, minHours = 2) => {
 
@@ -174,6 +174,7 @@ const youtubeVideos = async (query, minHours = 2) => {
                 platform : 'youtube',
                 type: 'free',
                 title: video.snippet.title,
+                level: `intermediate`,
                 provider: video.snippet.channelTitle,
                 description: video.snippet.channelTitle,
                 id: video.id,
@@ -290,7 +291,7 @@ const youtubePlaylists = async (query) => {
             lectures: playlist.contentDetails.itemCount,
             createdAt: convertDate(playlist.snippet.publishedAt),
             link: `https://www.youtube.com/playlist?list=${playlist.id}`,
-            imageUrl: playlist.snippet.thumbnails.high.url,
+            imageUrl: playlist?.snippet?.thumbnails?.high?.url || 'https://via.placeholder.com/150',
             level: 'intermediate',
         }));
 
@@ -318,4 +319,4 @@ const result2=await youtubeVideos(query, 2)
 
   
 }
-// youtubeCourses();
+ ///youtubeCourses("artificial intelligence");

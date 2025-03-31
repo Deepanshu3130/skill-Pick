@@ -16,9 +16,9 @@ const details = new mongoose.Schema(
     },
     description: {
         type: String,
-        required: true
+        
     },
-    imageurl: {
+    imageUrl: {
         type: String,
         required: true
     },
@@ -38,7 +38,7 @@ const details = new mongoose.Schema(
     type :{
         type:String,
         required:true,
-        enum:["Free" , "Paid"]
+        // enum:["free" , "paid"]
     },
 
     rating :{
@@ -57,6 +57,10 @@ const details = new mongoose.Schema(
         required:true,
         
     },
+    query:{
+        type:String,
+        required:true
+    }
   }
 );
 module.exports = mongoose.model('courseDetail', details);

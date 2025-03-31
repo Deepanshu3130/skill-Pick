@@ -238,7 +238,7 @@ async function scrapeCourseraCourse(url) {
 
     // Launch Puppeteer in headless mode
     browser = await puppeteer.launch({
-      headless: true , // Set to false to see the browser window
+      headless: false , // Set to false to see the browser window
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
@@ -342,7 +342,7 @@ async function scrapeCourseraCourse(url) {
 }
 
 // Example usage
-const courseUrl = `https://www.coursera.org/courses?query=${query}&skills=${query}&page=1`;
+const courseUrl = `https://www.coursera.org/courses?query=${query}&skill=${query}&page=1`;
 const result =await scrapeCourseraCourse(courseUrl);
 //console.log(result)
 return result
@@ -350,3 +350,5 @@ return result
   // .catch((err) => console.error('Error during scraping:', err.message));
     
 }
+ //getCourseraCourses("data structures and algorithms");
+
