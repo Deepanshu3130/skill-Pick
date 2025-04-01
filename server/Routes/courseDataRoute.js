@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {ClerkExpressWithAuth } = require('@clerk/clerk-sdk-node');
-const {getCourses} = require('../controlers/getCourse');
+const {getCourses , getCourseById} = require('../controlers/getCourse');
 const {clerkWebhook} = require('../controlers/clerkWebhook');
 const {sendMessage,getUsers,getMessages} = require('../controlers/message');
 
@@ -11,4 +11,6 @@ router.post('/getCourse',getCourses);
 router.post('/sendMessage/:id',ClerkExpressWithAuth() , sendMessage);
 router.get('/getUsers',ClerkExpressWithAuth(), getUsers);
 router.get('/getMessages/:id',ClerkExpressWithAuth(), getMessages);
+
+router.get('/getCourseById/:id' , getCourseById);
 module.exports = router;

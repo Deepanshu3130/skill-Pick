@@ -310,7 +310,7 @@ require('dotenv').config();
 
 
 // Add stealth plugin to avoid detection
-exports. getUdemyCourses =async(query)=>{
+exports.getUdemyCourses =async(query)=>{
   puppeteer.use(StealthPlugin());
 
 async function scrapeUdemyCourse(url) {
@@ -363,8 +363,8 @@ async function scrapeUdemyCourse(url) {
       return  courseElements.map((course) => {
         const platform = "Udemy";
          const type= "paid//temp";
-        const description = course.querySelector('.course-card-title_title__tvSBS h3')?.textContent.trim() || 'N/A';
-        const title = course.querySelector('.course-card_course-headline__BBr5m')?.textContent.trim() || 'N/A';
+        const description = course.querySelector('.course-card_course-headline__BBr5m')?.textContent.trim() || 'N/A';
+        const title = course.querySelector('h3[data-purpose="course-title-url"] a').firstChild.textContent.trim()|| 'N/A';
         const provider = course.querySelector('.course-card-instructors_instructor-list__helor')?.textContent.trim() || 'N/A';
         const rating = course.querySelector('.star-rating_rating-number__nHi2B')?.textContent.trim() || 'N/A';
         const reviews = course.querySelector('.course-card-ratings_reviews-text__rx1CN')?.textContent.trim() || 'N/A';
@@ -417,6 +417,7 @@ async function scrapeUdemyCourse(url) {
     // Close the browser
     await browser.close();
     console.log('Scraping completed successfully');
+    // console.log(courses)
     return courses;
   } catch (error) {
     console.error(`Data scraping error: ${error.message}`);
@@ -426,7 +427,7 @@ async function scrapeUdemyCourse(url) {
 }
 
 // Example usage
-const courseUrl = `https://www.udemy.com/topic/${query}/?p=1`;
+const courseUrl = `https://www.udemy.com/topic/${query}/?p=1&sort=popularity`;
 const result =await scrapeUdemyCourse(courseUrl);
 //console.log(result);
 return result;
@@ -434,3 +435,4 @@ return result;
   // .then(() => console.log('Scraping completed!'))
   // .catch((err) => console.error('Error during scraping:', err.message));
 }
+

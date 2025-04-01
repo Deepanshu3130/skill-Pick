@@ -33,7 +33,7 @@ function ChatContainer() {
        {messages.map((message,index)=>(
         <div
         key={index}
-        className={`chat ${message.senderClerkId ===user.id ? "chat-end" : "chat-start"}`}>
+        className={`chat ${message.senderClerkId === user.id ? "chat-end" : "chat-start"} `}>
           <div className='chat-image avatar'>
             <div className='size-10 rounded-full border'>
               <img
@@ -42,7 +42,7 @@ function ChatContainer() {
                />
             </div>
           </div>
-          <div className="chat-header mb-1 flex flex col">
+          <div className="chat-header mb-1  flex col">
               <time className="text-xs opacity-50 ml-1">
                 {formatMessageTime(message.createdAt)}
               </time>

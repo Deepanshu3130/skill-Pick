@@ -11,6 +11,10 @@ import { useUser } from '@clerk/clerk-react'
 import { io } from "socket.io-client";
 import { useChatStore } from './store/useChatStore'
 
+import Courses from './pages/Courses'
+import CourseDescription from './pages/CourseDescription'
+
+
 let socket1 = null
 function App() {
   const BASE_URL = "http://localhost:3000";
@@ -65,7 +69,8 @@ function App() {
      <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/settings" element ={<Settings/>}/>
-        
+        <Route path="/courses/:query" element={<Courses/>}/>
+        <Route path='/course/:id' element={<CourseDescription/>}></Route>
      </Routes>
     </div>
   )

@@ -4,6 +4,7 @@ import axios from "axios";
 //import { axiosInstance } from "../lib/axios";
 //import { apiConnector } from "../lib/axios";
 import { getSocket } from "../App";
+import { getMessages, getUsers, sendMessage } from "../operations/apiConnectors";
 
 export const useChatStore = create((set, get) => ({
     messages: [],
@@ -15,25 +16,7 @@ export const useChatStore = create((set, get) => ({
     getUsers: async(token)=>{
         set({isUserLoading:true});
         try{
-            const response = await axios.get(
-                // Correct URL with path parameter
-               `http://localhost:3000/api/v1/courseData/getUsers`,
-                
-                // Required request body matching backend expectations
-                // {
-                //   text: "what ,
-                //   image: "" // Add image URL if needed or leave empty
-                // },
-                
-                // Proper headers
-                {
-                  headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                    
-                  }
-                }
-              );
+            const response = await getUsers(token)
                
             set({users: response.data.Users});
         }catch(error){
@@ -46,26 +29,7 @@ export const useChatStore = create((set, get) => ({
     getMessages:async(userId ,token)=>{
         set({isMessagesLoading:true});
         try{
-            const response = await axios.get(
-                // Correct URL with path parameter
-               `http://localhost:3000/api/v1/courseData/getMessages/${userId}`,
-                
-                // Required request body matching backend expectations
-                // {
-                //   text: "what ,
-                //   image: "" // Add image URL if needed or leave empty
-                // },
-                
-                // Proper headers
-                {
-                  headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                    
-                  }
-                }
-              );
-              console.log(response) ;
+            const response = await getMessages(userId ,token)
             set({messages: response.data.messages}); 
              
         }catch(error){
@@ -77,34 +41,11 @@ export const useChatStore = create((set, get) => ({
 
     },
     sendMessage: async(text,img,token)=>{
-        console.log("call recieved")
+        //console.log("call recieved")
         const {selectedUser,messages} = get();
-        console.log("selected user",selectedUser);
+        //console.log("selected user",selectedUser);
         try{
-            const response = await axios.post(
-                // Correct URL with path parameter
-               `http://localhost:3000/api/v1/courseData/sendMessage/${selectedUser._id}`,
-                {
-                    text: text.trim(),
-                    image: img,
-                    receverClerkId: selectedUser.clerkId,
-                },
-                
-                // Required request body matching backend expectations
-                // {
-                //   text: "what the fck cutii",
-                //   image: "" // Add image URL if needed or leave empty
-                // },
-                
-                // Proper headers
-                {
-                  headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                    
-                  }
-                }
-              );
+            const response = await sendMessage(text,img,token,selectedUser)
               console.log(response) ;
               set({messages: [...messages, response.data.newMessage]});
         }catch(error){

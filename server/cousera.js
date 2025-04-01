@@ -238,7 +238,7 @@ async function scrapeCourseraCourse(url) {
 
     // Launch Puppeteer in headless mode
     browser = await puppeteer.launch({
-      headless: false , // Set to false to see the browser window
+      headless: true , // Set to false to see the browser window
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 

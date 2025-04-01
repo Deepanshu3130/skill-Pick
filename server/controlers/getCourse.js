@@ -1,8 +1,11 @@
+
 const courseDetail = require('../model/courseDetail');
 const gatherData = require('../utils/gatherData');
+const Query = require("../model/query")
 
 exports.getCourses = async(req, res) =>{
     try{
+        
         const {query} = req.body;
         if (!query) {
             return res.status(400).json({
@@ -10,7 +13,21 @@ exports.getCourses = async(req, res) =>{
                 message: "Query parameter is required"
             });
         }
-        console.log("query is",query);
+        const existingQuery  =await Query.findOne({query});
+        if(existingQuery ){
+            const result = await courseDetail.find({query:query})
+            return res.status(200).json({
+                Success: true,
+                message: 'got the data successfully',
+                data: result
+            });
+
+
+        }
+        await Query.create({
+            query
+        })
+        
         const coursesData = await gatherData.gatherData(query);
         // save the data to the database
         if (coursesData.length === 0) {
@@ -78,3 +95,20 @@ exports.getCourses = async(req, res) =>{
         })
     }
 }
+
+
+
+exports.getCourseById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const course = await courseDetail.findById(id);
+
+        if (!course) {
+            return res.status(404).json({ error: "Course not found" });
+        }
+
+        res.status(200).json({ success: true, data: course });
+    } catch (error) {
+        res.status(500).json({ error: "Server error" });
+    }
+};
