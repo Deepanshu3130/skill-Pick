@@ -1,10 +1,33 @@
 import { X } from "lucide-react";
-import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
+import { useCommunityChatStore } from "../store/useCommunityChatStore";
 
 const ChatHeader = () => {
   const { selectedUser, setSelctedUser } = useChatStore();
-  //const { onlineUsers } = useAuthStore();
+  const { selectedCommunity, setSelectedCommunity } = useCommunityChatStore();
+
+
+  const isCommunityChat = !!selectedCommunity;
+  const chatTitle = isCommunityChat 
+    ? selectedCommunity.channelName 
+    : selectedUser 
+      ? `${selectedUser.firstName} ${selectedUser.lastName}` 
+      : "Select a chat";
+
+  const chatProfilePic = isCommunityChat 
+    ? selectedCommunity.channelImg || "/community-placeholder.png" 
+    : selectedUser 
+      ? selectedUser.profilePicture || "/avatar.png" 
+      : "/avatar.png";
+
+  // Close chat function
+  const closeChat = () => {
+    if (isCommunityChat) {
+      setSelectedCommunity(null);
+    } else {
+      setSelctedUser(null);
+    }
+  };
 
   return (
     <div className="p-2.5 border-b border-base-300">
@@ -13,25 +36,23 @@ const ChatHeader = () => {
           {/* Avatar */}
           <div className="avatar">
             <div className="size-10 rounded-full relative">
-              <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullName} />
+              <img src={chatProfilePic} alt={chatTitle} />
             </div>
           </div>
 
-          {/* User info */}
+          {/* Chat info */}
           <div>
-            <h3 className="font-medium">{selectedUser.firstName + " " + selectedUser.lastName}</h3>
-            {/* <p className="text-sm text-base-content/70">
-              {onlineUsers.includes(selectedUser._id) ? "Online" : "Offline"}
-            </p> */}
+            <h3 className="font-medium">{chatTitle}</h3>
           </div>
         </div>
 
         {/* Close button */}
-        <button onClick={() => setSelctedUser(null)}>
+        <button onClick={closeChat}>
           <X />
         </button>
       </div>
     </div>
   );
 };
+
 export default ChatHeader;

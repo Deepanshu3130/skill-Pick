@@ -4,13 +4,18 @@ import { useChatStore } from '../store/useChatStore';
 import { Image, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "@clerk/clerk-react";
+import { useCommunityChatStore } from '../store/useCommunityChatStore';
 
 function MessageInput() {
     const [text, setText] = useState("");
     const [imagePreview, setImagePreview] = useState(null);
     const fileInputRef = useRef(null);
-    const { sendMessage } = useChatStore();
+    const { sendMessage, selectedUser} = useChatStore();
+    const {sendCommunityMessage ,selectedCommunity} = useCommunityChatStore()
     const { getToken } = useAuth();
+
+
+    const isCommunityChat = !!selectedCommunity;
 
     const removeImage = () => {
         setImagePreview(null);
@@ -35,15 +40,22 @@ function MessageInput() {
 
 
   const handleSendMessage = async (e) => {
-    const token = await getToken();
     e.preventDefault();
+    const token = await getToken();
+
     if (!text.trim() && !imagePreview) return;
 
     try {
-        console.log("sending message")
-      await sendMessage(text,imagePreview,token);
-      console.log("message sent")
+      console.log("Sending message...");
 
+      if (isCommunityChat && selectedCommunity) {
+        await sendCommunityMessage( text, imagePreview, token);
+      } else if (selectedUser) {
+        await sendMessage( text, imagePreview, token);
+      }
+
+      console.log("Message sent");
+      
       // Clear form
       setText("");
       setImagePreview(null);

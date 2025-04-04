@@ -4,6 +4,7 @@ const {ClerkExpressWithAuth } = require('@clerk/clerk-sdk-node');
 const {getCourses , getCourseById} = require('../controlers/getCourse');
 const {clerkWebhook} = require('../controlers/clerkWebhook');
 const {sendMessage,getUsers,getMessages} = require('../controlers/message');
+const { joinChannel, getUserChannels, sendMessageToChannel, getMessagesForChannel } = require('../controlers/community');
 
 
 router.post("/webhook/clerk-user", clerkWebhook);
@@ -13,4 +14,9 @@ router.get('/getUsers',ClerkExpressWithAuth(), getUsers);
 router.get('/getMessages/:id',ClerkExpressWithAuth(), getMessages);
 
 router.get('/getCourseById/:id' , getCourseById);
-module.exports = router;
+
+router.post('/joinChannel' ,ClerkExpressWithAuth(), joinChannel )
+router.get('/getUserChannels' , ClerkExpressWithAuth() , getUserChannels)
+router.post('/sendMessageToChannel/:channelId' ,ClerkExpressWithAuth(), sendMessageToChannel )
+router.get('/getMessagesForChannel/:channelId' ,ClerkExpressWithAuth() , getMessagesForChannel)
+module.exports=router

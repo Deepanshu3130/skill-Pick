@@ -165,3 +165,148 @@ console.log("got the res",response)
 }
 
 }
+
+
+export const getJoinedCommunities = async(token)=>{
+    
+    
+  try{
+        const response = await axios.get(
+          // Correct URL with path parameter
+           BASE_URL+`/courseData/getUserChannels`,
+          
+          // Required request body matching backend expectations
+          // {
+          //   text: "what ,
+          //   image: "" // Add image URL if needed or leave empty
+          // },
+          
+          // Proper headers
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json",
+              
+            }
+          }
+        );
+      console.log("getallcourse API RESPONSE............", response)
+      if(!response.data.success){
+          throw new Error("Could Not USERS")
+      }
+     
+      return response;
+  }catch(error){
+      console.log("GET_ALL_COURSE_API API ERROR............", error);
+      return false
+  }
+  
+}
+
+export const getCommunityMessages = async(channelId ,token)=>{
+    
+    
+  try{
+        const response = await axios.get(
+          // Correct URL with path parameter
+           BASE_URL+`/courseData/getMessagesForChannel/${channelId}`,
+          
+          // Required request body matching backend expectations
+          // {
+          //   text: "what ,
+          //   image: "" // Add image URL if needed or leave empty
+          // },
+          
+          // Proper headers
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json",
+              
+            }
+          }
+        );
+      console.log("GETMESSAGES from community  API RESPONSE............", response)
+      if(!response.data.success){
+          throw new Error("Could Not USERS")
+      }
+     
+      return response;
+  }catch(error){
+      console.log("GET MESSAGES_COURSE_API API ERROR............", error);
+      return false
+  }
+  
+}
+
+
+export const sendCommunityMessage = async(text,img,token,selectedCommunity)=>{
+    
+  try{
+        const response =  await axios.post(
+          // Correct URL with path parameter
+          BASE_URL+`/courseData/sendMessageToChannel/${selectedCommunity._id}`,
+          {
+              text: text.trim(),
+              image: img,
+              
+          },
+          
+          // Required request body matching backend expectations
+          // {
+          //   text: "what the fck cutii",
+          //   image: "" // Add image URL if needed or leave empty
+          // },
+          
+          // Proper headers
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json",
+              
+            }
+          }
+        );
+  
+      return response;
+  }catch(error){
+      console.log("GET MESSAGES_COURSE_API API ERROR............", error);
+      return false
+  }
+  
+}
+
+
+export const joinChannel = async(token,courseId)=>{
+
+
+  try{
+    const response = await axios.post(
+      // Correct URL with path parameter
+       BASE_URL+`/courseData/joinChannel`,
+      
+    
+      {
+        courseId:courseId
+      },
+      
+      // Proper headers
+      {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+          
+        }
+      }
+    );
+  console.log("GETMESSAGES API RESPONSE............", response)
+  if(!response.data.success){
+      throw new Error("Could Not USERS")
+  }
+ 
+  return response;
+}catch(error){
+  console.log("GET MESSAGES_COURSE_API API ERROR............", error);
+  return false
+} 
+}

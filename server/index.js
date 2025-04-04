@@ -1,7 +1,8 @@
 require('dotenv').config();
 const { connect } = require('./config/database');
 const cookieParser = require('cookie-parser');
-const courseRoute = require('./Routes/courseDataRoute');
+const courseRoute = require('./Routes/courseDataRoute')
+const filterRoute = require('./Routes/FilterRoutes')
 const cors = require('cors');
 const { app, server, io, getReceiverSocketId } = require('./config/socket');
 const express = require('express');
@@ -13,6 +14,7 @@ app.use(cors({
 }));
 
 app.use('/api/v1/courseData', courseRoute);
+app.use('/api/v1/filter', filterRoute);
 app.get('/', (req, res) => res.send('Your app is running here'));
 connect();
 
@@ -21,4 +23,4 @@ server.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);
 });
 
-// module.exports = { io, app, server, getReceiverSocketId };
+ module.exports = { io, app, server, getReceiverSocketId };

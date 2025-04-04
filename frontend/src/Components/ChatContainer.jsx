@@ -29,11 +29,11 @@ function ChatContainer() {
     
     <div className='flex-1 flex flex-col overflow-auto'>
        <ChatHeader></ChatHeader>
-       <div className='flex-1 overflow-y-auto p-4 space-y-4'> 
+       <div className='flex-1 overflow-y-auto p-4 space-y-4 '> 
        {messages.map((message,index)=>(
         <div
         key={index}
-        className={`chat ${message.senderClerkId === user.id ? "chat-end" : "chat-start"} `}>
+        className={`chat ${message.senderClerkId === user.id ? "chat-end" : "chat-start"}  `  }>
           <div className='chat-image avatar'>
             <div className='size-10 rounded-full border'>
               <img
@@ -42,12 +42,12 @@ function ChatContainer() {
                />
             </div>
           </div>
-          <div className="chat-header mb-1  flex col">
+          <div className="chat-header mb-1  flex col break-words whitespace-pre-wrap ">
               <time className="text-xs opacity-50 ml-1">
                 {formatMessageTime(message.createdAt)}
               </time>
             </div>
-            <div className="chat-bubble flex flex-col">
+            <div className="chat-bubble break-words whitespace-pre-wrap max-w-xs md:max-w-md lg:max-w-lg  ">
               {message.image && (
                 <img
                   src={message.image}

@@ -1,13 +1,22 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { courseDetail } from '../operations/apiConnectors';
+import { courseDetail, joinChannel } from '../operations/apiConnectors';
 import { useState, useEffect } from 'react';
 // import { StarIcon, BookmarkIcon, ShareIcon } from '@heroicons/react/24/solid';
+import { useAuth } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
+
+
+ // Initialize navigation hook
 
 function CourseDescription() {
+
+  
+  const{getToken} = useAuth();
     const {id} = useParams();
     const [course, setCourse] = useState({});
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourse = async () => {
@@ -23,6 +32,28 @@ function CourseDescription() {
         };
         fetchCourse();
       }, [id]);
+
+      
+  const handleJoinCommunity = async (e) => {
+    e.preventDefault();
+     const token = await getToken(); 
+  
+    try {
+      console.log("Joining community...");
+  
+      // Call API to join the community
+      const response = await joinChannel(token,course._id); 
+  
+      if (response.data.success) {
+        console.log("Successfully joined the community!");
+        navigate(`/`); // Redirect to the community page
+      } else {
+        console.error("Failed to join community:", response.message);
+      }
+    } catch (error) {
+      console.error("Error joining community:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen  pt-20 h-full">
@@ -63,8 +94,8 @@ function CourseDescription() {
                 </div>
               </div>
 
-              <button className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition">
-                Go to Class
+              <button onClick={handleJoinCommunity} className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition">
+               Join community
               </button>
               <button className="w-full border border-blue-600 text-blue-600 py-3 rounded-md mt-2 hover:bg-blue-50 transition">
                 Add to List
