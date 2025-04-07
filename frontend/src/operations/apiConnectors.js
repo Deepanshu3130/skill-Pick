@@ -1,7 +1,7 @@
  import axios from "axios";
 import { useChatStore } from "../store/useChatStore";
 import toast from "react-hot-toast";
- const BASE_URL = import.meta.env.VITE_BASE_URL
+ const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000/api/v1" : "/api/v1";
 export const getUsers = async(token)=>{
     
     

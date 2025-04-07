@@ -1,4 +1,5 @@
 import {create} from 'zustand';
+
 export const useAuthStore = create((set)=>({
   currentUser: null,
   
@@ -13,6 +14,7 @@ export const useAuthStore = create((set)=>({
    
 
     try {
+
       const token = await getToken();
       const response = await axios.get('http://localhost:3000/api/v1/courseData/get-user', {
         headers: { Authorization: `Bearer ${token}` }

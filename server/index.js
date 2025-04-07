@@ -3,11 +3,15 @@ const { connect } = require('./config/database');
 const cookieParser = require('cookie-parser');
 const courseRoute = require('./Routes/courseDataRoute')
 const filterRoute = require('./Routes/FilterRoutes')
+const path = require('path');
 const cors = require('cors');
 const { app, server, io, getReceiverSocketId } = require('./config/socket');
 const express = require('express');
 const {cloudinaryConnect} = require('./config/cloudinay');
-const fileUpload = require('express-fileupload');   
+const fileUpload = require('express-fileupload');
+dotenv.config();
+const __dirname=path.resolve();
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
@@ -24,7 +28,12 @@ app.use(
 
 app.use('/api/v1/courseData', courseRoute);
 // app.use('/api/v1/filter', filterRoute);
-app.get('/', (req, res) => res.send('Your app is running here'));
+ if(process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, '../frontend/dist')));
+	app.get('*', (req, res) => {
+		res.sendFile(path.resolve(__dirname, '../frontend', 'dist', 'index.html'));	
+	});	
+}
 
 
 connect();
