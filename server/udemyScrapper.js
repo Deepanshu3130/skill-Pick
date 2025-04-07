@@ -303,10 +303,10 @@
 
 
 
-
+require('dotenv').config();
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-require('dotenv').config();
+
 
 
 // Add stealth plugin to avoid detection
@@ -318,8 +318,11 @@ async function scrapeUdemyCourse(url) {
   try {
     // Launch Puppeteer in headless mode
     browser = await puppeteer.launch({
+      executablePath:
+      process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
       headless: true, // Set to false to see the browser window
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: ['--no-sandbox',
+         '--disable-setuid-sandbox'],
     });
 
     const page = await browser.newPage();

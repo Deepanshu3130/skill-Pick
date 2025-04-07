@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
    
-    "start": "node index.cjs",
-     "postinstall": "puppeteer install --unsafe-perm=true"
+    "start": "node index.cjs"
+    
   },
   "keywords": [],
   "author": "",
