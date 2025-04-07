@@ -9,8 +9,8 @@ const { app, server, io, getReceiverSocketId } = require('./config/socket');
 const express = require('express');
 const {cloudinaryConnect} = require('./config/cloudinay');
 const fileUpload = require('express-fileupload');
-dotenv.config();
-const __dirname=path.resolve();
+
+
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
