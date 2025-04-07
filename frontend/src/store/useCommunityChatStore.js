@@ -12,6 +12,7 @@ export const useCommunityChatStore = create((set, get) => ({
 
    
     getJoinedCommunities: async (token) => {
+        
         set({ isCommunityLoading: true });
         try {
             const response = await getJoinedCommunities(token);
@@ -45,14 +46,13 @@ export const useCommunityChatStore = create((set, get) => ({
                 text, 
                 image, 
                 token,
-                selectedCommunity // Make sure you're sending the ID, not the whole object
+                selectedCommunity 
             );
             
-            // Don't add to state here - let the socket event handle it
             const socket = getSocket();
             socket.emit("sendCommunityMessage", {
                 communityId: selectedCommunity._id,
-                message: response.data.data.newMessage // Ensure consistent structure
+                message: response.data.data.newMessage 
             });
     
             return response.data.data.newMessage;
@@ -76,7 +76,7 @@ export const useCommunityChatStore = create((set, get) => ({
         
             socket.on("newCommunityMessage", (newMessage) => {
                 set(state => {
-                    // Check if message already exists to prevent duplicates
+                
                     const messageExists = state.communityMessages.some(
                         msg => msg._id === newMessage._id
                     );
@@ -95,4 +95,5 @@ export const useCommunityChatStore = create((set, get) => ({
             const socket = getSocket();
             socket.off("newCommunityMessage");
         },
+        
     }));

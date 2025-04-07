@@ -4,7 +4,8 @@ const Message = require('../model/message');
 const User = require('../model/user');
 const {io } = require("../config/socket");
 //const { getRandomData } = require('random-useragent');
-const {getReceiverSocketId} = require("../config/socket")
+const {getReceiverSocketId} = require("../config/socket");
+const { uploadImageToCloudinary } = require('../utils/fileUplods');
 
 exports.getUsers = async (req, res) => {
     try{
@@ -73,6 +74,7 @@ exports.getMessages = async (req, res) => {
 
 exports.sendMessage = async (req, res) => {
     try{
+        const folder = process.env.FOLDER_NAME;
        
       
         const {id:receiverId} = req.params;
@@ -99,7 +101,20 @@ exports.sendMessage = async (req, res) => {
                
            });
         }
-        
+        let imageUrl;
+       
+        if(image){
+               
+             const uploadResponse = await uploadImageToCloudinary(image, folder);
+             imageUrl = uploadResponse.secure_url;
+             
+            if(!imageUrl){
+                return res.status(500).json({ 
+                    success: false,
+                    message: "Image upload failed",
+                });
+            } 
+        }
            
         // handle the image and cludinary case later on
         const message = new Message({
@@ -109,7 +124,7 @@ exports.sendMessage = async (req, res) => {
             receiverClerkId: receverClerkId,
             receiverId,
             text,
-            image
+            image:imageUrl,
         });
         
         await message.save();

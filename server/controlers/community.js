@@ -3,6 +3,7 @@ const courseDetail = require("../model/courseDetail")
 const User = require("../model/user")
 const ChannelMessage = require("../model/channelMessage") 
 const {io } = require("../config/socket"); 
+const { uploadImageToCloudinary } = require('../utils/fileUplods');
 
 const slugify = (text) => {
     return text
@@ -57,7 +58,7 @@ exports.joinChannel = async (req, res) => {
   
       // Check if user is already in the channel
       if (channel.users.includes(userId)) {
-        return res.status(400).json({ success: false, message: "User already in the channel" });
+        return res.status(201).json({ success: false, message: "User already in the channel" });
       }
   
       // Add user to existing channel
@@ -115,13 +116,29 @@ exports.sendMessageToChannel = async (req, res) => {
             return res.status(404).json({ message: "Sender not found" });
         }
 
+        let imageUrl;
+        
+        if(image){
+            const folder = process.env.FOLDER_NAME;
+                
+                const uploadResponse = await uploadImageToCloudinary(image, folder);
+                imageUrl = uploadResponse.secure_url;
+              
+            if(!imageUrl){
+                return res.status(500).json({ 
+                    success: false,
+                    message: "Image upload failed",
+                });
+            } 
+        }
+
         const newMessage = new ChannelMessage({
             channelId,
             senderId: sender._id,
             senderClerkId,
             senderProfilePic: sender.profilePic || "/avatar.png",
             text,
-            image
+            image: imageUrl
         });
 
         await newMessage.save();

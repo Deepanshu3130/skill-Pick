@@ -362,7 +362,7 @@ async function scrapeUdemyCourse(url) {
     const courses = await page.$$eval('.course-list_card__jWLES', (courseElements) => {
       return  courseElements.map((course) => {
         const platform = "Udemy";
-         const type= "paid//temp";
+         const type= "paid";
         const description = course.querySelector('.course-card_course-headline__BBr5m')?.textContent.trim() || 'N/A';
         const title = course.querySelector('h3[data-purpose="course-title-url"] a').firstChild.textContent.trim()|| 'N/A';
         const provider = course.querySelector('.course-card-instructors_instructor-list__helor')?.textContent.trim() || 'N/A';

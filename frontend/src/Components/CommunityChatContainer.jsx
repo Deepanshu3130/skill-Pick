@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState , useRef} from 'react';
 import { useCommunityChatStore } from '../store/useCommunityChatStore';
 import ChatHeader from './ChatHeader';
 import MessageInput from './MessageInput';
@@ -6,12 +6,14 @@ import { useAuth } from "@clerk/clerk-react";
 import { useUser } from "@clerk/clerk-react";
 import { formatMessageTime } from "../lib/utility";
 import { useChatStore } from '../store/useChatStore';
+import MessageSkeleton from './skeletons/MessageSkeleton';
 
 
 function CommunityChatContainer({setIsCommunityChat}) {
   const { 
     communityMessages, 
-    selectedCommunity, 
+    selectedCommunity,
+    setSelectedCommunity,
     isCommunityMessagesLoading, 
     getCommunityMessages, 
     subscribeToCommunityMessages, 
@@ -23,6 +25,7 @@ function CommunityChatContainer({setIsCommunityChat}) {
 
   const { getToken } = useAuth();
   const { user } = useUser();
+  const messageEndRef = useRef("");
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -34,7 +37,13 @@ function CommunityChatContainer({setIsCommunityChat}) {
     fetchMessages();
 
     return () => unsubscribeFromCommunityMessages();
-  }, [selectedCommunity._id, getCommunityMessages]);
+  }, [selectedCommunity._id,getCommunityMessages,subscribeToCommunityMessages,unsubscribeFromCommunityMessages]);
+
+    useEffect(() => {
+          if (messageEndRef.current && communityMessages) {
+            messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+          }
+        }, [communityMessages]);
 
   const [activeProfile, setActiveProfile] = useState(null);
 
@@ -45,8 +54,9 @@ function CommunityChatContainer({setIsCommunityChat}) {
 
   
   const handleSendHii = async(receiverId) => {
-    // You can emit a socket message or open a private chat here
+   console.log("Receiver ID:", receiverId); // Log the receiverId
     setSelctedUser(receiverId);
+    setSelectedCommunity(null); 
     try {
       const token = await getToken();
      await sendMessage("Hii", null, token);
@@ -59,7 +69,13 @@ function CommunityChatContainer({setIsCommunityChat}) {
 
 
   if (isCommunityMessagesLoading) {
-    return <p>Loading...</p>; // Add skeleton loader if needed
+    return (
+      <div className="flex-1 flex flex-col overflow-auto">
+        <ChatHeader />
+        <MessageSkeleton />
+        <MessageInput />
+      </div>
+    );
   }
 
  
@@ -74,11 +90,12 @@ function CommunityChatContainer({setIsCommunityChat}) {
               <div 
                 key={message._id} 
                 className={`flex items-start ${isSenderMe ? 'justify-end' : 'justify-start'}`}
+                ref={messageEndRef}
               >
                 {!isSenderMe && (
                   <div className='relative flex-shrink-0'>
                     <img
-                      src={message.senderProfilePic || "/avatar.png"}
+                      src={message.senderId.profilePicture || "/avatar.png"}
                       alt='profile pic'
                       className='size-10 rounded-full border cursor-pointer'
                       onClick={() => toggleProfile(message._id)}
@@ -106,8 +123,8 @@ function CommunityChatContainer({setIsCommunityChat}) {
                   <div 
                     className={`px-4 py-2 rounded-lg break-words whitespace-pre-wrap ${
                       isSenderMe 
-                        ? 'bg-blue-500 text-white rounded-tr-none' 
-                        : 'bg-gray-200 text-black rounded-tl-none'
+                        ? 'bg-primary text-primary-content rounded-tr-none' 
+                        : 'bg-base-200 rounded-tl-none'
                     }`}
                     style={{ 
                       wordBreak: 'break-word',

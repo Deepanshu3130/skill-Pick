@@ -288,7 +288,7 @@ async function scrapeCourseraCourse(url) {
     // console.log(imageUrl);
     const courses = await page.$$eval('ul.cds-9 li.cds-11', (courseElements) => {
         return courseElements.map((course) => {
-          const type= "paid//temp"
+          const type= "paid"
           const platform = "Coursera"
           const title = course.querySelector('.cds-CommonCard-title')?.textContent.trim() || 'N/A';
           const provider = course.querySelector('.cds-ProductCard-partnerNames')?.textContent.trim() || 'N/A';

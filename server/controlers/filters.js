@@ -87,3 +87,21 @@ exports.getFreeCourses = async(req,res)=>{
         });
     }
 }
+
+exports.getPlatformCourses = async(req,res)=>{
+    try{
+        const platformCourse = await courseDetail.find({platform:req.params.platform});
+        if(!platformCourse){
+            return res.status(404).json({success:false,message:"No courses found"})
+        }
+        return res.status(200).json({success:true,data:platformCourse}) 
+
+    }catch(error){
+        console.error("Error fetching youtube courses:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message
+        });
+    }
+}

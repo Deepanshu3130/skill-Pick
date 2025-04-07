@@ -1,5 +1,6 @@
  import axios from "axios";
 import { useChatStore } from "../store/useChatStore";
+import toast from "react-hot-toast";
  const BASE_URL = import.meta.env.VITE_BASE_URL
 export const getUsers = async(token)=>{
     
@@ -277,27 +278,46 @@ export const sendCommunityMessage = async(text,img,token,selectedCommunity)=>{
 }
 
 
-export const joinChannel = async(token,courseId)=>{
+export const joinChannel = async (token, courseId) => {
+  const toastId = toast.loading("Joining Channel...");
 
-
-  try{
+  try {
     const response = await axios.post(
-      // Correct URL with path parameter
-       BASE_URL+`/courseData/joinChannel`,
-      
-    
-      {
-        courseId:courseId
-      },
-      
-      // Proper headers
+      BASE_URL + `/courseData/joinChannel`,
+      { courseId: courseId },
       {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
-          
-        }
+        },
       }
+    );
+
+    if (!response.data.success) {
+      toast.error(response.data.message); // ✅ display actual message
+      return false;
+    }
+
+    toast.success("Joined Channel Successfully ✅");
+    return response;
+
+  } catch (error) {
+    console.log("JOIN CHANNEL API ERROR:", error);
+    toast.error("Failed to join channel ❌");
+    return false;
+
+  } finally {
+    toast.dismiss(toastId);
+  }
+};
+export const getPlatformCourses = async(platform)=>{
+  try{
+    const response = await axios.get(
+    
+       BASE_URL+`/courseData/getPlatformCourses/${platform}`,
+      
+    
+      
     );
   console.log("GETMESSAGES API RESPONSE............", response)
   if(!response.data.success){

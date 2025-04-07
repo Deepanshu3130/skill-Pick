@@ -3,6 +3,7 @@ import { useChatStore } from '../store/useChatStore'
 import { Users } from "lucide-react";
 import { useAuthStore } from '../store/useAuthStore';
 import { useAuth } from "@clerk/clerk-react";
+import SidebarSkeleton from './skeletons/SideSkeleton';
 function Sidebar() {
     const {getUsers, users , selectedUser, setSelctedUser, isUserLoading} = useChatStore();
     //const {token} = useAuthStore();
@@ -17,7 +18,7 @@ function Sidebar() {
       fetchUsers();
     }, [getUsers]);
   
-    if (isUserLoading) return <div>Loading...</div>
+    if (isUserLoading) return <div><SidebarSkeleton></SidebarSkeleton></div>
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
     <div className="border-b border-base-300 w-full p-5">
@@ -40,7 +41,7 @@ function Sidebar() {
           >
             <div className="relative mx-auto lg:mx-0">
               <img
-                src={user.profilePic || "/avatar.png"}
+                src={user.profilePicture || "/avatar.png"}
                 alt={user.firstName}
                 className="size-12 object-cover rounded-full"
               />

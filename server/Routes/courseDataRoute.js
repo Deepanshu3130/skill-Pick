@@ -5,6 +5,8 @@ const {getCourses , getCourseById} = require('../controlers/getCourse');
 const {clerkWebhook} = require('../controlers/clerkWebhook');
 const {sendMessage,getUsers,getMessages} = require('../controlers/message');
 const { joinChannel, getUserChannels, sendMessageToChannel, getMessagesForChannel } = require('../controlers/community');
+const { getPlatformCourses } = require('../controlers/filters');
+
 
 
 router.post("/webhook/clerk-user", clerkWebhook);
@@ -18,5 +20,6 @@ router.get('/getCourseById/:id' , getCourseById);
 router.post('/joinChannel' ,ClerkExpressWithAuth(), joinChannel )
 router.get('/getUserChannels' , ClerkExpressWithAuth() , getUserChannels)
 router.post('/sendMessageToChannel/:channelId' ,ClerkExpressWithAuth(), sendMessageToChannel )
-router.get('/getMessagesForChannel/:channelId' ,ClerkExpressWithAuth() , getMessagesForChannel)
+router.get('/getMessagesForChannel/:channelId' ,ClerkExpressWithAuth() , getMessagesForChannel);
+router.get('/getPlatformCourses/:platform' , getPlatformCourses);
 module.exports=router

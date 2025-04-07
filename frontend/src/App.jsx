@@ -4,15 +4,18 @@ import './App.css'
 import Navbar from './Components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import { useThemeStore } from './store/useThemeStore'
-import Home from './pages/Home'
+
 import Settings from './pages/Settings'
 import { useUser } from '@clerk/clerk-react'
 import { io } from "socket.io-client";
-import { useChatStore } from './store/useChatStore'
 
+import Home from "./pages/Home"
 import Courses from './pages/Courses'
 import CourseDescription from './pages/CourseDescription'
-
+import ChatHome from './pages/ChatHome'
+import AboutUs from './pages/AboutUs'
+import PlatfromPage from './pages/PlatformPage'
+import PrivateRoutes from './Components/PrivateRoutes'
 
 let socket1 = null
 function App() {
@@ -70,6 +73,17 @@ function App() {
         <Route path="/settings" element ={<Settings/>}/>
         <Route path="/courses/:query" element={<Courses/>}/>
         <Route path='/course/:id' element={<CourseDescription/>}></Route>
+        <Route 
+          path='/chatHome'
+          element={
+            <PrivateRoutes>
+              <ChatHome/>
+            </PrivateRoutes>
+          }
+        />
+
+        <Route path='/aboutUs' element={<AboutUs></AboutUs>}/>
+        <Route path='/Platform/:platform' element={<PlatfromPage/>}/>
      </Routes>
     </div>
   )

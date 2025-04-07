@@ -171,7 +171,7 @@ const youtubeVideos = async (query, minHours = 2) => {
         const filteredVideos = detailsResponse.data.items
             .filter(video => parseDuration(video.contentDetails.duration) >= minHours)
             .map(video => ({
-                platform : 'youtube',
+                platform : 'YouTube',
                 type: 'free',
                 title: video.snippet.title,
                 level: `intermediate`,
@@ -283,7 +283,7 @@ const youtubePlaylists = async (query) => {
         }
 
         return response.data.items.map(playlist => ({
-            platform: 'youtube',
+            platform: 'YouTube',
             type: 'free',
             title: playlist.snippet.title,
             provider: playlist.snippet.channelTitle,

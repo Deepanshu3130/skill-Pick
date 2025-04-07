@@ -36,14 +36,14 @@ exports.clerkWebhook = async (req, res) => {
       return res.status(200).json({ success: true });
     }
     if(type === "user.created" || type === "user.updated"){
-        const { id, email_addresses, username, first_name, last_name, image_url } = data;
+        const { id, email_addresses, username, first_name, last_name, profile_image_url } = data;
       let user = await User.findOne({ clerkId: id });
       
       if (user) {
           // Update existing user
           user.firstName = first_name;
           user.lastName = last_name;
-          user.profileImage = image_url;
+          user.profilePicture = profile_image_url;
           user.username = username;
       } else {
           // Create new user
@@ -52,7 +52,7 @@ exports.clerkWebhook = async (req, res) => {
               email: email_addresses[0]?.email_address,
               firstName: first_name,
               lastName: last_name,
-              profileImage: image_url,
+              profilePicture: profile_image_url,
               username: username,  // Include username
           });
       }

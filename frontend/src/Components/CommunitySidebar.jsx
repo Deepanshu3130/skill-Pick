@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useCommunityChatStore } from '../store/useCommunityChatStore';
 import { Users } from "lucide-react";
 import { useAuth } from "@clerk/clerk-react";
+import SidebarSkeleton from './skeletons/SideSkeleton';
 
 function CommunitySidebar() {
     const { getJoinedCommunities, joinedCommunity, selectedCommunity, setSelectedCommunity, isCommunityLoading } = useCommunityChatStore();
@@ -15,7 +16,7 @@ function CommunitySidebar() {
         fetchCommunities();
     }, [getJoinedCommunities]);
 
-    if (isCommunityLoading) return <div>Loading...</div>;
+    if (isCommunityLoading) return <div><SidebarSkeleton></SidebarSkeleton></div>;
 
     return (
         <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
