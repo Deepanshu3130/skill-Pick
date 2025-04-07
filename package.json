@@ -1,0 +1,13 @@
+{
+  "name": "skill-pick",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build":"npm install --prefix server && npm install --prefix frontend" ",  
+    "start" : ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
