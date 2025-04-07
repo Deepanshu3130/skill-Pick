@@ -1,3 +1,4 @@
+# Use Puppeteer base image
 FROM ghcr.io/puppeteer/puppeteer:24.2.1
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
@@ -5,10 +6,11 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+# Copy only server folder contents
+COPY server/package*.json ./
 
-RUN npm install   # safer in dev mode
+RUN npm install
 
-COPY . .
+COPY server/. .
 
 CMD ["node", "index.cjs"]
