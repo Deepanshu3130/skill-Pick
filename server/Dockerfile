@@ -6,16 +6,17 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 WORKDIR /usr/src/app
 
-# Give permission to write in the working directory
+# Copy only package files first (as root)
+COPY server/package*.json ./
+
+# Install dependencies as root
+RUN npm install
+
+# Change ownership of all files to pptruser
 RUN chown -R pptruser:pptruser /usr/src/app
 
 # Switch to pptruser (the default user in this base image)
 USER pptruser
-
-# Copy only package files
-COPY server/package*.json ./
-
-RUN npm install
 
 # Copy rest of the app
 COPY server/. .
