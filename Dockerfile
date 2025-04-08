@@ -1,22 +1,29 @@
-# Use Puppeteer base image
 FROM ghcr.io/puppeteer/puppeteer:24.2.1
 
-# Set environment variables
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable \
     NODE_ENV=production
 
+# Use root to handle installations
+USER root
+
 # Set working directory
 WORKDIR /usr/src/app
 
-# Copy all files into the container
+# Copy everything into the container
 COPY . .
 
-# Install frontend and backend dependencies and build frontend
-RUN npm run build
+# Set permissions so npm can write to folders
+RUN chmod -R 777 /usr/src/app
 
-# Set working directory to server
+# Install and build
+RUN npm install --prefix server && \
+    npm install --prefix frontend && \
+    npm run build --prefix frontend
+
+# Optional: switch back to non-root user if needed
+# USER pptruser
+
+# Set working dir to server and run server
 WORKDIR /usr/src/app/server
-
-# Start the backend server (which also serves frontend)
 CMD ["node", "index.cjs"]
