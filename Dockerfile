@@ -11,6 +11,11 @@ RUN mkdir -p /usr/src/app && \
 # 2. Frontend install
 WORKDIR /usr/src/app/frontend
 COPY --chown=pptruser:pptruser frontend/package*.json .
+
+USER root
+RUN mkdir -p /usr/src/app/frontend/node_modules && \
+    chown -R pptruser:pptruser /usr/src/app/frontend
+
 USER pptruser
 RUN npm install --include=dev --unsafe-perm
 
