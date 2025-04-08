@@ -1,31 +1,18 @@
-FROM ghcr.io/puppeteer/puppeteer:24.2.1
-
-# Configure Puppeteer
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable \
     NODE_ENV=production
 
-# Set up app directory
-RUN mkdir -p /usr/src/app && \
-    chown -R pptruser:pptruser /usr/src/app
+# Set working directory
 WORKDIR /usr/src/app
 
-# Copy backend dependencies
-COPY --chown=pptruser:pptruser server/package*.json ./
+# Copy package files
+COPY server/package*.json ./
 
-# Install backend deps (as non-root)
-USER pptruser
-RUN npm install --production
+# Install production dependencies
+RUN npm install --production && npm cache clean --force
 
-# Copy pre-built frontend and backend code
-COPY --chown=pptruser:pptruser frontend/dist ./frontend/dist
-COPY --chown=pptruser:pptruser server ./
-
-# Fix Puppeteer permissions (temporarily switch to root)
-USER root
-RUN chmod -R o+rwx /home/pptruser \
-    && chmod -R o+rwx /usr/src/app/node_modules/puppeteer/.local-chromium
-USER pptruser
+# Copy rest of the app (assuming Dockerfile is in root and "server" folder exists)
+COPY server/. .
 
 # Start the server
 CMD ["node", "index.cjs"]
