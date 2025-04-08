@@ -41,7 +41,6 @@
 # WORKDIR /usr/src/app/server
 # CMD ["node", "index.cjs"]
 
-
 FROM ghcr.io/puppeteer/puppeteer:24.2.1
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
@@ -51,17 +50,19 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
 USER root
 WORKDIR /usr/src/app
 
-# 2. Copy root files (including root package.json)
-COPY --chown=pptruser:pptruser package*.json ./
+# 2. Copy entire project (before installing anything)
+COPY --chown=pptruser:pptruser . .
 
-# 3. Install root dependencies (if any) and prep folders
-COPY --chown=pptruser:pptruser . .  # Copy full project
+# 3. Set ownership properly
 RUN chown -R pptruser:pptruser /usr/src/app
 
-# 4. Build using root script
+# 4. Build using the root package.json script
 USER pptruser
-RUN npm run build
+RUN npm install && npm run build
 
-# 5. Expose port and run backend
+# 5. Set working dir to backend
 WORKDIR /usr/src/app/server
+
+# 6. Start backend
 CMD ["npm", "start"]
+
