@@ -6,11 +6,18 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 WORKDIR /usr/src/app
 
-# Copy only server folder contents
+# Give permission to write in the working directory
+RUN chown -R pptruser:pptruser /usr/src/app
+
+# Switch to pptruser (the default user in this base image)
+USER pptruser
+
+# Copy only package files
 COPY server/package*.json ./
 
 RUN npm install
 
+# Copy rest of the app
 COPY server/. .
 
 CMD ["node", "index.cjs"]
