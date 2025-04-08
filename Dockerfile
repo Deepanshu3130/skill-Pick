@@ -1,31 +1,36 @@
 FROM ghcr.io/puppeteer/puppeteer:24.2.1
 
+# Set environment variables
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
+   
+# 1. Set up directories with proper permissions
+USER root
+RUN mkdir -p /usr/src/app/frontend && \
+    chown -R pptruser:pptruser /usr/src/app
 
-# 1. First install frontend dependencies (including devDependencies)
+# 2. Frontend dependencies
 WORKDIR /usr/src/app/frontend
-COPY frontend/package*.json .
-RUN npm install --include=dev
+COPY --chown=pptruser:pptruser frontend/package*.json .
+USER pptruser
+RUN npm install --include=dev --unsafe-perm
 
-# 2. Then install backend dependencies
+# 3. Backend dependencies
+USER root
 WORKDIR /usr/src/app/server
-COPY server/package*.json .
+COPY --chown=pptruser:pptruser server/package*.json .
+USER pptruser
 RUN npm install --production
 
-# 3. Copy remaining files
-WORKDIR /usr/src/app
-COPY . .
+# 4. Copy remaining files
+USER root
+COPY --chown=pptruser:pptruser . .
+RUN chmod -R o+rwx /home/pptruser
 
-# 4. Build frontend
+# 5. Build frontend
+USER pptruser
 WORKDIR /usr/src/app/frontend
 RUN npm run build
-
-# 5. Fix permissions properly
-USER root
-RUN chown -R pptruser:pptruser /usr/src/app && \
-    chmod -R o+rwx /home/pptruser
-USER pptruser
 
 # 6. Run server
 WORKDIR /usr/src/app/server

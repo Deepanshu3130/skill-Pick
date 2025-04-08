@@ -215,10 +215,10 @@
 //   });
 // })();
 
-
+require('dotenv').config();
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-require('dotenv').config();
+
 //const cheerio = require('cheerio');
 
 exports.getCourseraCourses = async (query) => {
