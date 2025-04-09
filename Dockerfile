@@ -45,7 +45,7 @@ FROM ghcr.io/puppeteer/puppeteer:24.2.1
 
 # 0. Set global env vars
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable \
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
     NODE_ENV=production
 
 # 1. Accept frontend env var as build ARG
