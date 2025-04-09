@@ -44,7 +44,7 @@
 
 FROM ghcr.io/puppeteer/puppeteer:24.2.1
 
-# 0. Environment variables
+# 0. Set ENV vars
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable \
     NODE_ENV=production
@@ -53,21 +53,22 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
 USER root
 WORKDIR /usr/src/app
 
-# 2. Copy entire project
+# 2. Copy project files
 COPY --chown=pptruser:pptruser . .
 
-# 3. Set ownership
-RUN chown -R pptruser:pptruser /usr/src/app
-
-# 4. Install frontend dependencies and build
+# 3. Install frontend deps and build
 USER pptruser
 WORKDIR /usr/src/app/frontend
-RUN npm install
+
+# Install dependencies (include devDeps for Vite build)
+RUN npm install --include=dev
+
+# Build Vite project
 RUN npm run build
 
-# 5. Install backend dependencies
+# 4. Install backend deps
 WORKDIR /usr/src/app/server
-RUN npm install
+RUN npm install --production
 
-# 6. Start backend server
+# 5. Start backend
 CMD ["npm", "start"]
