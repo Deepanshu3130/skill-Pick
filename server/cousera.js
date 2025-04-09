@@ -239,9 +239,11 @@ async function scrapeCourseraCourse(url) {
 
     // Launch Puppeteer in headless mode
     browser = await puppeteerExtra .launch({
+      headless: 'new',
+      dumpio: true,
           // executablePath:
           // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
-          headless: true, // Set to false to see the browser window
+          //headless: true, // Set to false to see the browser window
           args: ['--no-sandbox',
              '--disable-setuid-sandbox'],
         });
