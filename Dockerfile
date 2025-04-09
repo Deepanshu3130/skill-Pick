@@ -41,6 +41,7 @@
 # WORKDIR /usr/src/app/server
 # CMD ["node", "index.cjs"]
 
+
 FROM ghcr.io/puppeteer/puppeteer:24.2.1
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
