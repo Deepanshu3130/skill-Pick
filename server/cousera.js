@@ -249,7 +249,12 @@ async function scrapeCourseraCourse(url) {
             '--disable-dev-shm-usage',
             '--disable-gpu',
             '--no-zygote',
-            '--single-process'],
+            '--single-process',
+            '--disable-accelerated-2d-canvas',
+            '--disable-features=WebContentsForceDark',
+            '--disable-software-rasterizer',
+            '--disable-webgl',
+            '--mute-audio',],
         });
 
     const page = await browser.newPage();
