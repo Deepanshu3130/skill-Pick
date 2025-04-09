@@ -304,20 +304,21 @@
 
 
 require('dotenv').config();
-const puppeteer = require('puppeteer-extra');
+const puppeteer = require('puppeteer-core');
+const puppeteerExtra  = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 
 
 // Add stealth plugin to avoid detection
 exports.getUdemyCourses =async(query)=>{
-  puppeteer.use(StealthPlugin());
+  puppeteerExtra .use(StealthPlugin());
 
 async function scrapeUdemyCourse(url) {
   let browser;
   try {
     // Launch Puppeteer in headless mode
-    browser = await puppeteer.launch({
+    browser = await puppeteerExtra .launch({
       // executablePath:
       // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
       headless: true, // Set to false to see the browser window
