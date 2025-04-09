@@ -224,7 +224,7 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 exports. getCourseraCourses = async (query) => {
   // Add stealth plugin to avoid detection
-  puppeteerExtra .use(StealthPlugin());
+  puppeteerExtra.use(StealthPlugin());
 
 async function scrapeCourseraCourse(url) {
   // async function fetchImgUrl(html) {
@@ -239,8 +239,8 @@ async function scrapeCourseraCourse(url) {
 
     // Launch Puppeteer in headless mode
     browser = await puppeteerExtra .launch({
-      headless: 'new',
-      dumpio: true,
+      headless: false ,
+      // dumpio: true,
           // executablePath:
           // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
           //headless: true, // Set to false to see the browser window
