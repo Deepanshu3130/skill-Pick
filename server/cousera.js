@@ -244,8 +244,12 @@ async function scrapeCourseraCourse(url) {
           // executablePath:
           // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
           //headless: true, // Set to false to see the browser window
-          args: ['--no-sandbox',
-             '--disable-setuid-sandbox'],
+          args: [    '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--no-zygote',
+            '--single-process'],
         });
 
     const page = await browser.newPage();
