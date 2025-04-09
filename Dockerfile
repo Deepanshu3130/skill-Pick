@@ -43,12 +43,15 @@
 
 
 # 0. Set global env vars
+# 
+
+
 FROM ghcr.io/puppeteer/puppeteer:24.2.1
 
 # 0. Set global env vars
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
- PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
-    NODE_ENV=production
+# Let Puppeteer use the Chromium that comes with the base image
+ENV NODE_ENV=production
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 # 1. Accept frontend env var as build ARG
 ARG VITE_CLERK_PUBLISHABLE_KEY
