@@ -41,34 +41,33 @@
 # WORKDIR /usr/src/app/server
 # CMD ["node", "index.cjs"]
 
-
 FROM ghcr.io/puppeteer/puppeteer:24.2.1
 
-# 0. Set ENV vars
+# 0. Set global env vars
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable \
     NODE_ENV=production
 
-# 1. Base setup
+# 1. Accept frontend env var as build ARG
+ARG VITE_CLERK_PUBLISHABLE_KEY
+ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY
+
+# 2. Base setup
 USER root
 WORKDIR /usr/src/app
 
-# 2. Copy project files
+# 3. Copy project files
 COPY --chown=pptruser:pptruser . .
 
-# 3. Install frontend deps and build
+# 4. Install frontend dependencies and build
 USER pptruser
 WORKDIR /usr/src/app/frontend
-
-# Install dependencies (include devDeps for Vite build)
 RUN npm install --include=dev
-
-# Build Vite project
 RUN npm run build
 
-# 4. Install backend deps
+# 5. Install backend dependencies
 WORKDIR /usr/src/app/server
 RUN npm install --production
 
-# 5. Start backend
+# 6. Start backend
 CMD ["npm", "start"]
