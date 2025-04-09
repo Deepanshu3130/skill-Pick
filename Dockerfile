@@ -41,6 +41,8 @@
 # WORKDIR /usr/src/app/server
 # CMD ["node", "index.cjs"]
 
+
+# 0. Set global env vars
 FROM ghcr.io/puppeteer/puppeteer:24.2.1
 
 # 0. Set global env vars
