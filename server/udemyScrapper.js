@@ -320,7 +320,7 @@ async function scrapeUdemyCourse(url) {
     // Launch Puppeteer in headless mode
     browser = await puppeteerExtra.launch({
       headless: 'new',
-      // dumpio: true,
+      dumpio: true,
       // executablePath:
       // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
       // headless: false, // Set to false to see the browser window
