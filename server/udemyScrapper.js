@@ -304,24 +304,24 @@
 
 
 require('dotenv').config();
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer-core')
 const puppeteerExtra  = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 
 
 // Add stealth plugin to avoid detection
-exports.getUdemyCourses =async(query)=>{
+exports. getUdemyCourses =async(query)=>{
   puppeteerExtra .use(StealthPlugin());
 
 async function scrapeUdemyCourse(url) {
   let browser;
   try {
     // Launch Puppeteer in headless mode
-    browser = await puppeteerExtra .launch({
+    browser = await puppeteerExtra.launch({
       // executablePath:
       // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
-      headless: true, // Set to false to see the browser window
+      headless: false, // Set to false to see the browser window
       args: ['--no-sandbox',
          '--disable-setuid-sandbox'],
     });
@@ -439,4 +439,6 @@ return result;
   // .then(() => console.log('Scraping completed!'))
   // .catch((err) => console.error('Error during scraping:', err.message));
 }
+// getUdemyCourses("web development")
+
 
