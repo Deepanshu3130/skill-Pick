@@ -44,6 +44,7 @@
 
 FROM ghcr.io/puppeteer/puppeteer:24.2.1
 
+# 0. Environment variables
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable \
     NODE_ENV=production
@@ -58,12 +59,15 @@ COPY --chown=pptruser:pptruser . .
 # 3. Set ownership
 RUN chown -R pptruser:pptruser /usr/src/app
 
-# 4. Build frontend and backend dependencies
+# 4. Install frontend dependencies and build
 USER pptruser
-RUN npm install && npm run build
+WORKDIR /usr/src/app/frontend
+RUN npm install
+RUN npm run build
 
-# 5. Set working dir to backend
+# 5. Install backend dependencies
 WORKDIR /usr/src/app/server
+RUN npm install
 
-# 6. Start backend
+# 6. Start backend server
 CMD ["npm", "start"]
