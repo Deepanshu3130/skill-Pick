@@ -303,148 +303,298 @@
 
 
 
+// require('dotenv').config();
+// const puppeteer = require('puppeteer-core')
+// const puppeteerExtra  = require('puppeteer-extra');
+// const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+
+
+
+// // Add stealth plugin to avoid detection
+// exports. getUdemyCourses =async(query)=>{
+//   puppeteerExtra.use(StealthPlugin());
+
+// async function scrapeUdemyCourse(url) {
+//   let browser;
+//   try {
+//     // Launch Puppeteer in headless mode
+//     browser = await puppeteerExtra.launch({
+//       headless: 'new',
+//       dumpio: true,
+//       // executablePath:
+//       // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
+//       // headless: false, // Set to false to see the browser window
+//       args: [    '--no-sandbox',
+//         '--disable-setuid-sandbox',
+//         '--disable-dev-shm-usage',
+//         '--disable-gpu',
+//         '--no-zygote',
+//         '--single-process'],
+//     });
+
+//     const page = await browser.newPage();
+
+//     // Set a realistic user agent
+//     await page.setUserAgent(
+//       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+//     );
+
+//     // Navigate to the course page
+//     console.log(`Navigating to: ${url}`);
+//     await page.goto(url, { waitUntil: 'networkidle2', timeout: 40000 });
+
+//     // Wait for the DOM to be fully ready
+//     await page.waitForFunction(() => document.readyState === 'complete');
+
+//     // Take a screenshot after the page loads
+//     // await page.screenshot({ path: 'after_load.png', fullPage: true });
+//     // console.log('Screenshot saved as after_load.png');
+
+//     // Scroll to the bottom of the page to trigger lazy loading
+//     await page.evaluate(async () => {
+//       await new Promise((resolve) => {
+//         let totalHeight = 0;
+//         const distance = 100;
+//         const timer = setInterval(() => {
+//           const scrollHeight = document.body.scrollHeight;
+//           window.scrollBy(0, distance);
+//           totalHeight += distance;
+//           if (totalHeight >= scrollHeight) {
+//             clearInterval(timer);
+//             resolve();
+//           }
+//         }, 100);
+//       });
+//     });
+
+    
+//     // Extract course data
+//     const courses = await page.$$eval('.course-list_card__jWLES', (courseElements) => {
+//       return  courseElements.map((course) => {
+//         const platform = "Udemy";
+//          const type= "paid";
+//         const description = course.querySelector('.course-card_course-headline__BBr5m')?.textContent.trim() || 'N/A';
+//         const title = course.querySelector('h3[data-purpose="course-title-url"] a').firstChild.textContent.trim()|| 'N/A';
+//         const provider = course.querySelector('.course-card-instructors_instructor-list__helor')?.textContent.trim() || 'N/A';
+//         const rating = course.querySelector('.star-rating_rating-number__nHi2B')?.textContent.trim() || 'N/A';
+//         const reviews = course.querySelector('.course-card-ratings_reviews-text__rx1CN')?.textContent.trim() || 'N/A';
+//         const currentPrice = course.querySelector('[data-purpose="course-price-text"]')?.textContent.trim() || 'N/A';
+//         const originalPrice = course.querySelector('[data-purpose="course-old-price-text"]')?.textContent.trim() || 'N/A';
+//         const duration = course.querySelector('.course-card-details_row__sWQ8g:nth-child(1)')?.textContent.trim() || 'N/A';
+//         const lectures = course.querySelector('.course-card-details_row__sWQ8g:nth-child(2)')?.textContent.trim() || 'N/A';
+//         const level = course.querySelector('.course-card-details_row__sWQ8g:nth-child(3)')?.textContent.trim() || 'N/A';
+//         const imageUrl = course.querySelector('.course-card_image-container__sVClg img')?.src || 'N/A';
+//         const link = 'https://www.udemy.com' + course.querySelector('.prefetching-wrapper_prefetching-wrapper__flGra link')?.getAttribute('href') || 'N/A';
+
+//         return {
+//           type,
+//           platform,
+//           provider,
+//           title,
+//           description,
+//           rating,
+//           reviews,
+//           currentPrice,
+//           originalPrice,
+//           duration,
+//           lectures,
+//           level,
+//           imageUrl,
+//           link,
+          
+          
+//         };
+//       });
+//     });
+   
+//    //console.log('Extracted Course Data:', JSON.stringify(courses, null, 2));
+
+
+//     // Take a screenshot after scrolling
+//     // await page.screenshot({ path: 'after_scroll.png', fullPage: true });
+//     // console.log('Screenshot saved as after_scroll.png');
+
+//     // Get the complete HTML of the page
+//     // const htmlContent = await page.content();
+//     // console.log('Page HTML content fetched successfully');
+
+//     // Save the HTML to a file
+//     // const fs = require('fs');
+//     // fs.writeFileSync('udemy_page.html', htmlContent);
+//     // console.log('HTML saved to udemy_page.html');
+//     //console.log(htmlContent);
+
+//     // Close the browser
+//     await browser.close();
+//     console.log('Scraping completed successfully');
+//     // console.log(courses)
+//     return courses;
+//   } catch (error) {
+//     console.error(`Data scraping error: ${error.message}`);
+//     if (browser) await browser.close();
+//     throw error;
+//   }
+// }
+
+// // Example usage
+// const courseUrl = `https://www.udemy.com/topic/${query}/?p=1&sort=popularity`;
+// const result =await scrapeUdemyCourse(courseUrl);
+// //console.log(result);
+// return result;
+// // scrapeUdemyCourse(courseUrl)
+//   // .then(() => console.log('Scraping completed!'))
+//   // .catch((err) => console.error('Error during scraping:', err.message));
+// }
+// // getUdemyCourses("web development")
+
+
 require('dotenv').config();
-const puppeteer = require('puppeteer-core')
-const puppeteerExtra  = require('puppeteer-extra');
+const puppeteer = require('puppeteer-core');
+const puppeteerExtra = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
-
-
-// Add stealth plugin to avoid detection
-exports. getUdemyCourses =async(query)=>{
+exports.getCourseraCourses = async (query) => {
   puppeteerExtra.use(StealthPlugin());
 
-async function scrapeUdemyCourse(url) {
-  let browser;
-  try {
-    // Launch Puppeteer in headless mode
-    browser = await puppeteerExtra.launch({
-      headless: 'new',
-      dumpio: true,
-      // executablePath:
-      // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
-      // headless: false, // Set to false to see the browser window
-      args: [    '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--no-zygote',
-        '--single-process'],
-    });
+  async function scrapeCourseraCourse(url) {
+    let browser;
+    try {
+      // Launch Puppeteer with enhanced configuration
+      browser = await puppeteerExtra.launch({
+        headless: 'new',
+        dumpio: true,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--no-zygote',
+          '--single-process',
+          '--disable-accelerated-2d-canvas',
+          '--disable-features=IsolateOrigins,site-per-process',
+          '--disable-site-isolation-trials'
+        ],
+      });
 
-    const page = await browser.newPage();
+      const page = await browser.newPage();
+      
+      // Configure page settings
+      await page.setDefaultNavigationTimeout(60000);
+      await page.setDefaultTimeout(15000);
+      await page.setJavaScriptEnabled(true);
+      await page.setViewport({ width: 1366, height: 768 });
+      
+      // Set realistic browser fingerprints
+      await page.setUserAgent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      );
+      await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9',
+      });
 
-    // Set a realistic user agent
-    await page.setUserAgent(
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-    );
+      // Enable request interception to block unnecessary resources
+      await page.setRequestInterception(true);
+      page.on('request', (request) => {
+        const resourceType = request.resourceType();
+        if (['image', 'font', 'stylesheet'].includes(resourceType)) {
+          request.abort();
+        } else {
+          request.continue();
+        }
+      });
 
-    // Navigate to the course page
-    console.log(`Navigating to: ${url}`);
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 40000 });
+      console.log(`Navigating to: ${url}`);
+      await page.goto(url, { 
+        waitUntil: ['domcontentloaded', 'networkidle2'], 
+        timeout: 60000 
+      });
 
-    // Wait for the DOM to be fully ready
-    await page.waitForFunction(() => document.readyState === 'complete');
+      // Wait for core content to load
+      await page.waitForFunction(() => {
+        return document.querySelector('ul[data-testid="search-results-list"]') !== null;
+      }, { timeout: 15000 });
 
-    // Take a screenshot after the page loads
-    // await page.screenshot({ path: 'after_load.png', fullPage: true });
-    // console.log('Screenshot saved as after_load.png');
+      // Scroll gradually to load all content
+      await autoScroll(page);
 
-    // Scroll to the bottom of the page to trigger lazy loading
+      // More robust course extraction
+      const courses = await page.evaluate(() => {
+        const results = [];
+        const courseCards = document.querySelectorAll('ul[data-testid="search-results-list"] > li');
+        
+        courseCards.forEach((card) => {
+          try {
+            const titleElem = card.querySelector('[data-testid="search-result-card-title"]');
+            const providerElem = card.querySelector('[data-testid="search-result-card-partner-name"]');
+            const ratingElem = card.querySelector('[data-testid="search-result-card-rating"]');
+            const imageElem = card.querySelector('img[data-testid="search-result-card-image"]');
+            const linkElem = card.querySelector('a[data-testid="search-result-card-title"]');
+            
+            results.push({
+              type: "paid",
+              platform: "Coursera",
+              provider: providerElem?.textContent?.trim() || 'N/A',
+              title: titleElem?.textContent?.trim() || 'N/A',
+              description: card.querySelector('[data-testid="search-result-card-description"]')?.textContent?.trim() || 'N/A',
+              rating: ratingElem?.textContent?.trim() || 'N/A',
+              reviews: card.querySelector('[data-testid="search-result-card-reviews-count"]')?.textContent?.trim() || 'N/A',
+              duration: card.querySelector('[data-testid="search-result-card-duration"]')?.textContent?.trim() || 'N/A',
+              level: card.querySelector('[data-testid="search-result-card-level"]')?.textContent?.trim() || 'N/A',
+              imageUrl: imageElem?.src || imageElem?.getAttribute('srcset')?.split(',')[0] || 'N/A',
+              link: linkElem?.href ? `https://www.coursera.org${linkElem.href}` : 'N/A'
+            });
+          } catch (e) {
+            console.error('Error parsing course card:', e);
+          }
+        });
+        return results;
+      });
+
+      await browser.close();
+      console.log('Successfully scraped', courses.length, 'courses');
+      return courses;
+    } catch (error) {
+      console.error('Scraping failed:', error);
+      if (browser) await browser.close();
+      throw new Error(`Scraping failed: ${error.message}`);
+    }
+  }
+
+  // Helper function for smooth scrolling
+  async function autoScroll(page) {
     await page.evaluate(async () => {
       await new Promise((resolve) => {
         let totalHeight = 0;
-        const distance = 100;
+        const distance = 300;
+        const scrollDelay = 500;
         const timer = setInterval(() => {
           const scrollHeight = document.body.scrollHeight;
           window.scrollBy(0, distance);
           totalHeight += distance;
+          
           if (totalHeight >= scrollHeight) {
             clearInterval(timer);
-            resolve();
+            setTimeout(resolve, scrollDelay);
           }
-        }, 100);
+        }, 200);
       });
     });
-
-    
-    // Extract course data
-    const courses = await page.$$eval('.course-list_card__jWLES', (courseElements) => {
-      return  courseElements.map((course) => {
-        const platform = "Udemy";
-         const type= "paid";
-        const description = course.querySelector('.course-card_course-headline__BBr5m')?.textContent.trim() || 'N/A';
-        const title = course.querySelector('h3[data-purpose="course-title-url"] a').firstChild.textContent.trim()|| 'N/A';
-        const provider = course.querySelector('.course-card-instructors_instructor-list__helor')?.textContent.trim() || 'N/A';
-        const rating = course.querySelector('.star-rating_rating-number__nHi2B')?.textContent.trim() || 'N/A';
-        const reviews = course.querySelector('.course-card-ratings_reviews-text__rx1CN')?.textContent.trim() || 'N/A';
-        const currentPrice = course.querySelector('[data-purpose="course-price-text"]')?.textContent.trim() || 'N/A';
-        const originalPrice = course.querySelector('[data-purpose="course-old-price-text"]')?.textContent.trim() || 'N/A';
-        const duration = course.querySelector('.course-card-details_row__sWQ8g:nth-child(1)')?.textContent.trim() || 'N/A';
-        const lectures = course.querySelector('.course-card-details_row__sWQ8g:nth-child(2)')?.textContent.trim() || 'N/A';
-        const level = course.querySelector('.course-card-details_row__sWQ8g:nth-child(3)')?.textContent.trim() || 'N/A';
-        const imageUrl = course.querySelector('.course-card_image-container__sVClg img')?.src || 'N/A';
-        const link = 'https://www.udemy.com' + course.querySelector('.prefetching-wrapper_prefetching-wrapper__flGra link')?.getAttribute('href') || 'N/A';
-
-        return {
-          type,
-          platform,
-          provider,
-          title,
-          description,
-          rating,
-          reviews,
-          currentPrice,
-          originalPrice,
-          duration,
-          lectures,
-          level,
-          imageUrl,
-          link,
-          
-          
-        };
-      });
-    });
-   
-   //console.log('Extracted Course Data:', JSON.stringify(courses, null, 2));
-
-
-    // Take a screenshot after scrolling
-    // await page.screenshot({ path: 'after_scroll.png', fullPage: true });
-    // console.log('Screenshot saved as after_scroll.png');
-
-    // Get the complete HTML of the page
-    // const htmlContent = await page.content();
-    // console.log('Page HTML content fetched successfully');
-
-    // Save the HTML to a file
-    // const fs = require('fs');
-    // fs.writeFileSync('udemy_page.html', htmlContent);
-    // console.log('HTML saved to udemy_page.html');
-    //console.log(htmlContent);
-
-    // Close the browser
-    await browser.close();
-    console.log('Scraping completed successfully');
-    // console.log(courses)
-    return courses;
-  } catch (error) {
-    console.error(`Data scraping error: ${error.message}`);
-    if (browser) await browser.close();
-    throw error;
   }
-}
 
-// Example usage
-const courseUrl = `https://www.udemy.com/topic/${query}/?p=1&sort=popularity`;
-const result =await scrapeUdemyCourse(courseUrl);
-//console.log(result);
-return result;
-// scrapeUdemyCourse(courseUrl)
-  // .then(() => console.log('Scraping completed!'))
-  // .catch((err) => console.error('Error during scraping:', err.message));
-}
-// getUdemyCourses("web development")
+  // Retry mechanism
+  const retry = async (fn, retries = 3, delay = 2000) => {
+    try {
+      return await fn();
+    } catch (err) {
+      if (retries <= 0) throw err;
+      console.log(`Retrying... (${retries} attempts left)`);
+      await new Promise(res => setTimeout(res, delay));
+      return retry(fn, retries - 1, delay * 1.5);
+    }
+  };
+
+  const courseUrl = `https://www.coursera.org/courses?query=${encodeURIComponent(query)}`;
+  return retry(() => scrapeCourseraCourse(courseUrl));
+};
 
 
