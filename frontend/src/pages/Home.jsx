@@ -229,6 +229,13 @@ const Home = () => {
               <button onClick={() => handleCourse("data science")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">Data Science</button>
               <button onClick={() => handleCourse("web design")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">Web Design</button>
              <button onClick={() => handleCourse("machine learning")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">machine learning</button>
+             <button onClick={() => handleCourse("artifical intelligence")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">Artifical Intelligence</button>
+             <button onClick={() => handleCourse("deep learning")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">Deep learning</button>
+             <button onClick={() => handleCourse("android development")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">Android Development</button>
+             <button onClick={() => handleCourse("ios development")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">ios Development</button>
+             <button onClick={() => handleCourse("AutoCad")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">AutoCad</button>
+             <button onClick={() => handleCourse("python")}  className="badge badge-lg badge-outline hover:badge-primary transition-all"> python</button>
+             <button onClick={() => handleCourse("data structures")}  className="badge badge-lg badge-outline hover:badge-primary transition-all"> Data Structures</button>
             </motion.div>
           </div>
         </div>
