@@ -304,7 +304,7 @@
 
 
 require('dotenv').config();
-const puppeteer = require('puppeteer-core')
+const  puppeteer = require('puppeteer-core');
 const puppeteerExtra  = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
