@@ -111,6 +111,17 @@ function Courses() {
 
         {/* Courses List */}
         <div className="flex-1 p-6 h-full">
+        {selectedPlatform === "Udemy" && filters && filters.length === 0 && (
+          <div className="text-center p-8 bg-base-200 rounded-lg">
+            <p className="text-lg font-medium text-gray-600">
+              We're having trouble loading Udemy courses right now.
+            </p>
+            <p className="text-sm text-gray-500 mt-2">
+              Our team is working on this issue. For better results, you can try running locally.
+            </p>
+          </div>
+          )}
+       
           {loading ? (
             <div className="flex justify-center items-center ">
               <span className="loading loading-spinner loading-lg text-primary"></span>

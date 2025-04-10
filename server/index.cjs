@@ -16,7 +16,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
 app.use(cors({
-    origin: "https://skill-pick-1-bnio.onrender.com"||'http://localhost:5173',
+    origin: process.env.NODE_ENV==="production"? "https://skill-pick-1-bnio.onrender.com":'http://localhost:5173',
     credentials: true
 }));
 app.use(
@@ -39,7 +39,7 @@ app.use('/api/v1/courseData', courseRoute);
 connect();
 cloudinaryConnect();
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.NODE_ENV=== "production"? process.env.PORT : 3000;
 server.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);
 });

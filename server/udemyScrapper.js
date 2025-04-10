@@ -318,25 +318,23 @@ async function scrapeUdemyCourse(url) {
   let browser;
   try {
     // Launch Puppeteer in headless mode
-    browser = await puppeteerExtra.launch({
-      headless:'new',
-      dumpio: true,
-
-      
-      // executablePath:
-      // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
-      // headless: false, // Set to false to see the browser window
-      args: [   '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--disable-accelerated-2d-canvas',
-        '--disable-setuid-sandbox',
-        '--disable-features=IsolateOrigins,site-per-process'
-],
-        });
-
-    const page = await browser.newPage();
+   browser = await puppeteerExtra.launch({
+         headless: "new",
+          dumpio: true,
+             // executablePath:
+             // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
+             //headless: true, // Set to false to see the browser window
+            args: [    '--no-sandbox',
+           '--disable-setuid-sandbox',
+           '--disable-dev-shm-usage',
+           '--disable-gpu',
+           '--disable-accelerated-2d-canvas',
+           '--disable-setuid-sandbox',
+           '--disable-features=IsolateOrigins,site-per-process'
+   ],
+           });
+   
+       const page = await browser.newPage();
 
     // Set a realistic user agent
     await page.setUserAgent(
@@ -345,7 +343,7 @@ async function scrapeUdemyCourse(url) {
 
     // Navigate to the course page
     console.log(`Navigating to: ${url}`);
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 90000 });
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 50000 });
 
     // Wait for the DOM to be fully ready
     await page.waitForFunction(() => document.readyState === 'complete');
@@ -451,4 +449,64 @@ return result;
   // .catch((err) => console.error('Error during scraping:', err.message));
 }
 
-// getUdemyCourses("kotlin")
+//  getUdemyCourses("kotlin")
+
+
+// const axios = require('axios');
+// const fs = require('fs');
+
+// // 1. Mimic Udemy's API headers
+// const API_HEADERS = {
+//   'Accept': 'application/json, text/plain, */*',
+//   'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Get from browser's Network tab
+//   'Referer': 'https://www.udemy.com/',
+//   'X-Requested-With': 'XMLHttpRequest'
+// };
+
+// // 2. Fetch courses via Discovery API
+// async function fetchUdemyCourses(sort = 'highest-rated', page = 1) {
+//   try {
+//     const url = `https://www.udemy.com/api-2.0/discovery-units/all_courses/?page=${page}&sort=${sort}&closed_caption_available=true`;
+    
+//     const response = await axios.get(url, {
+//       headers: API_HEADERS,
+//       proxy: { // Use residential proxy
+//         host: 'residential.proxy.ip',
+//         port: 8080,
+//         auth: { username: 'user', password: 'pass' }
+//       }
+//     });
+
+//     return response.data;
+//   } catch (error) {
+//     console.error('API Error:', error.response?.status, error.message);
+//     return null;
+//   }
+// }
+
+// // 3. Get course pricing in bulk
+// async function fetchCoursePricing(courseIds) {
+//   const url = `https://www.udemy.com/pricing/?course_ids=${courseIds.join(',')}&fields[list_price.price]=amount`;
+//   const response = await axios.get(url, { headers: API_HEADERS });
+//   return response.data;
+// }
+
+// // 4. Example Usage
+// (async () => {
+//   // Fetch first page of highest-rated courses
+//   const courses = await fetchUdemyCourses('highest-rated', 1);
+  
+//   // Extract course IDs
+//   const courseIds = courses.unit.items.map(course => course.id);
+  
+//   // Get their prices
+//   const pricing = await fetchCoursePricing(courseIds);
+  
+//   // Save results
+//   fs.writeFileSync('udemy_courses.json', JSON.stringify({
+//     courses: courses.unit.items,
+//     pricing
+//   }, null, 2));
+
+//   console.log(`Saved ${courseIds.length} courses with pricing data`);
+// })();
