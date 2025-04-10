@@ -266,7 +266,7 @@ async function scrapeCourseraCourse(url) {
 
     // Navigate to the course page
     console.log(`Navigating to: ${url}`);
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 40000 });
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
     // Wait for the DOM to be fully ready
     await page.waitForFunction(() => document.readyState === 'complete');
