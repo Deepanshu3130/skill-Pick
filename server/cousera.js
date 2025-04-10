@@ -221,8 +221,8 @@ const puppeteerExtra  = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 //const cheerio = require('cheerio');
-puppeteerExtra.use(StealthPlugin());
-const  getCourseraCourses = async (query) => {
+
+exports.getCourseraCourses = async (query) => {
   puppeteerExtra.use(StealthPlugin());
   // Add stealth plugin to avoid detection
   // puppeteerExtra.use(StealthPlugin());
@@ -363,5 +363,5 @@ return result
   // .catch((err) => console.error('Error during scraping:', err.message));
     
 }
- getCourseraCourses("machine learning");
+//  getCourseraCourses("machine learning");
 
