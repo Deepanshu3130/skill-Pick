@@ -311,7 +311,7 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 
 // Add stealth plugin to avoid detection
-exports.getUdemyCourses =async(query)=>{
+exports. getUdemyCourses =async(query)=>{
   puppeteerExtra.use(StealthPlugin());
 
 async function scrapeUdemyCourse(url) {
@@ -326,7 +326,7 @@ async function scrapeUdemyCourse(url) {
       // executablePath:
       // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
       // headless: false, // Set to false to see the browser window
-      args: [    '--no-sandbox',
+      args: [   '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-gpu',
@@ -345,11 +345,11 @@ async function scrapeUdemyCourse(url) {
 
     // Navigate to the course page
     console.log(`Navigating to: ${url}`);
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 10000 });
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 90000 });
 
     // Wait for the DOM to be fully ready
     await page.waitForFunction(() => document.readyState === 'complete');
-    await page.waitForSelector('.course-list_card__jWLES', { timeout: 10000 });
+    // await page.waitForSelector('.course-list_card__jWLES', { timeout: 10000 });
 
     // Take a screenshot after the page loads
     // await page.screenshot({ path: 'after_load.png', fullPage: true });
@@ -451,3 +451,4 @@ return result;
   // .catch((err) => console.error('Error during scraping:', err.message));
 }
 
+// getUdemyCourses("kotlin")
