@@ -216,15 +216,15 @@
 // })();
 
 require('dotenv').config();
-const puppeteer = require('puppeteer-core')
+const puppeteer = require("puppeteer-core")
 const puppeteerExtra  = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 //const cheerio = require('cheerio');
-
-exports. getCourseraCourses = async (query) => {
+puppeteerExtra.use(StealthPlugin());
+const getCourseraCourses = async (query) => {
   // Add stealth plugin to avoid detection
-  puppeteerExtra.use(StealthPlugin());
+  // puppeteerExtra.use(StealthPlugin());
 
 async function scrapeCourseraCourse(url) {
   // async function fetchImgUrl(html) {
@@ -239,22 +239,13 @@ async function scrapeCourseraCourse(url) {
 
     // Launch Puppeteer in headless mode
     browser = await puppeteerExtra.launch({
-      headless: 'new',
-      dumpio: true,
+      headless: "new",
+       dumpio: true,
           // executablePath:
           // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
           //headless: true, // Set to false to see the browser window
-          args: [    '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-gpu',
-            '--no-zygote',
-            '--single-process',
-            '--disable-accelerated-2d-canvas',
-            '--disable-features=WebContentsForceDark',
-            '--disable-software-rasterizer',
-            '--disable-webgl',
-            '--mute-audio',],
+         args: [    '--no-sandbox',
+        '--disable-setuid-sandbox',],
         });
 
     const page = await browser.newPage();
@@ -359,11 +350,11 @@ async function scrapeCourseraCourse(url) {
 // Example usage
 const courseUrl = `https://www.coursera.org/courses?query=${query}&skill=${query}&page=1`;
 const result =await scrapeCourseraCourse(courseUrl);
-//console.log(result)
+console.log(result)
 return result
   // .then(() => console.log('Scraping completed!'))
   // .catch((err) => console.error('Error during scraping:', err.message));
     
 }
-//  getCourseraCourses("data structures and algorithms");
+  getCourseraCourses("data structures and algorithms");
 
