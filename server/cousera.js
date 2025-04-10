@@ -222,7 +222,8 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 //const cheerio = require('cheerio');
 puppeteerExtra.use(StealthPlugin());
-exports. getCourseraCourses = async (query) => {
+const  getCourseraCourses = async (query) => {
+  puppeteerExtra.use(StealthPlugin());
   // Add stealth plugin to avoid detection
   // puppeteerExtra.use(StealthPlugin());
 
@@ -245,7 +246,13 @@ async function scrapeCourseraCourse(url) {
           // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
           //headless: true, // Set to false to see the browser window
          args: [    '--no-sandbox',
-        '--disable-setuid-sandbox',],
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-accelerated-2d-canvas',
+        '--disable-setuid-sandbox',
+        '--disable-features=IsolateOrigins,site-per-process'
+],
         });
 
     const page = await browser.newPage();
@@ -257,7 +264,7 @@ async function scrapeCourseraCourse(url) {
 
     // Navigate to the course page
     console.log(`Navigating to: ${url}`);
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 40000 });
+    await page.goto(url, { timeout: 60000, waitUntil: 'load' });
 
     // Wait for the DOM to be fully ready
     await page.waitForFunction(() => document.readyState === 'complete');
@@ -356,5 +363,5 @@ return result
   // .catch((err) => console.error('Error during scraping:', err.message));
     
 }
-// getCourseraCourses("machine learning");
+ getCourseraCourses("machine learning");
 

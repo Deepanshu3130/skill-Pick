@@ -21,12 +21,12 @@ exports.gatherData = async(query) =>{
         // combine the results
 
        result=[...udemyResult,...courseraResult, ...youtubeResult];
-      //console.log(result);
+      console.log(result);
        return result;
     }catch(error){
         return error;
     }
 }
-// gatherData("data structures");
+//  gatherData("data structures");
 
 
