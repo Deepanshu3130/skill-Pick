@@ -238,7 +238,7 @@ async function scrapeCourseraCourse(url) {
   try {
 
     // Launch Puppeteer in headless mode
-    browser = await puppeteerExtra .launch({
+    browser = await puppeteerExtra.launch({
       headless: false,
       dumpio: true,
           // executablePath:
