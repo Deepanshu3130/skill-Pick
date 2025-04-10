@@ -349,6 +349,7 @@ async function scrapeUdemyCourse(url) {
 
     // Wait for the DOM to be fully ready
     await page.waitForFunction(() => document.readyState === 'complete');
+    await page.waitForSelector('.course-list_card__jWLES', { timeout: 10000 });
 
     // Take a screenshot after the page loads
     // await page.screenshot({ path: 'after_load.png', fullPage: true });
