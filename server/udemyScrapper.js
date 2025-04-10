@@ -326,10 +326,7 @@ async function scrapeUdemyCourse(url) {
       // headless: false, // Set to false to see the browser window
       args: [    '--no-sandbox',
         '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--no-zygote',
-        '--single-process'],
+        '--disable-dev-shm-usage',],
     });
 
     const page = await browser.newPage();
@@ -427,7 +424,7 @@ async function scrapeUdemyCourse(url) {
     // Close the browser
     await browser.close();
     console.log('Scraping completed successfully');
-    // console.log(courses)
+     console.log(courses)
     return courses;
   } catch (error) {
     console.error(`Data scraping error: ${error.message}`);
@@ -439,12 +436,12 @@ async function scrapeUdemyCourse(url) {
 // Example usage
 const courseUrl = `https://www.udemy.com/topic/${query}/?p=1&sort=popularity`;
 const result =await scrapeUdemyCourse(courseUrl);
-//console.log(result);
+console.log(result);
 return result;
 // scrapeUdemyCourse(courseUrl)
   // .then(() => console.log('Scraping completed!'))
   // .catch((err) => console.error('Error during scraping:', err.message));
 }
-// getUdemyCourses("web development")
+//  getUdemyCourses("web-development")
 
 

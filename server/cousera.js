@@ -257,7 +257,7 @@ async function scrapeCourseraCourse(url) {
 
     // Navigate to the course page
     console.log(`Navigating to: ${url}`);
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 40000 });
 
     // Wait for the DOM to be fully ready
     await page.waitForFunction(() => document.readyState === 'complete');
@@ -266,7 +266,7 @@ async function scrapeCourseraCourse(url) {
     // await page.screenshot({ path: 'after_load.png', fullPage: true });
     // console.log('Screenshot saved as after_load.png');
     
-    await page.waitForSelector('ul.cds-9 li.cds-11', { timeout: 10000 });
+    // await page.waitForSelector('ul.cds-9 li.cds-11', { timeout: 10000 });
     // Scroll to the bottom of the page to trigger lazy loading
     await page.evaluate(async () => {
       await new Promise((resolve) => {
@@ -356,5 +356,5 @@ return result
   // .catch((err) => console.error('Error during scraping:', err.message));
     
 }
-  //getCourseraCourses("data structures and algorithms");
+// getCourseraCourses("machine learning");
 
