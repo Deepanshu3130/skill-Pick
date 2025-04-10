@@ -326,11 +326,7 @@ async function scrapeUdemyCourse(url) {
       // headless: false, // Set to false to see the browser window
       args: [    '--no-sandbox',
         '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--disable-accelerated-2d-canvas',
-        '--disable-setuid-sandbox',
-        '--disable-features=IsolateOrigins,site-per-process'],
+      ],
     });
 
     const page = await browser.newPage();
