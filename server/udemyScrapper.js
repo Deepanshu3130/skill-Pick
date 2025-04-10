@@ -319,15 +319,22 @@ async function scrapeUdemyCourse(url) {
   try {
     // Launch Puppeteer in headless mode
     browser = await puppeteerExtra.launch({
-      headless: true,
+      headless:'new',
       dumpio: true,
+
+      
       // executablePath:
       // process.env.NODE_ENV ==="production"? process.env.PUPPETEER_EXECUTABLE_PATH:puppeteer.executablePath(),
       // headless: false, // Set to false to see the browser window
       args: [    '--no-sandbox',
         '--disable-setuid-sandbox',
-      ],
-    });
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-accelerated-2d-canvas',
+        '--disable-setuid-sandbox',
+        '--disable-features=IsolateOrigins,site-per-process'
+],
+        });
 
     const page = await browser.newPage();
 
@@ -338,7 +345,7 @@ async function scrapeUdemyCourse(url) {
 
     // Navigate to the course page
     console.log(`Navigating to: ${url}`);
-    await page.goto(url, { timeout: 60000, waitUntil: 'load' });
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
     // Wait for the DOM to be fully ready
     await page.waitForFunction(() => document.readyState === 'complete');
@@ -442,6 +449,4 @@ return result;
   // .then(() => console.log('Scraping completed!'))
   // .catch((err) => console.error('Error during scraping:', err.message));
 }
-  // getUdemyCourses("web-development")
-
 
