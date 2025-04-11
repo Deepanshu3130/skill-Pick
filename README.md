@@ -54,11 +54,13 @@ cd skil-pick
 
 2. Set Up Environment
 Create .env files:
- ```
 Frontend (/frontend/.env)
-VITE_CLERK_PUBLISHABLE_KEY=your_pub_key
-VITE_BASE_URL=http://localhost:10000
+ ```
 
+VITE_CLERK_PUBLISHABLE_KEY=your_pub_key
+VITE_BASE_URL=http://localhost:3000/api/v1
+```
+```
 Backend (/server/.env)
 # Database
 dataBase_url=mongodb+srv://your_mongo_uri
