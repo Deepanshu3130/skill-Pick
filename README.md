@@ -92,10 +92,10 @@ cd ../server && npm install
 🖥️ Running the Application
   Development Mode
   ```
-# Start frontend (port 3000)
+# Start frontend 
 cd frontend && npm run dev
 
-# Start backend (port 10000)
+# Start backend 
 cd ../server && node index.cjs
 ```
 Production Build
