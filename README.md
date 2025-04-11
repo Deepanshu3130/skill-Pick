@@ -1,6 +1,7 @@
 # 🚀 Skil-Pick - Course Discovery Platform
 
-![Skil-Pick Banner](https://github.com/user-attachments/assets/36cf7c1f-21bb-48af-90fd-998315d4eae7)
+![Skil-Pick Banner]((https://github.com/user-attachments/assets/4b91485e-0d05-46c0-b945-ab16411c77f4)
+)
 )
 
 
