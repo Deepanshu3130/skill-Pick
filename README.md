@@ -2,7 +2,6 @@
 
 ![Skil-Pick Banner]((https://github.com/user-attachments/assets/4b91485e-0d05-46c0-b945-ab16411c77f4)
 )
-)
 
 
 A dynamic platform for discovering skill-based courses across YouTube, Coursera, and Udemy with real-time community features.
