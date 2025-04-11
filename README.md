@@ -1,8 +1,8 @@
 # 🚀 Skil-Pick - Course Discovery Platform
 
-![Skil-Pick Banner](https://github.com/user-attachments/assets/1a6691f0-2629-4462-81b0-609f5ccb1cfe
-h-12)
+![Skil-Pick Banner](https://github.com/user-attachments/assets/36cf7c1f-21bb-48af-90fd-998315d4eae7)
 )
+
 
 A dynamic platform for discovering skill-based courses across YouTube, Coursera, and Udemy with real-time community features.
 
