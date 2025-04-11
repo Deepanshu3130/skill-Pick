@@ -44,6 +44,8 @@ Cloudinary account
 Installation
 Clone the repository
 
+bash
+Copy
 git clone https://github.com/yourusername/skil-pick.git
 cd skil-pick
 Set up environment variables
@@ -51,17 +53,19 @@ Create .env files in both /frontend and /server directories with required creden
 
 Install dependencies
 
+bash
+Copy
 cd frontend && npm install
 cd ../server && npm install
-
 Configuration
 Frontend (.env)
 env
 Copy
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_key
-VITE_BASE_URL=http://localhost:3000/api/v1
-
+VITE_BASE_URL=http://localhost:10000
 Backend (.env)
+env
+Copy
 # Database
 dataBase_url=mongodb+srv://your_mongodb_url
 
@@ -84,12 +88,15 @@ PORT=10000
 Running the Application
 Development Mode:
 
-
+bash
+Copy
 # Frontend
 cd frontend && npm run dev
 
 # Backend
 cd server && node index.cjs
-
 Production Build:
+
+bash
+Copy
 cd frontend && npm run build
