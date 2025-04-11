@@ -31,72 +31,61 @@ Skil-Pick is a dynamic platform that helps users search for skill-based courses 
 - Socket.IO
 
 ---
-🚀 Getting Started
-✅ Prerequisites
-Node.js v16 or higher
 
-MongoDB Atlas account
+## 🚀 Installation
 
-Clerk developer account
+### 1. Clone Repository
+---
+git clone https://github.com/yourusername/skil-pick.git
+cd skil-pick
+---
 
-Cloudinary account
+### 2. Set Up Environment
+Create `.env` files in both `/frontend` and `/server` directories:
 
-📦 Installation
-1. Clone the Repository
-Clone the repo using:
-
-https://github.com/yourusername/skil-pick.git
-Then move into the project folder: cd skil-pick
-
-2. Set Up Environment Variables
-Create .env files in both /frontend and /server directories with the following values:
-
-🧩 Frontend .env
-VITE_CLERK_PUBLISHABLE_KEY=your_clerk_key
-
+#### Frontend (.env)
+---
+VITE_CLERK_PUBLISHABLE_KEY=your_pub_key
 VITE_BASE_URL=http://localhost:10000
+---
 
-🖥 Backend .env
-Database
+#### Backend (.env)
+---
+# Database
+dataBase_url=mongodb+srv://your_mongo_url
 
-dataBase_url=mongodb+srv://your_mongodb_url
-
-Authentication (Clerk)
-
-CLERK_PUBLISHABLE_KEY=your_clerk_key
-
-CLERK_SECRET_KEY=your_clerk_secret
-
-APIs
-
-YOUTUBE_API_KEY=your_youtube_key
-
+# APIs
+YOUTUBE_API_KEY=your_yt_key
 BROWSERLESS_TOKEN=your_browserless_token
 
-Cloudinary (for file uploads)
-
+# Cloudinary
 CLOUD_NAME=your_cloud_name
-
-API_KEY=your_cloud_key
-
-API_SECRET=your_cloud_secret
-
+API_KEY=your_api_key
+API_SECRET=your_api_secret
 FOLDER_NAME="uploads"
+---
 
-Server
+### 3. Install Dependencies
+---
+# Frontend
+cd frontend && npm install
 
-PORT=10000
+# Backend
+cd ../server && npm install
+---
 
-📂 Install Dependencies
-Navigate to the folders and install dependencies:
+## 🖥️ Running the App
 
-In frontend: run npm install
+### Development Mode
+---
+# Terminal 1 (Frontend)
+cd frontend && npm run dev
 
-In server: run npm install
+# Terminal 2 (Backend)
+cd ../server && node index.cjs
+---
 
-🧪 Run the Application
-Open two separate terminals:
-
-In the first terminal, run the frontend using: npm run dev inside the frontend folder
-
-In the second terminal, run the backend using: node index.cjs inside the server folder
+### Production Build
+---
+cd frontend && npm run build
+---
