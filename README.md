@@ -31,58 +31,65 @@ Skil-Pick is a dynamic platform that helps users search for skill-based courses 
 - Socket.IO
 
 ---
+🚀 Getting Started
+Prerequisites
+Node.js v16+
 
-## ⚙️ Setup Instructions
+MongoDB Atlas account
 
-### 1. Clone the repository
+Clerk developer account
+
+Cloudinary account
+
+Installation
+Clone the repository
+
 git clone https://github.com/yourusername/skil-pick.git
 cd skil-pick
+Set up environment variables
+Create .env files in both /frontend and /server directories with required credentials.
 
-###2. Install dependencies
-cd frontend
-npm install
+Install dependencies
 
-cd server
-npm install
+cd frontend && npm install
+cd ../server && npm install
 
-🔐 Environment Variables
-Frontend (/client/.env)
-VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-VITE_BASE_URL=http://localhost:10000
- 
-🖥️ Backend (/server/.env)
-# MongoDB
+Configuration
+Frontend (.env)
+env
+Copy
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_key
+VITE_BASE_URL=http://localhost:3000/api/v1
+
+Backend (.env)
+# Database
 dataBase_url=mongodb+srv://your_mongodb_url
 
-# Clerk Auth
-CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-CLERK_SECRET_KEY=your_clerk_secret_key
+# Authentication
+CLERK_PUBLISHABLE_KEY=your_clerk_key
+CLERK_SECRET_KEY=your_clerk_secret
 
-# YouTube API
-YOUTUBE_API_KEY=your_youtube_api_key
-
-# Cloudinary (for file uploads)
-CLOUD_NAME=your_cloudinary_cloud_name
-API_KEY=your_cloudinary_api_key
-API_SECRET=your_cloudinary_api_secret
-FOLDER_NAME="deepanshu"
-
-# Puppeteer / Browserless
+# APIs
+YOUTUBE_API_KEY=your_youtube_key
 BROWSERLESS_TOKEN=your_browserless_token
 
-# Server Port
+# Cloudinary
+CLOUD_NAME=your_cloud_name
+API_KEY=your_cloud_key
+API_SECRET=your_cloud_secret
+FOLDER_NAME="uploads"
+
+# Server
 PORT=10000
-⚠️ Note: Cloudinary-related keys (CLOUD_NAME, API_KEY, API_SECRET, FOLDER_NAME) are used for image uploads.
+Running the Application
+Development Mode:
 
-🧪 Running the App
-Run the frontend and backend in separate terminals:
-▶️ Frontend
-cd frontend
-npm run dev
 
-🖥️ Backend
-cd server
-node index.cjs
+# Frontend
+cd frontend && npm run dev
 
-🤝 Contributing
-Feel free to fork this repo and open a PR if you want to contribute. Issues and ideas are always welcome!
+# Backend
+cd server && node index.cjs
+
+Production Build:
+cd frontend && npm run build
