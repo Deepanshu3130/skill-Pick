@@ -1,61 +1,70 @@
-# 🚀 Skil-Pick
+# 🚀 Skil-Pick - Course Discovery Platform
 
-Skil-Pick is a dynamic platform that helps users search for skill-based courses (e.g., Web Development, UI/UX, etc.) across platforms like YouTube, Coursera, and Udemy. It also provides an interactive community with real-time group and private chats powered by Clerk authentication.
+![Skil-Pick Banner](https://via.placeholder.com/1200x400?text=Skil-Pick+-+Find+Your+Perfect+Course)
+
+A dynamic platform for discovering skill-based courses across YouTube, Coursera, and Udemy with real-time community features.
 
 ---
 
-## 🌟 Features
+## 🌟 Key Features
 
-- 🔍 Search courses across multiple platforms
-- 🧠 Smart filtering by platform & price
-- 💬 Real-time community & 1:1 chat using Socket.IO
+- 🔍 Unified course search across multiple platforms
+- 🎚️ Smart filtering by platform, price, and skill level
+- 💬 Real-time chat (group & 1:1) with Socket.IO
 - 🔐 Secure authentication via Clerk
-- ☁️ Media upload integration with Cloudinary
+- ☁️ Media uploads with Cloudinary integration
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Technology Stack
 
-**Frontend**  
-- React  
-- Tailwind CSS  
-- Clerk (for Auth)  
-- Zustand (for state management)  
+### Frontend
+| Technology | Purpose |
+|------------|---------|
+| React | Core framework |
+| Tailwind CSS | Utility-first styling |
+| Clerk | Authentication |
+| Zustand | State management |
 
-**Backend**  
-- Node.js  
-- Express  
-- MongoDB + Mongoose  
-- Puppeteer (for scraping)
-- Cloudinary (image upload)
-- Socket.IO
+### Backend
+| Technology | Purpose |
+|------------|---------|
+| Node.js | Runtime environment |
+| Express | API framework |
+| MongoDB | Database |
+| Puppeteer | Web scraping |
+| Socket.IO | Real-time communication |
+| Cloudinary | Media storage |
 
 ---
 
-## 🚀 Installation
+## 🚀 Getting Started
 
-### 1. Clone Repository
----
+### Prerequisites
+- Node.js v16+
+- MongoDB Atlas account
+- Clerk developer account
+- Cloudinary account
+
+### 1. Clone the Repository
+```bash
 git clone https://github.com/yourusername/skil-pick.git
 cd skil-pick
----
+```
 
-### 2. Set Up Environment
-Create `.env` files in both `/frontend` and `/server` directories:
-
-#### Frontend (.env)
----
+2. Set Up Environment
+Create .env files:
+ ```
+Frontend (/frontend/.env)
 VITE_CLERK_PUBLISHABLE_KEY=your_pub_key
 VITE_BASE_URL=http://localhost:10000
----
 
-#### Backend (.env)
----
+Backend (/server/.env)
 # Database
-dataBase_url=mongodb+srv://your_mongo_url
+dataBase_url=mongodb+srv://your_mongo_uri
 
 # APIs
-YOUTUBE_API_KEY=your_yt_key
+YOUTUBE_API_KEY=your_youtube_api_key
 BROWSERLESS_TOKEN=your_browserless_token
 
 # Cloudinary
@@ -63,29 +72,34 @@ CLOUD_NAME=your_cloud_name
 API_KEY=your_api_key
 API_SECRET=your_api_secret
 FOLDER_NAME="uploads"
----
 
-### 3. Install Dependencies
----
-# Frontend
+# Server
+PORT=10000
+```
+
+3. Install Dependencies
+```
+# Frontend dependencies
 cd frontend && npm install
 
-# Backend
+# Backend dependencies
 cd ../server && npm install
----
-
-## 🖥️ Running the App
-
-### Development Mode
----
-# Terminal 1 (Frontend)
+```
+🖥️ Running the Application
+  Development Mode
+  ```
+# Start frontend (port 3000)
 cd frontend && npm run dev
 
-# Terminal 2 (Backend)
+# Start backend (port 10000)
 cd ../server && node index.cjs
----
-
-### Production Build
----
+```
+Production Build
+```
 cd frontend && npm run build
----
+```
+
+
+
+
+
