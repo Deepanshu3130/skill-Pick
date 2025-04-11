@@ -53,7 +53,8 @@ cd skil-pick
 ```
 
 2. Set Up Environment
-Create .env files:
+Create .env files:<br/>
+
 Frontend (/frontend/.env)
  ```
 
