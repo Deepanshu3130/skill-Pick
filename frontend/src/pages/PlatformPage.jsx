@@ -14,8 +14,8 @@ function Courses() {
   const [loading, setLoading] = useState(false);
   const {platform} = useParams();
   let img = null;
-  if (platform === "Youtube") {
-    img = "/youtube-logo.jpg";  // no import needed
+  if (platform === "YouTube") {
+    img = "/youtube-logo.jpg";  
   } else if (platform === "Udemy") {
     img = "/udemy-logo.png";
   } else {
