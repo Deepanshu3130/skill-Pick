@@ -5,7 +5,6 @@
 
 
 A dynamic platform for discovering skill-based courses across YouTube, Coursera, and Udemy with real-time community features.
-https://skill-pick-3.onrender.com
 ---
 
 ## 🌟 Key Features
