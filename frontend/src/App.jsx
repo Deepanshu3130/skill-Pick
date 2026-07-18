@@ -19,7 +19,7 @@ import PrivateRoutes from './Components/PrivateRoutes'
 
 let socket1 = null
 function App() {
-  const BASE_URL = import.meta.env.MODE=== "development" ? "http://localhost:3000" : "/"
+  const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "https://skill-pick-se.onrender.com";
   const { isSignedIn, user } = useUser();
  
 
