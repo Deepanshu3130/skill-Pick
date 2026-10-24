@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui";
+@import "./Components/motion/motionStyles.css";
 
 /* =========================================================================
    SkillPick Custom Developer Themes (WCAG AA Compliant)

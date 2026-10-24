@@ -1,0 +1,165 @@
+/* ==========================================================================
+   Motion System: Shared Tokens & Utilities
+   ========================================================================== */
+
+:root {
+  --ease-out-cubic: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-entrance: 500ms;
+  --duration-hover: 200ms;
+}
+
+/* Eyebrow Label */
+.motion-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-base-content, #64748b);
+  opacity: 0.7;
+}
+
+.motion-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0.5;
+  margin-right: 8px;
+}
+
+/* Outlined Pill Tag */
+.motion-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  border: 1px solid var(--color-base-300, #e2e8f0);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-base-content, #475569);
+  background-color: transparent;
+  transition: border-color var(--duration-hover) var(--ease-out-cubic),
+              color var(--duration-hover) var(--ease-out-cubic);
+}
+
+.motion-pill:hover {
+  border-color: var(--color-primary, #6366f1);
+  color: var(--color-primary, #6366f1);
+}
+
+/* Mono Number */
+.motion-mono-num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-base-content, #64748b);
+  opacity: 0.5;
+}
+
+/* Thin 1px Divider */
+.motion-divider {
+  height: 1px;
+  width: 100%;
+  background-color: var(--color-base-300, #e2e8f0);
+  opacity: 0.6;
+}
+
+/* Marquee Infinite Loop Keyframes */
+@keyframes marquee-left {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-left var(--marquee-speed, 50s) linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marquee-right var(--marquee-speed, 50s) linear infinite;
+  will-change: transform;
+}
+
+/* Pause on hover & focus-within */
+.marquee-container:hover .animate-marquee-left,
+.marquee-container:hover .animate-marquee-right,
+.marquee-container:focus-within .animate-marquee-left,
+.marquee-container:focus-within .animate-marquee-right {
+  animation-play-state: paused;
+}
+
+/* Mask image fade for marquee edges */
+.marquee-fade-edges {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+/* Headline Reveal Mask */
+.headline-mask-line {
+  display: block;
+  overflow: hidden;
+}
+
+.headline-slide-up {
+  display: block;
+  transform: translate3d(0, 100%, 0);
+  transition: transform var(--duration-entrance) var(--ease-out-cubic);
+  will-change: transform;
+}
+
+.headline-slide-up.is-visible {
+  transform: translate3d(0, 0, 0);
+}
+
+/* prefers-reduced-motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-left,
+  .animate-marquee-right {
+    animation: none !important;
+    transform: none !important;
+    flex-wrap: wrap;
+    width: 100% !important;
+  }
+
+  .headline-slide-up {
+    transform: none !important;
+    transition: none !important;
+  }
+}
