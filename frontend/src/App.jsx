@@ -15,6 +15,7 @@ import ChatHome from './pages/ChatHome';
 import AboutUs from './pages/AboutUs';
 import PlatfromPage from './pages/PlatformPage';
 import PrivateRoutes from './Components/PrivateRoutes';
+import Footer from './Components/Footer';
 
 let socket1 = null;
 
@@ -98,6 +99,7 @@ function App() {
         <Route path='/aboutUs' element={<AboutUs />} />
         <Route path='/Platform/:platform' element={<PlatfromPage />} />
       </Routes>
+      <Footer />
     </div>
   );
 }

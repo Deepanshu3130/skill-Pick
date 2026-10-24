@@ -4,7 +4,7 @@ import { getPlatformCourses } from '../operations/apiConnectors';
 import useCourseStore from '../store/useCourseStore';
 import CourseCard from "../Components/CourseCard";
 import Pagination from "../Components/Pagination";
-import { FiSearch, FiSliders, FiX } from 'react-icons/fi';
+import { Search, SlidersHorizontal, X } from 'lucide-react';
 
 function PlatformPage() {
   const { setPlatformCourses, platformCourses } = useCourseStore();
@@ -139,10 +139,10 @@ function PlatformPage() {
                 onClick={() => setSearchKeyword("")}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 text-base-content/50 hover:text-base-content"
               >
-                <FiX className="size-3.5" />
+                <X className="size-3.5" />
               </button>
             ) : (
-              <FiSearch className="absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-base-content/40 pointer-events-none" />
+              <Search className="absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-base-content/40 pointer-events-none" />
             )}
           </div>
 

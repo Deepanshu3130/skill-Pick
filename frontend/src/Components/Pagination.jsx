@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 
 /**
  * Reusable, responsive pagination component using DaisyUI & Tailwind.
@@ -95,7 +95,7 @@ function Pagination({
             aria-label="First page"
             title="First page"
           >
-            <FiChevronsLeft className="size-4" />
+            <ChevronsLeft className="size-4" strokeWidth={1.5} />
           </button>
 
           {/* Previous Page */}
@@ -105,7 +105,7 @@ function Pagination({
             className="btn btn-sm btn-outline gap-1 px-2.5 rounded-lg disabled:opacity-40"
             aria-label="Previous page"
           >
-            <FiChevronLeft className="size-4" />
+            <ChevronLeft className="size-4" strokeWidth={1.5} />
             <span className="hidden sm:inline text-xs">Prev</span>
           </button>
 
@@ -149,7 +149,7 @@ function Pagination({
             aria-label="Next page"
           >
             <span className="hidden sm:inline text-xs">Next</span>
-            <FiChevronRight className="size-4" />
+            <ChevronRight className="size-4" strokeWidth={1.5} />
           </button>
 
           {/* Last Page (desktop only) */}
@@ -160,7 +160,7 @@ function Pagination({
             aria-label="Last page"
             title="Last page"
           >
-            <FiChevronsRight className="size-4" />
+            <ChevronsRight className="size-4" strokeWidth={1.5} />
           </button>
         </div>
       )}

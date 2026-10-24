@@ -1,157 +1,108 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Code, BookOpen, Globe, Shield, Star, Search, Bookmark, Users, Play } from 'lucide-react';
+import { 
+  BookOpen, 
+  GitBranch, 
+  MessageSquare, 
+  ShieldCheck, 
+  Terminal, 
+  Search, 
+  ArrowRight,
+  Code
+} from 'lucide-react';
 
 function AboutUs() {
   return (
-    <div className="min-h-screen bg-base-100 pt-20">
-      {/* Hero Section */}
-      <section className="hero bg-base-200 py-16">
-        <div className="hero-content text-center">
-          <div className="max-w-4xl">
-            <h1 className="text-5xl font-bold text-primary mb-6">About SKILL-PICK</h1>
-            <p className="text-xl">
-              Your smart course discovery platform to find the best learning resources
-            </p>
+    <div className="min-h-screen bg-base-100 pt-24 pb-16 flex flex-col">
+      <div className="w-11/12 max-w-4xl mx-auto px-4 space-y-12 text-left">
+        {/* Header */}
+        <div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-base-200 border border-base-300 text-xs font-medium text-base-content/80 mb-3">
+            <Code className="size-3.5 text-primary" strokeWidth={1.5} />
+            <span>Open Learning Community</span>
           </div>
-        </div>
-      </section>
-
-      {/* Mission Section */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto">
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-12">
-            <div className="lg:w-1/2">
-              <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
-              <p className="text-lg mb-6">
-                SKILL-PICK helps you discover the highest quality courses from multiple platforms 
-                in one place, saving you time and helping you make informed learning decisions.
-              </p>
-              <div className="stats shadow bg-base-200">
-                <div className="stat">
-                  <div className="stat-figure text-primary">
-                    <Users className="w-8 h-8" />
-                  </div>
-                  <div className="stat-title">Active Learners</div>
-                  <div className="stat-value">10,000+</div>
-                </div>
-                
-                <div className="stat">
-                  <div className="stat-figure text-secondary">
-                    <BookOpen className="w-8 h-8" />
-                  </div>
-                  <div className="stat-title">Courses</div>
-                  <div className="stat-value">500+</div>
-                </div>
-              </div>
-            </div>
-            <div className="">
-              <img 
-                src="hero.png"
-                alt="Person learning online" 
-                className="rounded-lg shadow-2xl object-cover h-full max-h-[500px] w-full"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How to Use Section */}
-      <section className="py-16 bg-base-200">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">How to Use SKILL-PICK</h2>
-          
-          <div className="flex flex-col gap-8 max-w-4xl mx-auto">
-            {/* Step 1 */}
-            <div className="flex flex-col md:flex-row gap-6 items-start">
-              <div className="bg-primary text-primary-content p-4 rounded-full">
-                <Search className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-2">1. Search for Courses</h3>
-                <p>
-                  Use the search bar to find courses by topic, platform, or skill. Our powerful search 
-                  aggregates courses from multiple providers to give you comprehensive results.
-                </p>
-              </div>
-            </div>
-            
-            {/* Step 2 */}
-            <div className="flex flex-col md:flex-row gap-6 items-start">
-              <div className="bg-secondary text-secondary-content p-4 rounded-full">
-                <Bookmark className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-2">2. Compare & Save</h3>
-                <p>
-                  View course details, ratings, and platform information. Bookmark interesting 
-                  courses to your list for easy access later.
-                </p>
-              </div>
-            </div>
-            
-            {/* Step 3 */}
-            <div className="flex flex-col md:flex-row gap-6 items-start">
-              <div className="bg-accent text-accent-content p-4 rounded-full">
-                <Play className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-2">3. Start Learning</h3>
-                <p>
-                  Click through to your chosen course platform to enroll and begin your learning 
-                  journey. We'll redirect you to the official course page.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Why Choose SKILL-PICK?</h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow">
-              <div className="card-body items-center text-center">
-                <Globe className="w-12 h-12 text-primary mb-4" />
-                <h3 className="card-title mb-2">Multi-Platform</h3>
-                <p>Courses and open-source repositories from YouTube, GitHub, and community learners in one place.</p>
-              </div>
-            </div>
-            
-            <div className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow">
-              <div className="card-body items-center text-center">
-                <Shield className="w-12 h-12 text-secondary mb-4" />
-                <h3 className="card-title mb-2">Verified Reviews</h3>
-                <p>Real feedback from learners to help you choose quality courses.</p>
-              </div>
-            </div>
-            
-            <div className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow">
-              <div className="card-body items-center text-center">
-                <Star className="w-12 h-12 text-accent mb-4" />
-                <h3 className="card-title mb-2">Personalized</h3>
-                <p>Save courses and track your learning progress.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-primary text-primary-content">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Start Learning?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Join our community of learners today and find your perfect course
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-base-content">
+            About SkillPick
+          </h1>
+          <p className="text-sm sm:text-base text-base-content/70 mt-2 max-w-2xl leading-relaxed">
+            SkillPick was created to eliminate fragmented learning. Instead of jumping between paywalled platforms, scattered video playlists, and unhelpful comment sections, we organize resources around topics with peer study rooms.
           </p>
-          <Link to="/" className="btn btn-secondary btn-lg">
-            Browse Courses
-          </Link>
         </div>
-      </section>
+
+        {/* Core Principles */}
+        <div className="space-y-4">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-primary">
+            Our Principles
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="card bg-base-200 border border-base-300 p-5 rounded-2xl space-y-2.5">
+              <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <BookOpen className="size-4" strokeWidth={1.5} />
+              </div>
+              <h3 className="font-bold text-sm text-base-content">Official APIs Only</h3>
+              <p className="text-xs text-base-content/70 leading-relaxed">
+                Zero web scraping. All content is fetched strictly through official YouTube Data API v3 and GitHub REST API endpoints.
+              </p>
+            </div>
+
+            <div className="card bg-base-200 border border-base-300 p-5 rounded-2xl space-y-2.5">
+              <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <ShieldCheck className="size-4" strokeWidth={1.5} />
+              </div>
+              <h3 className="font-bold text-sm text-base-content">Free & Paywall-Free</h3>
+              <p className="text-xs text-base-content/70 leading-relaxed">
+                Curated open courses and starred open-source roadmaps. No subscriptions, affiliate traps, or scraped partial content.
+              </p>
+            </div>
+
+            <div className="card bg-base-200 border border-base-300 p-5 rounded-2xl space-y-2.5">
+              <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <MessageSquare className="size-4" strokeWidth={1.5} />
+              </div>
+              <h3 className="font-bold text-sm text-base-content">Connected Study Rooms</h3>
+              <p className="text-xs text-base-content/70 leading-relaxed">
+                Every course has a real-time study chat powered by Socket.IO where learners ask questions, solve bugs, and collaborate.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* How It Works List */}
+        <div className="card bg-base-200 border border-base-300 p-6 sm:p-8 rounded-2xl space-y-5">
+          <h2 className="text-base font-bold text-base-content">
+            How topics and resources are organized
+          </h2>
+
+          <ul className="space-y-4 text-xs sm:text-sm text-base-content/80">
+            <li className="flex items-start gap-3">
+              <span className="font-mono text-primary font-bold">1.</span>
+              <div>
+                <strong>Two-Layer Search:</strong> Topics power typing suggestions and hierarchical links (e.g. <code>react</code> part of <code>web-development</code>). Full courses and repos are searched simultaneously across titles, descriptions, and creators.
+              </div>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="font-mono text-primary font-bold">2.</span>
+              <div>
+                <strong>Community Submissions:</strong> Missing a course? Paste any link via "Can't find your course?". It runs through offline validation and official API verification with automatic whole-word topic tagging.
+              </div>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="font-mono text-primary font-bold">3.</span>
+              <div>
+                <strong>Student Moderation:</strong> Submissions are verified and upvoted by community members. Resources with 3+ upvotes graduate immediately into public topic recommendations.
+              </div>
+            </li>
+          </ul>
+
+          <div className="pt-2">
+            <Link to="/" className="btn btn-sm btn-primary gap-1 font-semibold rounded-xl">
+              <span>Start exploring topics</span>
+              <ArrowRight className="size-3.5" />
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
