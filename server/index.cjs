@@ -1,4 +1,16 @@
 require('dotenv').config();
+
+// Normalize environment variable casing for Linux/Docker environments
+if (!process.env.NODE_ENV && process.env.Node_ENV) {
+    process.env.NODE_ENV = process.env.Node_ENV;
+}
+if (!process.env.dataBase_url && process.env.DATABASE_URL) {
+    process.env.dataBase_url = process.env.DATABASE_URL;
+}
+if (!process.env.dataBase_url && process.env.MONGODB_URI) {
+    process.env.dataBase_url = process.env.MONGODB_URI;
+}
+
 const { connect } = require('./config/database');
 const cookieParser = require('cookie-parser');
 const courseRoute = require('./Routes/courseDataRoute');
@@ -20,7 +32,7 @@ const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'http://localhost:3000',
-    'https://skill-pick-3-bnio.onrender.com'
+    'https://skill-pick-frontend.onrender.com/'
 ];
 
 if (process.env.FRONTEND_URL) {
@@ -73,9 +85,17 @@ if (fs.existsSync(distPath)) {
 connect();
 cloudinaryConnect();
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+// Catch unexpected errors so the server logs exact details instead of dying silently
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+});
+
+const PORT = parseInt(process.env.PORT, 10) || 3000;
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on port ${PORT} (0.0.0.0)`);
 });
 
 module.exports = { io, app, server, getReceiverSocketId };

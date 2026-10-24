@@ -26,3 +26,6 @@ Thumbs.db
 .vscode/
 !.vscode/extensions.json
 .idea/
+
+# Local personal files
+CHANGELOG.md
