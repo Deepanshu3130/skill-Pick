@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FiX, FiSearch, FiGitBranch, FiBookOpen, FiStar, FiArrowRight, FiExternalLink, FiMessageSquare } from 'react-icons/fi';
+import { 
+  X, 
+  Search, 
+  GitBranch, 
+  BookOpen, 
+  Star, 
+  MessageSquare, 
+  CheckCircle, 
+  AlertCircle,
+  ExternalLink 
+} from 'lucide-react';
 import {
   submitResourceLink,
   searchWebResources,
@@ -345,22 +355,21 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-xs transition-opacity duration-200">
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-xs transition-opacity duration-200">
       {/* Backdrop click to close */}
-      <div className="absolute inset-0" onClick={onClose} />
+      <div className="absolute inset-0" onClick={onClose} aria-label="Close backdrop" />
 
       {/* Slide-over Side Panel on Desktop, Bottom Sheet on Mobile */}
       <div 
-        className="relative z-10 bg-base-100 w-full sm:w-[480px] h-[90vh] sm:h-full mt-auto sm:mt-0 rounded-t-2xl sm:rounded-none shadow-2xl flex flex-col border-l border-base-300 font-sans animate-slideLeft overflow-hidden"
-        style={{ fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" }}
+        className="relative z-10 bg-base-100 w-full sm:w-[480px] h-[90vh] sm:h-full mt-auto sm:mt-0 rounded-t-2xl sm:rounded-none shadow-2xl flex flex-col border-l border-base-300 overflow-hidden"
       >
         {/* Header with Close */}
-        <div className="p-5 border-b border-base-200 flex justify-between items-center bg-base-200/40">
+        <div className="p-5 border-b border-base-300 flex justify-between items-center bg-base-200/50">
           <div>
-            <h2 className="text-[20px] font-semibold text-base-content leading-tight">
+            <h2 className="text-lg font-bold text-base-content leading-tight">
               {activeTab === "course" ? "Add a course" : "Add a GitHub repo"}
             </h2>
-            <p className="text-[14px] font-normal text-base-content/75 mt-0.5">
+            <p className="text-xs text-base-content/70 mt-0.5">
               {activeTab === "course" 
                 ? "Paste a course link and we'll find it for you." 
                 : "Search by name or paste a repo link."}
@@ -368,16 +377,16 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
           </div>
           <button 
             onClick={onClose} 
-            className="btn btn-sm btn-circle btn-ghost text-base-content/70 hover:text-base-content"
+            className="btn btn-sm btn-circle btn-ghost text-base-content/60 hover:text-base-content"
             aria-label="Close panel"
           >
-            <FiX className="size-5" />
+            <X className="size-4" strokeWidth={1.5} />
           </button>
         </div>
 
         {/* Tab List */}
         <div 
-          className="flex border-b border-base-200 bg-base-200/20 px-5" 
+          className="flex border-b border-base-300 bg-base-100 px-5" 
           role="tablist"
           aria-label="Resource type selection"
         >
@@ -385,25 +394,25 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
             role="tab"
             aria-selected={activeTab === "course"}
             onClick={() => { setActiveTab("course"); setFeedback(null); }}
-            className={`py-3 px-4 text-[14px] font-semibold flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
+            className={`py-3 px-4 text-xs font-semibold flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
               activeTab === "course"
                 ? "border-primary text-primary"
                 : "border-transparent text-base-content/60 hover:text-base-content"
             }`}
           >
-            <FiBookOpen className="size-4" /> Course
+            <BookOpen className="size-4" strokeWidth={1.5} /> Course
           </button>
           <button
             role="tab"
             aria-selected={activeTab === "github"}
             onClick={() => { setActiveTab("github"); setFeedback(null); }}
-            className={`py-3 px-4 text-[14px] font-semibold flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
+            className={`py-3 px-4 text-xs font-semibold flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
               activeTab === "github"
                 ? "border-primary text-primary"
                 : "border-transparent text-base-content/60 hover:text-base-content"
             }`}
           >
-            <FiGitBranch className="size-4" /> GitHub repo
+            <GitBranch className="size-4" strokeWidth={1.5} /> GitHub repo
           </button>
         </div>
 
@@ -411,7 +420,7 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
         <div className="flex-1 overflow-y-auto p-5 space-y-5">
           {!isSignedIn ? (
             <div className="p-8 text-center bg-base-200/50 rounded-2xl border border-base-300 space-y-3">
-              <p className="text-[14px] font-medium text-base-content/80">
+              <p className="text-sm font-medium text-base-content/80">
                 Please log in to add a course.
               </p>
             </div>
@@ -419,44 +428,45 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
             <>
               {/* Feedback messages / cards */}
               {feedback && (
-                <div className="space-y-4 animate-fadeIn">
+                <div className="space-y-4">
                   <div 
-                    className={`p-4 rounded-xl text-[14px] font-medium border ${
+                    className={`alert text-xs font-medium border rounded-xl ${
                       feedback.status === "added"
-                        ? "bg-success/10 border-success/30 text-success"
+                        ? "alert-success"
                         : feedback.status === "exists"
-                        ? "bg-info/10 border-info/30 text-info"
-                        : feedback.status === "rate_limited" || feedback.status === "service_busy" || feedback.status === "invalid"
-                        ? "bg-warning/10 border-warning/30 text-warning"
-                        : "bg-base-200 border-base-300 text-base-content/80"
+                        ? "alert-info"
+                        : "alert-warning"
                     }`}
                   >
-                    {feedback.message}
+                    <span>{feedback.message}</span>
                   </div>
 
                   {feedback.resource && (
-                    <div className="card bg-base-200 border border-base-300 shadow-sm p-4 rounded-xl space-y-3">
+                    <div className="card bg-base-200 border border-base-300 shadow-xs p-4 rounded-xl space-y-3">
                       <div className="flex gap-3 items-center">
                         <img 
                           src={feedback.resource.imageUrl || feedback.resource.thumbnail || 'https://via.placeholder.com/80'} 
                           alt="" 
-                          className="w-14 h-14 object-cover rounded-lg shrink-0"
+                          className="w-12 h-12 object-cover rounded-lg shrink-0 bg-base-300"
                         />
                         <div className="min-w-0 flex-1">
-                          <h4 className="font-semibold text-sm truncate">{feedback.resource.title}</h4>
-                          <p className="text-xs text-base-content/60 truncate">
+                          <h4 className="font-semibold text-xs sm:text-sm truncate text-base-content">
+                            {feedback.resource.title}
+                          </h4>
+                          <p className="text-[11px] text-base-content/60 truncate">
                             {feedback.resource.channelOrOwner || feedback.resource.provider}
                           </p>
                         </div>
                       </div>
 
-                      <div className="flex justify-end gap-2 pt-2 border-t border-base-300/50">
+                      <div className="flex justify-end gap-2 pt-2 border-t border-base-300">
                         <Link
                           to={`/course/${feedback.resource._id}`}
                           onClick={onClose}
-                          className="btn btn-sm btn-primary gap-1"
+                          className="btn btn-xs btn-primary gap-1 font-semibold"
                         >
-                          <FiMessageSquare className="size-4" /> Join room
+                          <MessageSquare className="size-3" strokeWidth={1.5} />
+                          <span>Join room</span>
                         </Link>
                       </div>
                     </div>
@@ -476,7 +486,7 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                           placeholder="Paste a YouTube, Udemy or Coursera link"
                           value={courseInput}
                           onChange={(e) => setCourseInput(e.target.value)}
-                          className="input input-bordered w-full text-[16px] focus:outline-none"
+                          className="input input-bordered w-full text-sm rounded-xl focus:outline-hidden"
                           disabled={courseLoading}
                           required
                         />
@@ -485,43 +495,50 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                       <button
                         type="submit"
                         disabled={courseLoading || !courseInput.trim()}
-                        className="btn btn-primary w-full text-[14px] font-semibold"
+                        className="btn btn-primary w-full text-xs font-semibold rounded-xl"
                       >
-                        {courseLoading ? "Searching..." : "Find course"}
+                        {courseLoading ? (
+                          <>
+                            <span className="loading loading-spinner loading-xs" />
+                            <span>Searching...</span>
+                          </>
+                        ) : (
+                          "Find course"
+                        )}
                       </button>
                     </form>
                   )}
 
                   {/* Picker Screen (Status choose) */}
                   {courseResults && !isManualMode && (
-                    <div className="space-y-4 animate-fadeIn">
+                    <div className="space-y-4">
                       <div>
-                        <h3 className="text-[16px] font-semibold text-base-content">
+                        <h3 className="text-sm font-bold text-base-content">
                           Select your course
                         </h3>
-                        <p className="text-[13px] text-base-content/75">
+                        <p className="text-xs text-base-content/70">
                           We found these on the web. Pick the one you meant.
                         </p>
                       </div>
 
-                      <div className="space-y-2.5 max-h-[42vh] overflow-y-auto pr-1">
+                      <div className="space-y-2 max-h-[42vh] overflow-y-auto pr-1">
                         {courseResults.results.map((item) => (
                           <div
                             key={item.index}
                             onClick={() => handlePickCourse(item.index)}
-                            className="p-3.5 bg-base-200/60 hover:bg-base-200 border border-base-300 rounded-xl transition-all cursor-pointer flex flex-col gap-1 hover:border-primary/50"
+                            className="p-3 bg-base-100 hover:bg-base-200 border border-base-300 rounded-xl transition-all cursor-pointer flex flex-col gap-1 hover:border-primary/50"
                           >
                             <div className="flex justify-between items-start gap-2">
-                              <h4 className="font-semibold text-sm line-clamp-1 text-base-content">
+                              <h4 className="font-semibold text-xs line-clamp-1 text-base-content">
                                 {item.title}
                               </h4>
                               {item.domain && (
-                                <span className="badge badge-sm badge-outline font-mono shrink-0 text-[11px]">
+                                <span className="badge badge-xs badge-outline font-mono shrink-0 text-[10px]">
                                   {item.domain}
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-base-content/70 line-clamp-2 leading-relaxed">
+                            <p className="text-[11px] text-base-content/70 line-clamp-2 leading-relaxed">
                               {item.snippet}
                             </p>
                           </div>
@@ -529,7 +546,7 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                       </div>
 
                       {/* Edit query box */}
-                      <div className="pt-2 border-t border-base-200 space-y-3">
+                      <div className="pt-2 border-t border-base-300 space-y-3">
                         <label className="text-xs font-medium text-base-content/70 block">
                           Not right? Try a different search
                         </label>
@@ -538,13 +555,13 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                             type="text"
                             value={courseEditQuery}
                             onChange={(e) => setCourseEditQuery(e.target.value)}
-                            className="input input-sm input-bordered join-item flex-1 text-sm focus:outline-none"
+                            className="input input-sm input-bordered join-item flex-1 text-xs focus:outline-hidden"
                             disabled={courseLoading}
                           />
                           <button
                             type="submit"
                             disabled={courseLoading || !courseEditQuery.trim()}
-                            className="btn btn-sm btn-primary join-item"
+                            className="btn btn-sm btn-primary join-item text-xs font-semibold"
                           >
                             {courseLoading ? "Searching..." : "Search"}
                           </button>
@@ -553,7 +570,7 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                         <button
                           type="button"
                           onClick={() => setIsManualMode(true)}
-                          className="btn btn-sm btn-ghost w-full text-xs text-base-content/75 hover:text-base-content"
+                          className="btn btn-sm btn-ghost w-full text-xs text-base-content/70 hover:text-base-content"
                         >
                           None of these, enter details manually
                         </button>
@@ -563,12 +580,12 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
 
                   {/* Manual Form */}
                   {isManualMode && (
-                    <form onSubmit={handleManualSubmit} className="space-y-4 animate-fadeIn">
+                    <form onSubmit={handleManualSubmit} className="space-y-4">
                       <div>
-                        <h3 className="text-[16px] font-semibold text-base-content">
+                        <h3 className="text-sm font-bold text-base-content">
                           Enter details manually
                         </h3>
-                        <p className="text-[13px] text-base-content/75">
+                        <p className="text-xs text-base-content/70">
                           Provide course information for community review.
                         </p>
                       </div>
@@ -583,7 +600,7 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                             placeholder="Course title"
                             value={manualTitle}
                             onChange={(e) => setManualTitle(e.target.value)}
-                            className="input input-bordered w-full text-sm focus:outline-none"
+                            className="input input-sm input-bordered w-full text-xs rounded-lg focus:outline-hidden"
                             required
                             disabled={courseLoading}
                           />
@@ -598,7 +615,7 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                             placeholder="https://..."
                             value={manualUrl}
                             onChange={(e) => setManualUrl(e.target.value)}
-                            className="input input-bordered w-full text-sm focus:outline-none"
+                            className="input input-sm input-bordered w-full text-xs rounded-lg focus:outline-hidden"
                             required
                             disabled={courseLoading}
                           />
@@ -612,7 +629,7 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                             placeholder="What does this course cover?"
                             value={manualDescription}
                             onChange={(e) => setManualDescription(e.target.value)}
-                            className="textarea textarea-bordered w-full text-sm focus:outline-none h-20"
+                            className="textarea textarea-bordered w-full text-xs rounded-lg focus:outline-hidden h-20"
                             disabled={courseLoading}
                           />
                         </div>
@@ -622,14 +639,14 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                         <button
                           type="button"
                           onClick={() => setIsManualMode(false)}
-                          className="btn btn-sm btn-ghost flex-1"
+                          className="btn btn-sm btn-ghost flex-1 text-xs"
                         >
                           Back to results
                         </button>
                         <button
                           type="submit"
                           disabled={courseLoading || !manualTitle.trim() || !manualUrl.trim()}
-                          className="btn btn-sm btn-primary flex-1"
+                          className="btn btn-sm btn-primary flex-1 text-xs font-semibold"
                         >
                           {courseLoading ? "Submitting..." : "Submit for review"}
                         </button>
@@ -650,7 +667,7 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                         placeholder="Search repos, or paste github.com/owner/repo"
                         value={githubInput}
                         onChange={(e) => setGithubInput(e.target.value)}
-                        className="input input-bordered w-full text-[16px] focus:outline-none"
+                        className="input input-bordered w-full text-sm rounded-xl focus:outline-hidden"
                         disabled={githubLoading}
                         required
                       />
@@ -659,43 +676,48 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                     <button
                       type="submit"
                       disabled={githubLoading || !githubInput.trim()}
-                      className="btn btn-primary w-full text-[14px] font-semibold"
+                      className="btn btn-primary w-full text-xs font-semibold rounded-xl"
                     >
-                      {githubLoading ? "Searching..." : "Search"}
+                      {githubLoading ? (
+                        <>
+                          <span className="loading loading-spinner loading-xs" />
+                          <span>Searching...</span>
+                        </>
+                      ) : (
+                        "Search"
+                      )}
                     </button>
                   </form>
 
                   {/* GitHub Results Screen */}
                   {githubResults && githubResults.results.length > 0 && (
-                    <div className="space-y-4 animate-fadeIn">
+                    <div className="space-y-4">
                       <div>
-                        <h3 className="text-[16px] font-semibold text-base-content">
+                        <h3 className="text-sm font-bold text-base-content">
                           Select your repo
                         </h3>
-                        <p className="text-[13px] text-base-content/75">
+                        <p className="text-xs text-base-content/70">
                           Pick the repo you want to add.
                         </p>
                       </div>
 
-                      <div className="space-y-2.5 max-h-[46vh] overflow-y-auto pr-1">
+                      <div className="space-y-2 max-h-[46vh] overflow-y-auto pr-1">
                         {githubResults.results.map((repo) => (
                           <div
                             key={repo.index}
-                            className="p-3.5 bg-base-200/60 hover:bg-base-200 border border-base-300 rounded-xl transition-all flex justify-between items-center gap-3"
+                            className="p-3 bg-base-100 hover:bg-base-200 border border-base-300 rounded-xl transition-all flex justify-between items-center gap-3"
                           >
                             <div className="min-w-0 flex-1 space-y-1">
-                              <div className="flex items-center gap-2">
-                                <span className="font-semibold text-sm truncate text-primary">
-                                  {repo.fullName}
-                                </span>
-                              </div>
-                              <p className="text-xs text-base-content/70 line-clamp-2 leading-relaxed">
+                              <span className="font-semibold text-xs truncate text-primary block">
+                                {repo.fullName}
+                              </span>
+                              <p className="text-[11px] text-base-content/70 line-clamp-2 leading-relaxed">
                                 {repo.description || "No description provided."}
                               </p>
-                              <div className="flex items-center gap-3 text-[11px] text-base-content/60 pt-0.5">
+                              <div className="flex items-center gap-3 text-[10px] text-base-content/60 font-mono pt-0.5">
                                 {repo.stars !== undefined && (
-                                  <span className="flex items-center gap-1 text-amber-500 font-medium">
-                                    <FiStar className="size-3" /> {repo.stars.toLocaleString()}
+                                  <span className="flex items-center gap-1 text-warning">
+                                    <Star className="size-2.5 fill-warning" /> {repo.stars.toLocaleString()}
                                   </span>
                                 )}
                                 {repo.language && (
@@ -710,7 +732,7 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
                               type="button"
                               onClick={() => handlePickRepo(repo.index)}
                               disabled={githubLoading}
-                              className="btn btn-xs btn-primary shrink-0"
+                              className="btn btn-xs btn-primary shrink-0 text-xs font-semibold"
                             >
                               Add
                             </button>
