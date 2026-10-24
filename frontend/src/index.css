@@ -1,36 +1,128 @@
 @import "tailwindcss";
-@plugin "daisyui" {
-    themes:
-     "light",
-    "dark",
-    "cupcake",
-    "bumblebee",
-    "emerald",
-    "corporate",
-    "synthwave",
-    "retro",
-    "cyberpunk",
-    "valentine",
-    "halloween",
-    "garden",
-    "forest",
-    "aqua",
-    "lofi",
-    "pastel",
-    "fantasy",
-    "wireframe",
-    "black",
-    "luxury",
-    "dracula",
-    "cmyk",
-    "autumn",
-    "business",
-    "acid",
-    "lemonade",
-    "night",
-    "coffee",
-    "winter",
-    "dim",
-    "nord",
-    "sunset";
+@plugin "daisyui";
+
+/* =========================================================================
+   SkillPick Custom Developer Themes (WCAG AA Compliant)
+   ========================================================================= */
+
+/* Light Theme (Default) */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(98% 0.005 255);
+  --color-base-300: oklch(92.5% 0.01 255);
+  --color-base-content: oklch(22% 0.02 260);
+
+  /* Confident calm indigo */
+  --color-primary: oklch(47% 0.20 260);
+  --color-primary-content: oklch(99% 0 0);
+
+  /* Steel slate */
+  --color-secondary: oklch(55% 0.12 215);
+  --color-secondary-content: oklch(99% 0 0);
+
+  /* Refined sage */
+  --color-accent: oklch(58% 0.16 160);
+  --color-accent-content: oklch(99% 0 0);
+
+  --color-neutral: oklch(22% 0.015 260);
+  --color-neutral-content: oklch(96% 0.005 260);
+
+  --color-info: oklch(62% 0.17 240);
+  --color-info-content: oklch(99% 0 0);
+  --color-success: oklch(58% 0.18 145);
+  --color-success-content: oklch(99% 0 0);
+  --color-warning: oklch(76% 0.15 75);
+  --color-warning-content: oklch(22% 0.04 75);
+  --color-error: oklch(58% 0.22 25);
+  --color-error-content: oklch(99% 0 0);
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --color-base-100: oklch(18% 0.014 260);
+  --color-base-200: oklch(22% 0.016 260);
+  --color-base-300: oklch(28% 0.02 260);
+  --color-base-content: oklch(94% 0.008 260);
+
+  /* Vibrant electric indigo */
+  --color-primary: oklch(66% 0.19 260);
+  --color-primary-content: oklch(14% 0.02 260);
+
+  /* Soft slate cyan */
+  --color-secondary: oklch(68% 0.12 215);
+  --color-secondary-content: oklch(15% 0.02 260);
+
+  /* Mint sage */
+  --color-accent: oklch(72% 0.14 160);
+  --color-accent-content: oklch(15% 0.02 260);
+
+  --color-neutral: oklch(26% 0.018 260);
+  --color-neutral-content: oklch(92% 0.008 260);
+
+  --color-info: oklch(72% 0.14 240);
+  --color-info-content: oklch(15% 0.02 260);
+  --color-success: oklch(70% 0.16 145);
+  --color-success-content: oklch(15% 0.02 260);
+  --color-warning: oklch(80% 0.15 75);
+  --color-warning-content: oklch(20% 0.04 75);
+  --color-error: oklch(68% 0.20 25);
+  --color-error-content: oklch(15% 0.02 260);
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+}
+
+/* =========================================================================
+   Typography & Base Styles
+   ========================================================================= */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.55;
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+  transition: background-color 200ms ease, color 200ms ease;
+  min-height: 100vh;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  color: var(--color-base-content);
+}
+
+p {
+  max-width: 65ch;
+}
+
+code, kbd, samp, pre {
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* =========================================================================
+   Smooth Motion & Reduced Motion Safeguards
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
+}
