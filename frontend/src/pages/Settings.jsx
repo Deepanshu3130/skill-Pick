@@ -1,6 +1,7 @@
 import React from 'react';
 import { useThemeStore } from "../store/useThemeStore";
 import { Sun, Moon, Send, Check } from "lucide-react";
+import HeadlineReveal from '../Components/motion/HeadlineReveal';
 
 const Settings = () => {
   const { theme, setTheme } = useThemeStore();
@@ -9,9 +10,10 @@ const Settings = () => {
     <div className="min-h-screen bg-base-100 pt-24 pb-16">
       <div className="w-11/12 max-w-4xl mx-auto px-4 space-y-8 text-left">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-base-content">
-            Interface Preferences
-          </h1>
+          <HeadlineReveal
+            lines={["Interface Preferences"]}
+            className="text-2xl sm:text-3xl font-extrabold tracking-tight text-base-content"
+          />
           <p className="text-xs sm:text-sm text-base-content/70 mt-1">
             Choose between our high-contrast, WCAG AA compliant light and dark themes.
           </p>
