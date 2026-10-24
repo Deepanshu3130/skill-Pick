@@ -33,11 +33,13 @@ function Navbar() {
         <div className="navbar-start w-auto flex items-center gap-3">
           <Link
             to="/"
-            className="flex items-center gap-2 group text-base font-semibold tracking-tight text-base-content hover:text-primary transition-colors"
+            className="flex items-center gap-2.5 group text-base font-semibold tracking-tight text-base-content hover:text-primary transition-colors"
           >
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center text-primary-content text-xs font-mono font-bold">
-              SP
-            </div>
+            <img 
+              src="/favicon.ico" 
+              alt="SkillPick Logo" 
+              className="w-7 h-7 rounded-lg object-contain shrink-0" 
+            />
             <span className="text-base font-bold tracking-tight">
               Skill<span className="text-primary">Pick</span>
             </span>

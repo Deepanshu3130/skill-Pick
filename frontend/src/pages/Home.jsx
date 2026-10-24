@@ -133,13 +133,38 @@ const Home = () => {
               Every resource connects to a live study room so you can code together, share repos, and unblock errors.
             </p>
 
-            {/* Hero Search Box - Clean, Single Border */}
-            <div className="w-full max-w-2xl mx-auto pt-2">
-              <SearchAutocomplete
-                placeholder="What skill do you want to learn? (e.g. react, dsa, python)..."
-                buttonText="Search"
-                showButton={true}
+            {/* Hero Search Box with subtle ambient glow */}
+            <div className="relative w-full max-w-2xl mx-auto pt-2">
+              <div 
+                className="absolute -inset-1.5 rounded-2xl bg-gradient-to-r from-primary/10 via-primary/20 to-primary/10 opacity-70 blur-md pointer-events-none" 
+                aria-hidden="true" 
               />
+              <div className="relative">
+                <SearchAutocomplete
+                  placeholder="What skill do you want to learn? (e.g. react, dsa, python)..."
+                  buttonText="Search"
+                  showButton={true}
+                />
+              </div>
+            </div>
+
+            {/* Quick interactive suggestions */}
+            <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs text-base-content/60 pt-1">
+              <span className="font-medium">Try:</span>
+              {[
+                { label: "react roadmap", query: "react" },
+                { label: "dsa in python", query: "dsa" },
+                { label: "system design", query: "system-design" },
+                { label: "docker compose", query: "docker" }
+              ].map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => navigate(`/courses/${item.query}`)}
+                  className="px-2 py-0.5 rounded-md bg-base-100 hover:bg-base-200 border border-base-300 hover:border-primary/40 text-base-content/75 hover:text-primary transition-all font-mono text-[11px] cursor-pointer"
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
 
             {/* Popular Topics Row */}
