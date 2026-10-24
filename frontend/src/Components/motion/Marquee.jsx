@@ -46,9 +46,9 @@ export function Marquee({
           style={{ '--marquee-speed': `${speed}s` }}
         >
           {/* List 1 (Accessible to screen readers) */}
-          <div className="flex items-center gap-12 sm:gap-20 shrink-0 pr-12 sm:pr-20">
+          <div className="flex items-center gap-12 sm:gap-20 shrink-0 pr-12 sm:pr-20 pl-6 sm:pl-10">
             {label && (
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary font-mono text-xs uppercase tracking-wider font-bold shrink-0 select-none">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/15 border border-primary/40 text-primary font-mono text-xs uppercase tracking-wider font-bold shrink-0 select-none">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
                 <span>{label}</span>
               </div>
@@ -83,7 +83,7 @@ export function Marquee({
             tabIndex={-1}
           >
             {label && (
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary font-mono text-xs uppercase tracking-wider font-bold shrink-0 select-none">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/15 border border-primary/40 text-primary font-mono text-xs uppercase tracking-wider font-bold shrink-0 select-none">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
                 <span>{label}</span>
               </div>

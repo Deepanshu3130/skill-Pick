@@ -154,7 +154,7 @@ const Home = () => {
           
           {/* Eyebrow Label */}
           <div className="flex justify-center">
-            <span className="motion-eyebrow text-primary">
+            <span className="motion-eyebrow">
               00 // OPEN STUDENT LEARNING STACK
             </span>
           </div>
@@ -163,13 +163,13 @@ const Home = () => {
           <HeadlineReveal
             lines={[
               <span key="1">
-                Learning is not just <span className="text-primary">watching videos.</span>
+                Learning is not just <span className="text-primary font-bold">watching videos.</span>
               </span>,
               <span key="2">
-                It is <span className="text-primary">code</span>, practice, and <span className="text-primary">community.</span>
+                It is <span className="text-primary font-bold">code, practice, and community.</span>
               </span>
             ]}
-            className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-base-content leading-[1.12] max-w-4xl mx-auto"
+            className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight text-base-content leading-[1.18] max-w-5xl mx-auto"
           />
 
           {/* Subtitle */}

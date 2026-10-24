@@ -3,39 +3,39 @@
 @import "./Components/motion/motionStyles.css";
 
 /* =========================================================================
-   SkillPick Custom Developer Themes (WCAG AA Compliant)
+   SkillPick Custom Developer Themes (WCAG AA Compliant - Pure Black & Blue)
    ========================================================================= */
 
 /* Light Theme (Crisp Black & Blue on Clean White) */
 [data-theme="light"] {
   color-scheme: light;
   --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(98% 0.005 250);
-  --color-base-300: oklch(92% 0.01 250);
-  --color-base-content: oklch(14% 0.01 250);
+  --color-base-200: oklch(98% 0.005 240);
+  --color-base-300: oklch(92% 0.01 240);
+  --color-base-content: oklch(14% 0.01 240);
 
-  /* Vibrant royal blue */
-  --color-primary: oklch(54% 0.23 250);
+  /* Vibrant royal blue (#2563eb) */
+  --color-primary: oklch(54% 0.24 240);
   --color-primary-content: oklch(99% 0 0);
 
   /* Deep slate blue */
-  --color-secondary: oklch(46% 0.16 250);
+  --color-secondary: oklch(46% 0.16 240);
   --color-secondary-content: oklch(99% 0 0);
 
   /* Sky blue accent */
-  --color-accent: oklch(62% 0.18 245);
+  --color-accent: oklch(62% 0.18 240);
   --color-accent-content: oklch(99% 0 0);
 
-  --color-neutral: oklch(14% 0.01 250);
+  --color-neutral: oklch(14% 0.01 240);
   --color-neutral-content: oklch(98% 0 0);
 
-  --color-info: oklch(58% 0.20 245);
+  --color-info: oklch(58% 0.20 240);
   --color-info-content: oklch(99% 0 0);
-  --color-success: oklch(54% 0.22 250);
+  --color-success: oklch(54% 0.22 240);
   --color-success-content: oklch(99% 0 0);
-  --color-warning: oklch(62% 0.18 250);
+  --color-warning: oklch(62% 0.18 240);
   --color-warning-content: oklch(99% 0 0);
-  --color-error: oklch(52% 0.22 250);
+  --color-error: oklch(52% 0.22 240);
   --color-error-content: oklch(99% 0 0);
 
   --radius-selector: 0.5rem;
@@ -50,33 +50,33 @@
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
-  --color-base-100: oklch(10% 0.004 250); /* #06070a pure deep black */
-  --color-base-200: oklch(14% 0.008 250); /* #0f121a dark obsidian */
-  --color-base-300: oklch(21% 0.018 250); /* #1a2233 clean dark blue-gray border */
-  --color-base-content: oklch(96% 0.005 250); /* #f8fafc crisp white text */
+  --color-base-100: oklch(10% 0.004 240); /* #06070a pure deep black */
+  --color-base-200: oklch(14% 0.008 240); /* #0f121a dark obsidian */
+  --color-base-300: oklch(21% 0.018 240); /* #1a2233 clean dark blue-gray border */
+  --color-base-content: oklch(98% 0.002 240); /* pure crisp white text */
 
-  /* Pure electric vibrant blue */
-  --color-primary: oklch(62% 0.24 250); /* #2563eb / #3b82f6 */
+  /* Pure electric vibrant blue (#3b82f6) */
+  --color-primary: oklch(62% 0.22 240);
   --color-primary-content: oklch(99% 0 0);
 
   /* Azure blue */
-  --color-secondary: oklch(68% 0.18 245);
-  --color-secondary-content: oklch(10% 0.004 250);
+  --color-secondary: oklch(68% 0.18 240);
+  --color-secondary-content: oklch(10% 0.004 240);
 
   /* Ice sky blue */
   --color-accent: oklch(74% 0.16 240);
-  --color-accent-content: oklch(10% 0.004 250);
+  --color-accent-content: oklch(10% 0.004 240);
 
-  --color-neutral: oklch(16% 0.01 250);
-  --color-neutral-content: oklch(94% 0.008 250);
+  --color-neutral: oklch(16% 0.01 240);
+  --color-neutral-content: oklch(94% 0.008 240);
 
-  --color-info: oklch(65% 0.20 245);
+  --color-info: oklch(65% 0.20 240);
   --color-info-content: oklch(99% 0 0);
-  --color-success: oklch(62% 0.24 250);
+  --color-success: oklch(62% 0.24 240);
   --color-success-content: oklch(99% 0 0);
-  --color-warning: oklch(68% 0.16 250);
-  --color-warning-content: oklch(10% 0.004 250);
-  --color-error: oklch(60% 0.22 250);
+  --color-warning: oklch(68% 0.16 240);
+  --color-warning-content: oklch(10% 0.004 240);
+  --color-error: oklch(60% 0.22 240);
   --color-error-content: oklch(99% 0 0);
 
   --radius-selector: 0.5rem;

@@ -17,8 +17,8 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-base-content, #64748b);
-  opacity: 0.7;
+  color: var(--color-primary, #3b82f6);
+  opacity: 0.95;
 }
 
 .motion-eyebrow::before {
@@ -27,7 +27,7 @@
   width: 16px;
   height: 1px;
   background-color: currentColor;
-  opacity: 0.5;
+  opacity: 0.6;
   margin-right: 8px;
 }
 
@@ -50,8 +50,8 @@
 }
 
 .motion-pill:hover {
-  border-color: var(--color-primary, #6366f1);
-  color: var(--color-primary, #6366f1);
+  border-color: var(--color-primary, #3b82f6);
+  color: var(--color-primary, #3b82f6);
 }
 
 /* Mono Number */
@@ -113,20 +113,20 @@
   animation-play-state: paused;
 }
 
-/* Mask image fade for marquee edges */
+/* Mask image fade for marquee edges - Clean 3% edge taper */
 .marquee-fade-edges {
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    black 8%,
-    black 92%,
+    black 3%,
+    black 97%,
     transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    black 8%,
-    black 92%,
+    black 3%,
+    black 97%,
     transparent 100%
   );
 }
