@@ -43,6 +43,7 @@ app.use('/api', topicRoute);
 app.use('/api/v1', topicRoute);
 app.use('/api/resources', resourceRoute);
 app.use('/api/v1/resources', resourceRoute);
+app.use('/api', require('./Routes/homeStatsRoute'));
 
 connect();
 cloudinaryConnect();
