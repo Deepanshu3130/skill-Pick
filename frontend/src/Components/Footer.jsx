@@ -9,9 +9,9 @@ function Footer() {
         {/* Brand & Note */}
         <div className="space-y-1.5 text-left">
           <div className="flex items-center gap-2">
-            <img src={} className="w-6 h-6 rounded-md bg-primary flex items-center justify-center text-primary-content text-[11px] font-mono font-bold">
-              
-            </img>
+            <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center text-primary-content text-[11px] font-mono font-bold">
+              SP
+            </div>
             <span className="font-bold text-sm text-base-content">
               Skill<span className="text-primary">Pick</span>
             </span>
