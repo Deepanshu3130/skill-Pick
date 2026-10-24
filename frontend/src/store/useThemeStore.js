@@ -9,11 +9,11 @@ const getInitialTheme = () => {
     console.warn('Could not read theme from localStorage:', err);
   }
 
-  // Fallback to prefers-color-scheme on first visit
-  if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark';
+  // Fallback default theme is black & blue dark mode
+  if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    return 'light';
   }
-  return 'light';
+  return 'dark';
 };
 
 export const useThemeStore = create((set) => ({

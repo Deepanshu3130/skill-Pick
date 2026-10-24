@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
-  Search, 
-  BookOpen, 
   MessageSquare, 
   GitBranch, 
   ArrowRight, 
-  Code, 
-  Terminal, 
-  Layers, 
-  Sparkles, 
   Video 
 } from 'lucide-react';
 import SearchAutocomplete from '../Components/SearchAutocomplete';
@@ -29,6 +23,24 @@ const POPULAR_TOPICS = [
   { name: "Docker", slug: "docker" },
   { name: "Next.js", slug: "nextjs" },
   { name: "Machine Learning", slug: "machine-learning" },
+];
+
+const QUICK_SUGGESTIONS = [
+  { label: "react", query: "react" },
+  { label: "dsa", query: "dsa" },
+  { label: "python", query: "python" },
+  { label: "system-design", query: "system-design" },
+  { label: "javascript", query: "javascript" },
+  { label: "nextjs", query: "nextjs" },
+  { label: "nodejs", query: "nodejs" },
+  { label: "docker", query: "docker" },
+  { label: "typescript", query: "typescript" },
+  { label: "kubernetes", query: "kubernetes" },
+  { label: "golang", query: "golang" },
+  { label: "sql", query: "sql" },
+  { label: "machine-learning", query: "machine-learning" },
+  { label: "git", query: "git" },
+  { label: "cpp", query: "c-plus-plus" }
 ];
 
 const TIMELINE_STEPS = [
@@ -89,33 +101,6 @@ const PLATFORMS = [
   }
 ];
 
-const FEATURED_PATHS = [
-  {
-    topic: "Web Development",
-    slug: "web-development",
-    desc: "Full-stack foundations covering modern HTML, CSS, JavaScript, React, and server-side runtimes.",
-    icon: Code,
-    tags: ["react", "nextjs", "nodejs"],
-    coursesCount: "28+ resources"
-  },
-  {
-    topic: "Data Structures & Algorithms",
-    slug: "dsa",
-    desc: "Problem-solving patterns, array algorithms, trees, dynamic programming, and interview prep.",
-    icon: Terminal,
-    tags: ["dsa", "c-plus-plus", "python"],
-    coursesCount: "34+ resources"
-  },
-  {
-    topic: "System Design & DevOps",
-    slug: "system-design",
-    desc: "Distributed architecture, caching, microservices, containerization with Docker and Kubernetes.",
-    icon: Layers,
-    tags: ["system-design", "docker", "devops"],
-    coursesCount: "19+ resources"
-  }
-];
-
 const BUILT_WITH_TECH = [
   { text: "React 19" },
   { text: "Node.js" },
@@ -162,7 +147,7 @@ const Home = () => {
       <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 border-b border-base-300 bg-base-100">
         {/* Subtle grid pattern background */}
         <div 
-          className="absolute inset-0 pointer-events-none opacity-30 dark:opacity-15 bg-[radial-gradient(circle,#94a3b8_1px,transparent_1px)] [background-size:24px_24px]" 
+          className="absolute inset-0 pointer-events-none opacity-20 dark:opacity-20 bg-[radial-gradient(circle,#3b82f6_1px,transparent_1px)] [background-size:24px_24px]" 
           aria-hidden="true"
         />
 
@@ -197,20 +182,14 @@ const Home = () => {
               showButton={true}
             />
 
-            {/* Quick Prompt Pills */}
-            <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs text-base-content/60 pt-3">
-              <span className="font-mono text-[11px] text-base-content/50">try:</span>
-              {[
-                { label: "react", query: "react" },
-                { label: "dsa", query: "dsa" },
-                { label: "system-design", query: "system-design" },
-                { label: "docker", query: "docker" },
-                { label: "python", query: "python" }
-              ].map((item) => (
+            {/* Quick Prompt Pills (Expanded suggestions) */}
+            <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs text-base-content/60 pt-3 max-w-3xl mx-auto">
+              <span className="font-mono text-[11px] text-base-content/50 shrink-0">try:</span>
+              {QUICK_SUGGESTIONS.map((item) => (
                 <button
                   key={item.label}
                   onClick={() => navigate(`/courses/${item.query}`)}
-                  className="px-2 py-0.5 rounded-md bg-base-200/70 hover:bg-base-300 border border-base-300 hover:border-primary/40 text-base-content/75 hover:text-primary transition-all font-mono text-[11px] cursor-pointer"
+                  className="px-2.5 py-0.5 rounded-md bg-base-200/60 hover:bg-primary/10 border border-base-300/80 hover:border-primary/50 text-base-content/75 hover:text-primary transition-all font-mono text-[11px] cursor-pointer"
                 >
                   /{item.label}
                 </button>
@@ -257,7 +236,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {PLATFORMS.map((platform) => {
               const Icon = platform.icon;
               return (
@@ -289,67 +268,6 @@ const Home = () => {
                     <ArrowRight className="size-3.5 group-hover:translate-x-1.5 transition-transform" />
                   </div>
                 </Link>
-              );
-            })}
-          </div>
-
-          {/* Curriculum Tracks */}
-          <div className="max-w-2xl mb-10 space-y-2">
-            <span className="motion-eyebrow">
-              CURRICULUM
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-base-content">
-              Structured learning tracks
-            </h2>
-            <p className="text-sm sm:text-base text-base-content/70">
-              Curated sequences for interview readiness, full-stack development, and system architecture.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {FEATURED_PATHS.map((path) => {
-              const Icon = path.icon;
-              return (
-                <div
-                  key={path.slug}
-                  className="card bg-base-100 hover:bg-base-200/80 border border-base-300 p-7 rounded-2xl flex flex-col justify-between transition-all duration-200 hover:border-primary/40"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-4">
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                        <Icon className="size-5" strokeWidth={1.5} />
-                      </div>
-                      <span className="badge badge-sm badge-neutral font-mono text-[11px]">
-                        {path.coursesCount}
-                      </span>
-                    </div>
-
-                    <h3 className="text-base sm:text-lg font-bold text-base-content mb-2 leading-snug">
-                      {path.topic}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-base-content/70 leading-relaxed mb-6">
-                      {path.desc}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-base-300/80 flex items-center justify-between gap-2">
-                    <div className="flex flex-wrap gap-1.5">
-                      {path.tags.map((t) => (
-                        <span key={t} className="badge badge-xs badge-ghost font-mono text-base-content/70">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-
-                    <Link
-                      to={`/courses/${path.slug}`}
-                      className="btn btn-xs btn-primary gap-1 shrink-0 font-medium"
-                    >
-                      <span>Explore</span>
-                      <ArrowRight className="size-3" />
-                    </Link>
-                  </div>
-                </div>
               );
             })}
           </div>

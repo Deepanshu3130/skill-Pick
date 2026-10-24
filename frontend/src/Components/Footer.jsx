@@ -42,27 +42,27 @@ function Footer() {
               <li>
                 <Link 
                   to="/Platform/YouTube" 
-                  className="flex items-center gap-2 text-base-content/75 hover:text-primary transition-colors"
+                  className="group flex items-center gap-2 text-base-content/75 hover:text-primary transition-colors"
                 >
-                  <Youtube className="size-3.5 text-red-500" />
+                  <Youtube className="size-3.5 text-primary/80 group-hover:text-primary transition-colors" />
                   <span>YouTube Courses</span>
                 </Link>
               </li>
               <li>
                 <Link 
                   to="/Platform/GitHub" 
-                  className="flex items-center gap-2 text-base-content/75 hover:text-primary transition-colors"
+                  className="group flex items-center gap-2 text-base-content/75 hover:text-primary transition-colors"
                 >
-                  <Github className="size-3.5 text-purple-500" />
+                  <Github className="size-3.5 text-primary/80 group-hover:text-primary transition-colors" />
                   <span>GitHub Repositories</span>
                 </Link>
               </li>
               <li>
                 <Link 
                   to="/Platform/Community" 
-                  className="flex items-center gap-2 text-base-content/75 hover:text-primary transition-colors"
+                  className="group flex items-center gap-2 text-base-content/75 hover:text-primary transition-colors"
                 >
-                  <MessageSquare className="size-3.5 text-emerald-500" />
+                  <MessageSquare className="size-3.5 text-primary/80 group-hover:text-primary transition-colors" />
                   <span>Community Submissions</span>
                 </Link>
               </li>
@@ -111,7 +111,7 @@ function Footer() {
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-base-content/60">
           <p>© {new Date().getFullYear()} SkillPick. Built for student developers.</p>
           <div className="flex items-center gap-2 font-mono text-[11px]">
-            <span className="w-2 h-2 rounded-full bg-success inline-block animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-primary inline-block animate-pulse" />
             <span>All systems operational</span>
           </div>
         </div>
