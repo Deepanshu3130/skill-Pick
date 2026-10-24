@@ -42,7 +42,7 @@ export function Marquee({
         }`}
       >
         <div 
-          className={animationClass}
+          className={`flex w-max shrink-0 items-center ${animationClass}`}
           style={{ '--marquee-speed': `${speed}s` }}
         >
           {/* List 1 (Accessible to screen readers) */}
@@ -76,9 +76,9 @@ export function Marquee({
             })}
           </div>
 
-          {/* List 2 (Duplicate for infinite seamless loop: aria-hidden & non-focusable) */}
+          {/* List 2 (Duplicate for infinite seamless loop: aria-hidden & non-focusable, hidden on reduced-motion) */}
           <div 
-            className="flex items-center gap-12 sm:gap-20 shrink-0 pr-12 sm:pr-20"
+            className="flex items-center gap-12 sm:gap-20 shrink-0 pr-12 sm:pr-20 motion-reduce:hidden"
             aria-hidden="true"
             tabIndex={-1}
           >

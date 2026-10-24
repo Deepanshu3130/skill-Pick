@@ -154,7 +154,7 @@
   .animate-marquee-right {
     animation: none !important;
     transform: none !important;
-    flex-wrap: wrap;
+    overflow-x: auto;
     width: 100% !important;
   }
 

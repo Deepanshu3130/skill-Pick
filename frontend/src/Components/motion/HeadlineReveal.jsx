@@ -26,9 +26,9 @@ export function HeadlineReveal({
   return (
     <Component ref={ref} className={className}>
       {lines.map((line, index) => (
-        <span key={index} className="headline-mask-line">
+        <span key={index} className="headline-mask-line block overflow-hidden">
           <span
-            className={`headline-slide-up ${reducedMotion || isVisible ? 'is-visible' : ''}`}
+            className={`headline-slide-up block ${reducedMotion || isVisible ? 'is-visible' : ''}`}
             style={{
               transitionDelay: reducedMotion ? '0ms' : `${index * 60}ms`
             }}
