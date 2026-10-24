@@ -3,8 +3,13 @@ const mongoose = require("mongoose");
 const channelSchema = new mongoose.Schema({
   courseId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Course", // Assuming you have a Course model
+    ref: "courseDetail",
     required: true,
+  },
+  roomId: {
+    type: String,
+    unique: true,
+    sparse: true
   },
   channelName: {
     type: String,
@@ -13,11 +18,11 @@ const channelSchema = new mongoose.Schema({
   users: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Assuming you have a User model
+      ref: "User",
     },
   ],
-  channelImg:{
-    type:String
+  channelImg: {
+    type: String
   }
 }, { timestamps: true });
 

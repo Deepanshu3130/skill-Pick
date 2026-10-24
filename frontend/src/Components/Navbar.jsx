@@ -1,19 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import { MessageSquare, Settings, User, Info } from "lucide-react";
 import { useThemeStore } from "../store/useThemeStore";
-import { Link, useNavigate } from "react-router-dom";
-import { FiSearch } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import SearchAutocomplete from "./SearchAutocomplete";
 
 function Navbar() {
-  const navigate = useNavigate();
   const { theme } = useThemeStore();
-  const [input, setInput] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    navigate(`/courses/${input}`);
-  };
 
   return (
     <header className="bg-base-100 border-b border-base-300 fixed w-full top-0 z-40 backdrop-blur-lg">
@@ -22,24 +15,15 @@ function Navbar() {
           <h1 className="text-xl font-bold text-primary">SKILL-PICK</h1>
         </Link>
 
-        <form onSubmit={handleSubmit} className="flex-1 max-w-md mx-4 hidden lg:flex ">
-        <div className="join w-full">
-          <input
-            type="text"
-            placeholder="Search for courses..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          className="input input-bordered join-item w-full focus:outline-none text-base-content placeholder:text-base-content/60"
+        <div className="flex-1 max-w-md mx-4 hidden lg:block">
+          <SearchAutocomplete 
+            placeholder="Search topics, courses, repos..."
+            buttonText="Search"
           />
-          <button className="btn btn-primary join-item">
-          <FiSearch className="mr-2" /> Search
-           </button>
-          </div>
-        </form>
+        </div>
 
         <div className="flex items-center gap-4">
-          
-        <SignedIn>
+          <SignedIn>
             <Link to="/ChatHome" className="btn btn-ghost btn-sm gap-2">
               <MessageSquare className="size-5" />
               <span className="hidden sm:inline">Chat</span>
@@ -51,7 +35,6 @@ function Navbar() {
             <span className="hidden sm:inline">About Us</span>
           </Link>
 
-         
           <Link to="/settings" className="btn btn-ghost btn-sm gap-2">
             <Settings className="size-5" />
             <span className="hidden sm:inline">Settings</span>
@@ -68,7 +51,7 @@ function Navbar() {
               </SignInButton>
             </SignedOut>
             <SignedIn>
-              <UserButton  />
+              <UserButton />
             </SignedIn>
           </div>
         </div>

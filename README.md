@@ -1,20 +1,18 @@
-# 🚀 Skil-Pick - Course Discovery Platform
+# 🚀 Skill-Pick - Skill & Resource Discovery Platform
 
-![Skil-Pick Banner](https://github.com/user-attachments/assets/4b91485e-0d05-46c0-b945-ab16411c77f4)
+A modern, dynamic platform for discovering skill-based courses and open-source repositories across official YouTube and GitHub APIs with real-time community rooms.
 
-
-
-A dynamic platform for discovering skill-based courses across YouTube, Coursera, and Udemy with real-time community features.
-https://skill-pick-3.onrender.com
 ---
 
 ## 🌟 Key Features
 
-- 🔍 Unified course search across multiple platforms
-- 🎚️ Smart filtering by platform, price, and skill level
-- 💬 Real-time chat (group & 1:1) with Socket.IO
-- 🔐 Secure authentication via Clerk
-- ☁️ Media uploads with Cloudinary integration
+- 🔍 **Unified Skill Search**: Autocomplete powered by MongoDB Atlas Search.
+- 📺 **Official YouTube Courses**: Curated playlists and full courses.
+- 🐙 **GitHub Repositories**: Starred open-source repositories and code roadmaps.
+- 🔗 **Resource Submission Panel**: Add custom resources via link with SSRF protection and OpenGraph metadata.
+- 💬 **Real-time In-Room Chat**: Group rooms and verified private in-room DMs with Socket.IO.
+- 🔐 **Secure Authentication**: JWT-authenticated connections via Clerk.
+- ☁️ **Media Uploads**: Cloudinary integration for attachments.
 
 ---
 
@@ -23,89 +21,51 @@ https://skill-pick-3.onrender.com
 ### Frontend
 | Technology | Purpose |
 |------------|---------|
-| React | Core framework |
-| Tailwind CSS | Utility-first styling |
+| React 19 | Core framework |
+| Vite | Frontend tooling |
+| Tailwind CSS / DaisyUI | Styling & UI components |
 | Clerk | Authentication |
 | Zustand | State management |
+| Socket.IO Client | Real-time chat |
 
 ### Backend
 | Technology | Purpose |
 |------------|---------|
-| Node.js | Runtime environment |
-| Express | API framework |
-| MongoDB | Database |
-| Puppeteer | Web scraping |
-| Socket.IO | Real-time communication |
+| Node.js / Express | API framework |
+| MongoDB / Mongoose | Database & Atlas Search |
+| YouTube Data API v3 | Official course data |
+| GitHub REST API | Official repository data |
+| Socket.IO | Real-time communication with JWT verification |
 | Cloudinary | Media storage |
 
 ---
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Node.js v16+
-- MongoDB Atlas account
-- Clerk developer account
-- Cloudinary account
-
-### 1. Clone the Repository
+### 1. Set Up Environment
+Copy the example files and configure your credentials:
 ```bash
-git clone https://github.com/yourusername/skil-pick.git
-cd skil-pick
+cp server/.env.example server/.env
+cp frontend/.env.example frontend/.env
 ```
 
-2. Set Up Environment
-Create .env files:<br/>
-
-Frontend (/frontend/.env)
- ```
-
-VITE_CLERK_PUBLISHABLE_KEY=your_pub_key
-VITE_BASE_URL=http://localhost:3000/api/v1
-```
-Backend (/server/.env)
-```
-
-# Database
-dataBase_url=mongodb+srv://your_mongo_uri
-
-# APIs
-YOUTUBE_API_KEY=your_youtube_api_key
-BROWSERLESS_TOKEN=your_browserless_token
-
-# Cloudinary
-CLOUD_NAME=your_cloud_name
-API_KEY=your_api_key
-API_SECRET=your_api_secret
-FOLDER_NAME="uploads"
-
-# Server
-PORT=10000
-```
-
-3. Install Dependencies
-```
-# Frontend dependencies
+### 2. Install Dependencies
+```bash
 cd frontend && npm install
-
-# Backend dependencies
 cd ../server && npm install
 ```
-🖥️ Running the Application
-  Development Mode
-  ```
-# Start frontend 
+
+### 3. Seed Topic Database
+```bash
+cd server && node scripts/seedTopics.js
+```
+
+### 4. Running the Application
+Development Mode:
+```bash
+# Terminal 1: Backend
+cd server && npm start
+
+# Terminal 2: Frontend
 cd frontend && npm run dev
-
-# Start backend 
-cd ../server && node index.cjs
 ```
-Production Build
-```
-cd frontend && npm run build
-```
-
-
-
-
-

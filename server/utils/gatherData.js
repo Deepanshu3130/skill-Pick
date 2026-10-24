@@ -1,32 +1,14 @@
 require('dotenv').config({ path: '../.env' });
+const { youtubeCourses } = require('../youtubeData');
 
-const {getUdemyCourses} = require('../udemyScrapper');
-const {getCourseraCourses} = require('../cousera');
-const {youtubeCourses} = require('../youtubeData');
-
- const updateUdemyQuery = (query) =>{
-    return query.trim().replace(/\s+/g,'-');
- }
-exports.gatherData = async(query) =>{
-    try{
-        let result={}
-       
-        //get the data from the udemy scrapper
-        const udemyResult = await getUdemyCourses(updateUdemyQuery(query));
-        // get from the coursera scrapper
-        const courseraResult = await getCourseraCourses(query);
-       //get from the youtube api
-       const youtubeResult = await youtubeCourses(query);
-     
-        // combine the results
-
-       result=[...udemyResult,...courseraResult, ...youtubeResult];
-      console.log(result);
-       return result;
-    }catch(error){
-        return error;
+exports.gatherData = async (query) => {
+    try {
+        const youtubeResult = await youtubeCourses(query);
+        const result = Array.isArray(youtubeResult) ? youtubeResult : [];
+        console.log(`Gathered ${result.length} YouTube courses for query: "${query}"`);
+        return result;
+    } catch (error) {
+        console.error("Error gathering course data:", error);
+        return [];
     }
-}
-//  gatherData("data structures");
-
-
+};

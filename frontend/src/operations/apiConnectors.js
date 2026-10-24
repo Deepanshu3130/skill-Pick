@@ -1,7 +1,10 @@
  import axios from "axios";
 import { useChatStore } from "../store/useChatStore";
 import toast from "react-hot-toast";
- const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000/api/v1" : "/api/v1";
+
+const rawBase = import.meta.env.VITE_BASE_URL ? import.meta.env.VITE_BASE_URL.trim() : "";
+const BASE_URL = rawBase || (import.meta.env.MODE === "development" ? "http://localhost:3000/api/v1" : "/api/v1");
+const API_ROOT = BASE_URL.replace(/\/v1$/, "");
 export const getUsers = async(token)=>{
     
     
@@ -330,3 +333,145 @@ export const getPlatformCourses = async(platform)=>{
   return false
 } 
 }
+
+
+
+export const getTopicResources = async (slug, token = null) => {
+  try {
+    const headers = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    const response = await axios.get(`${API_ROOT}/topics/${encodeURIComponent(slug)}/resources`, { headers });
+    return response;
+  } catch (error) {
+    console.error("GET TOPIC RESOURCES API ERROR:", error);
+    return false;
+  }
+};
+
+export const submitResourceLink = async (url, topicSlug, token) => {
+  try {
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await axios.post(
+      `${API_ROOT}/resources/from-link`,
+      { url, topicSlug },
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response?.data || { status: "service_busy", message: "Server connection failed" };
+  }
+};
+
+export const searchWebResources = async (query, topicSlug, token) => {
+  try {
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await axios.post(
+      `${API_ROOT}/resources/search`,
+      { query, topicSlug },
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response?.data || { status: "service_busy", message: "Search service unavailable" };
+  }
+};
+
+export const pickResourceItem = async (searchId, index, token) => {
+  try {
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await axios.post(
+      `${API_ROOT}/resources/pick`,
+      { searchId, index },
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response?.data || { status: "service_busy", message: "Failed to pick resource" };
+  }
+};
+
+export const searchGithubReposApi = async (query, topicSlug, token) => {
+  try {
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await axios.post(
+      `${API_ROOT}/resources/github-search`,
+      { query, topicSlug },
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response?.data || { status: "service_busy", message: "GitHub search unavailable" };
+  }
+};
+
+export const pickGithubRepoItem = async (searchId, index, token) => {
+  try {
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await axios.post(
+      `${API_ROOT}/resources/pick-repo`,
+      { searchId, index },
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response?.data || { status: "service_busy", message: "Failed to pick repo" };
+  }
+};
+
+export const submitManualResource = async ({ url, title, description, topicSlug }, token) => {
+  try {
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await axios.post(
+      `${API_ROOT}/resources/manual`,
+      { url, title, description, topicSlug },
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    return error.response?.data || { status: "service_busy", message: "Failed to submit manual resource" };
+  }
+};
+
+export const upvoteResource = async (id, token) => {
+  try {
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await axios.post(`${API_ROOT}/resources/${id}/upvote`, {}, { headers });
+    if (response.data) {
+      toast.success("Upvoted!");
+      return response.data;
+    }
+  } catch (error) {
+    toast.error("Could not register upvote");
+    return false;
+  }
+};
+
+export const reportResource = async (id, token) => {
+  try {
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await axios.post(`${API_ROOT}/resources/${id}/report`, {}, { headers });
+    if (response.data) {
+      toast.success("Report submitted for review");
+      return response.data;
+    }
+  } catch (error) {
+    toast.error("Could not register report");
+    return false;
+  }
+};

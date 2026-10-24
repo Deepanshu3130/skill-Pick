@@ -15,6 +15,7 @@ import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import WarningModal from '../Components/WarningModal';
+import SearchAutocomplete from '../Components/SearchAutocomplete';
  
 const Home = () => {
   const navigate = useNavigate();
@@ -58,22 +59,22 @@ const Home = () => {
 
   const platformStats = [
     {
-      name: "Udemy",
-      courses: "210,000+",
-      highlight: "Most comprehensive course library",
-      logo: "/udemy-logo.png"
-    },
-    {
-      name: "Coursera",
-      courses: "5,000+",
-      highlight: "University-certified programs",
-      logo: "/coursera-logo.webp"
-    },
-    {
       name: "YouTube",
-      courses: "Millions",
-      highlight: "Free learning resources",
-      logo: "/youtube-logo.jpg" 
+      courses: "Curated Playlists",
+      highlight: "High-quality video courses and full tutorials",
+      logo: "/youtube-logo.jpg"
+    },
+    {
+      name: "GitHub",
+      courses: "Open Source Repos",
+      highlight: "Top starred repositories, code examples, and roadmaps",
+      logo: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+    },
+    {
+      name: "Community",
+      courses: "Learner Curated",
+      highlight: "Verified links and community recommended resources",
+      logo: "/avatar.png"
     }
   ];
   // // const platformLogos = [
@@ -204,18 +205,7 @@ const Home = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="w-full max-w-xl mb-8"
             >
-              <form onSubmit={handleSubmit} className="join w-full">
-                <input
-                  type="text"
-                  placeholder="What skill do you want to master today?"
-                  className="input input-bordered join-item w-full focus:outline-none text-base-content placeholder:text-base-content/60"
-                  value={input}
-                 onChange={(e) => setInput(e.target.value)}
-                />
-                <button className="btn btn-primary join-item">
-                  <FiSearch className="mr-2" /> Search
-                </button>
-              </form>
+              <SearchAutocomplete className="w-full" />
             </motion.div>
             
             <motion.div
@@ -225,17 +215,14 @@ const Home = () => {
               className="flex flex-wrap items-center gap-3"
             >
               <span className="text-sm text-base-content/60">Trending:</span>
-              <button onClick={() => handleCourse("web development")}   className="badge badge-lg badge-outline hover:badge-primary transition-all">Web Development</button>
-              <button onClick={() => handleCourse("data science")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">Data Science</button>
-              <button onClick={() => handleCourse("web design")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">Web Design</button>
-             <button onClick={() => handleCourse("machine learning")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">machine learning</button>
-             <button onClick={() => handleCourse("artifical intelligence")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">Artifical Intelligence</button>
-             <button onClick={() => handleCourse("deep learning")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">Deep learning</button>
-             <button onClick={() => handleCourse("android development")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">Android Development</button>
-             <button onClick={() => handleCourse("ios development")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">ios Development</button>
-             <button onClick={() => handleCourse("AutoCad")}  className="badge badge-lg badge-outline hover:badge-primary transition-all">AutoCad</button>
-             <button onClick={() => handleCourse("python")}  className="badge badge-lg badge-outline hover:badge-primary transition-all"> python</button>
-             <button onClick={() => handleCourse("data structures")}  className="badge badge-lg badge-outline hover:badge-primary transition-all"> Data Structures</button>
+              <button onClick={() => handleCourse("web-development")} className="badge badge-lg badge-outline hover:badge-primary transition-all">Web Development</button>
+              <button onClick={() => handleCourse("frontend-development")} className="badge badge-lg badge-outline hover:badge-primary transition-all">Frontend</button>
+              <button onClick={() => handleCourse("react")} className="badge badge-lg badge-outline hover:badge-primary transition-all">React</button>
+              <button onClick={() => handleCourse("nodejs")} className="badge badge-lg badge-outline hover:badge-primary transition-all">Node.js</button>
+              <button onClick={() => handleCourse("python")} className="badge badge-lg badge-outline hover:badge-primary transition-all">Python</button>
+              <button onClick={() => handleCourse("dsa")} className="badge badge-lg badge-outline hover:badge-primary transition-all">DSA</button>
+              <button onClick={() => handleCourse("machine-learning")} className="badge badge-lg badge-outline hover:badge-primary transition-all">Machine Learning</button>
+              <button onClick={() => handleCourse("mern-stack")} className="badge badge-lg badge-outline hover:badge-primary transition-all">MERN Stack</button>
             </motion.div>
           </div>
         </div>

@@ -117,7 +117,7 @@ function AboutUs() {
               <div className="card-body items-center text-center">
                 <Globe className="w-12 h-12 text-primary mb-4" />
                 <h3 className="card-title mb-2">Multi-Platform</h3>
-                <p>Courses from Udemy, Coursera, YouTube and more in one place.</p>
+                <p>Courses and open-source repositories from YouTube, GitHub, and community learners in one place.</p>
               </div>
             </div>
             

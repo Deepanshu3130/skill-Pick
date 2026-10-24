@@ -39,17 +39,19 @@ exports.joinChannel = async (req, res) => {
         return res.status(404).json({ success: false, message: "Course not found" });
       }
   
-      // Check if channel exists for the course
-      let channel = await Channel.findOne({ courseId });
+      // Check if channel exists for the course or roomId
+      const courseRoomId = course.roomId || (course.type === 'repo' ? `repo:${course.externalId}` : `course:${course.externalId}`);
+      let channel = await Channel.findOne({ $or: [{ courseId }, { roomId: courseRoomId }] });
   
       // If channel does not exist, create it
       if (!channel) {
         const shortName = slugify(course.title);
         channel = new Channel({
           courseId,
-          channelName: `${shortName}-${courseId.slice(-4)}`, // You can customize this
+          roomId: courseRoomId,
+          channelName: `${shortName}-${courseId.toString().slice(-4)}`,
           users: [userId],
-          channelImg: course.imageUrl // Add user to the new channel
+          channelImg: course.imageUrl
         });
   
         await channel.save();

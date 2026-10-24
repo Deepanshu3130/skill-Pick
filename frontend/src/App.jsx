@@ -1,93 +1,107 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react';
+import './App.css';
+import Navbar from './Components/Navbar';
+import { Route, Routes } from 'react-router-dom';
+import { useThemeStore } from './store/useThemeStore';
 
-import './App.css'
-import Navbar from './Components/Navbar'
-import { Route, Routes } from 'react-router-dom'
-import { useThemeStore } from './store/useThemeStore'
-
-import Settings from './pages/Settings'
-import { useUser } from '@clerk/clerk-react'
+import Settings from './pages/Settings';
+import { useUser, useAuth } from '@clerk/clerk-react';
 import { io } from "socket.io-client";
 
-import Home from "./pages/Home"
-import Courses from './pages/Courses'
-import CourseDescription from './pages/CourseDescription'
-import ChatHome from './pages/ChatHome'
-import AboutUs from './pages/AboutUs'
-import PlatfromPage from './pages/PlatformPage'
-import PrivateRoutes from './Components/PrivateRoutes'
+import Home from "./pages/Home";
+import Courses from './pages/Courses';
+import CourseDescription from './pages/CourseDescription';
+import ChatHome from './pages/ChatHome';
+import AboutUs from './pages/AboutUs';
+import PlatfromPage from './pages/PlatformPage';
+import PrivateRoutes from './Components/PrivateRoutes';
 
-let socket1 = null
+let socket1 = null;
+
 function App() {
-  const BASE_URL = import.meta.env.MODE=== "development" ? "http://localhost:3000" : "/"
+  const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
   const { isSignedIn, user } = useUser();
- 
+  const { getToken } = useAuth();
 
   useEffect(() => {
-    if (isSignedIn && user) {
-      console.log("User ID before connecting socket:", user.id);
-      if (!socket1) {
-        socket1 = io(BASE_URL, {
-          query: { userId: user.id }, // Clerk user ID
-          reconnection: true, // Ensures auto-reconnect on server restart
-          // reconnectionAttempts: 10, // Number of retries
-          // reconnectionDelay: 3000, // Delay between retries (3 sec)
-        });
+    let isMounted = true;
 
-        socket1.on("connect", () => {
-          console.log("Socket connected:", socket1.id);
-          
-        });
+    const initSocket = async () => {
+      if (isSignedIn && user) {
+        try {
+          const token = await getToken();
+          if (!isMounted) return;
 
-        socket1.on("disconnect", () => {
-          console.log("Socket disconnected");
-        });
+          if (!socket1) {
+            // Secure connection: Pass JWT token via auth payload
+            socket1 = io(BASE_URL, {
+              auth: { token },
+              reconnection: true,
+            });
 
-        socket1.on("getOnlineUsers", (userIds) => {
-          console.log("Online Users:", userIds);
-        });
+            socket1.on("connect", () => {
+              console.log("Socket connected securely with JWT:", socket1.id);
+            });
+
+            socket1.on("connect_error", (err) => {
+              console.warn("Socket connection warning:", err.message);
+            });
+
+            socket1.on("disconnect", () => {
+              console.log("Socket disconnected");
+            });
+
+            socket1.on("getOnlineUsers", (userIds) => {
+              console.log("Online Users count:", userIds.length);
+            });
+          }
+        } catch (err) {
+          console.error("Error getting Clerk JWT for socket connection:", err);
+        }
+      } else {
+        if (socket1) {
+          socket1.disconnect();
+          socket1 = null;
+        }
       }
-    } else {
-      // If user logs out, disconnect socket
-      if (socket1) {
-        socket1.disconnect();
-        socket1 = null;
-      }
-    }
+    };
+
+    initSocket();
 
     return () => {
-      // Cleanup function to disconnect on component unmount
+      isMounted = false;
       if (socket1) {
         socket1.disconnect();
         socket1 = null;
       }
     };
-  }, [isSignedIn, user]);
-  const {theme} = useThemeStore()
-  
+  }, [isSignedIn, user, getToken]);
+
+  const { theme } = useThemeStore();
+
   return (
     <div data-theme={theme}>
-     <Navbar></Navbar>
-     <Routes>
+      <Navbar />
+      <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/settings" element ={<Settings/>}/>
-        <Route path="/courses/:query" element={<Courses/>}/>
-        <Route path='/course/:id' element={<CourseDescription/>}></Route>
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/courses/:query" element={<Courses />} />
+        <Route path='/course/:id' element={<CourseDescription />} />
         <Route 
           path='/chatHome'
           element={
             <PrivateRoutes>
-              <ChatHome/>
+              <ChatHome />
             </PrivateRoutes>
           }
         />
-
-        <Route path='/aboutUs' element={<AboutUs></AboutUs>}/>
-        <Route path='/Platform/:platform' element={<PlatfromPage/>}/>
-     </Routes>
+        <Route path='/aboutUs' element={<AboutUs />} />
+        <Route path='/Platform/:platform' element={<PlatfromPage />} />
+      </Routes>
     </div>
-  )
+  );
 }
+
 export const getSocket = () => socket1;
 
-export default App
+export default App;
