@@ -5,18 +5,19 @@ import CourseCard from "../Components/CourseCard";
 import AddResourceModal from "../Components/AddResourceModal";
 import Pagination from "../Components/Pagination";
 import { 
-  FiPlus, 
-  FiBookOpen, 
-  FiGitBranch, 
-  FiCompass, 
-  FiSearch, 
-  FiSliders, 
-  FiX, 
-  FiFilter,
-  FiCode,
-  FiLayers,
-  FiChevronRight
-} from 'react-icons/fi';
+  Plus, 
+  BookOpen, 
+  GitBranch, 
+  Compass, 
+  Search, 
+  SlidersHorizontal, 
+  X, 
+  Filter, 
+  Code, 
+  Layers, 
+  ChevronRight,
+  AlertCircle 
+} from 'lucide-react';
 import { useAuth } from '@clerk/clerk-react';
 
 function Courses() {
@@ -245,10 +246,11 @@ function Courses() {
   return (
     <div className='min-h-screen w-full bg-base-100 flex flex-col relative'>
       {/* Header Banner */}
-      <div className='w-full bg-base-200 border-b border-base-300 pt-24 pb-8'>
-        <div className='w-11/12 max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4'>
+      <div className='w-full bg-base-200/50 border-b border-base-300 pt-24 pb-8'>
+        <div className='w-11/12 max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-6'>
           <div>
-            <div className="flex items-center gap-2 mb-2">
+            {/* Topic breadcrumb */}
+            <div className="flex items-center gap-2 mb-2.5">
               <span className="badge badge-primary font-mono text-xs font-semibold">/{topicInfo?.slug || query}</span>
               {topicInfo?.parent && (
                 <span className="text-xs text-base-content/60 flex items-center gap-1">
@@ -256,27 +258,37 @@ function Courses() {
                 </span>
               )}
             </div>
-            <h1 className='text-3xl md:text-4xl font-extrabold tracking-tight'>
+
+            <h1 className='text-3xl md:text-4xl font-extrabold tracking-tight text-base-content'>
               Explore <span className='text-primary'>{topicInfo?.name || query}</span>
             </h1>
-            <p className="text-sm text-base-content/70 mt-1">
-              Top curated YouTube courses, video series & GitHub open-source repositories
+
+            <p className="text-sm text-base-content/70 mt-1.5 max-w-2xl">
+              Curated YouTube playlists, video courses, and starred GitHub repositories for learners.
             </p>
           </div>
 
-          {/* Section Tabs */}
-          <div className="join bg-base-100 p-1 border border-base-300 rounded-xl shadow-xs">
+          {/* daisyUI Tabs (tabs-border) */}
+          <div role="tablist" className="tabs tabs-border bg-base-100 p-1 rounded-xl border border-base-300 shadow-xs">
             <button
+              role="tab"
               onClick={() => setActiveTab("courses")}
-              className={`btn btn-sm join-item gap-2 ${activeTab === "courses" ? "btn-primary" : "btn-ghost"}`}
+              className={`tab gap-2 text-xs sm:text-sm font-semibold transition-colors ${
+                activeTab === "courses" ? "tab-active text-primary border-primary" : "text-base-content/70"
+              }`}
             >
-              <FiBookOpen className="size-4" /> Courses ({totalCourses})
+              <BookOpen className="size-4" strokeWidth={1.5} />
+              <span>Courses ({totalCourses})</span>
             </button>
             <button
+              role="tab"
               onClick={() => setActiveTab("repos")}
-              className={`btn btn-sm join-item gap-2 ${activeTab === "repos" ? "btn-primary" : "btn-ghost"}`}
+              className={`tab gap-2 text-xs sm:text-sm font-semibold transition-colors ${
+                activeTab === "repos" ? "tab-active text-primary border-primary" : "text-base-content/70"
+              }`}
             >
-              <FiGitBranch className="size-4" /> Repos ({totalRepos})
+              <GitBranch className="size-4" strokeWidth={1.5} />
+              <span>Repos ({totalRepos})</span>
             </button>
           </div>
         </div>
@@ -286,11 +298,11 @@ function Courses() {
       <div className="w-11/12 max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 py-8 px-4 flex-1">
         {/* Filter Sidebar */}
         <div className="w-full lg:w-72 shrink-0 space-y-6">
-          <div className="bg-base-200 p-5 rounded-2xl border border-base-300 space-y-5">
-            <div className="flex justify-between items-center pb-2 border-b border-base-300">
+          <div className="bg-base-200 border border-base-300 rounded-2xl p-5 space-y-5">
+            <div className="flex justify-between items-center pb-2.5 border-b border-base-300">
               <div className="flex items-center gap-2">
-                <FiSliders className="size-4 text-primary" />
-                <h2 className="text-sm font-bold uppercase tracking-wider text-base-content">Filters & Sort</h2>
+                <SlidersHorizontal className="size-4 text-primary" strokeWidth={1.5} />
+                <h2 className="text-xs font-bold uppercase tracking-wider text-base-content">Filters & Sort</h2>
               </div>
               {hasActiveFilters && (
                 <button
@@ -319,10 +331,10 @@ function Courses() {
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-base-content/50 hover:text-base-content"
                     aria-label="Clear search"
                   >
-                    <FiX className="size-3.5" />
+                    <X className="size-3.5" />
                   </button>
                 ) : (
-                  <FiSearch className="absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-base-content/40 pointer-events-none" />
+                  <Search className="absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-base-content/40 pointer-events-none" />
                 )}
               </div>
             </div>
@@ -333,7 +345,7 @@ function Courses() {
                 {/* Format Filter */}
                 <div>
                   <h3 className="text-xs font-bold uppercase text-base-content/70 mb-2 flex items-center gap-1.5">
-                    <FiLayers className="size-3.5" /> Content Format
+                    <Layers className="size-3.5" strokeWidth={1.5} /> Format
                   </h3>
                   <div className="flex flex-col gap-1">
                     {[
@@ -403,7 +415,7 @@ function Courses() {
                 {availableLanguages.length > 0 && (
                   <div>
                     <h3 className="text-xs font-bold uppercase text-base-content/70 mb-2 flex items-center gap-1.5">
-                      <FiCode className="size-3.5" /> Language
+                      <Code className="size-3.5" strokeWidth={1.5} /> Language
                     </h3>
                     <div className="flex flex-col gap-1 max-h-48 overflow-y-auto pr-1">
                       <button
@@ -454,18 +466,18 @@ function Courses() {
 
           {/* Related Topics Pill Box */}
           {topicInfo?.related && topicInfo.related.length > 0 && (
-            <div className="bg-base-200 p-5 rounded-2xl border border-base-300">
+            <div className="bg-base-200 border border-base-300 rounded-2xl p-5">
               <h3 className="text-xs font-bold uppercase text-base-content/70 mb-3 flex items-center gap-1.5">
-                <FiCompass className="size-4 text-primary" /> Also Explore
+                <Compass className="size-4 text-primary" strokeWidth={1.5} /> Also Explore
               </h3>
               <div className="flex flex-wrap gap-1.5">
                 {topicInfo.related.map(slug => (
                   <Link
                     key={slug}
                     to={`/courses/${slug}`}
-                    className="badge badge-outline hover:badge-primary transition-all p-3 text-xs font-medium"
+                    className="badge badge-outline hover:badge-primary font-mono text-xs p-2.5 transition-colors"
                   >
-                    {slug}
+                    /{slug}
                   </Link>
                 ))}
               </div>
@@ -477,16 +489,16 @@ function Courses() {
         <div className="flex-1 min-w-0" id="results-feed-top">
           {/* Active Filter Chips */}
           {hasActiveFilters && (
-            <div className="flex flex-wrap items-center gap-2 mb-4 p-3 bg-base-200/80 rounded-xl border border-base-300 text-xs">
+            <div className="flex flex-wrap items-center gap-2 mb-5 p-3 bg-base-200/80 rounded-xl border border-base-300 text-xs">
               <span className="font-semibold text-base-content/70 flex items-center gap-1">
-                <FiFilter className="size-3" /> Active:
+                <Filter className="size-3" strokeWidth={1.5} /> Active:
               </span>
 
               {searchKeyword.trim() && (
                 <span className="badge badge-primary gap-1 py-2 font-medium">
                   "{searchKeyword}"
                   <button onClick={() => setSearchKeyword("")} className="cursor-pointer hover:opacity-80">
-                    <FiX className="size-3" />
+                    <X className="size-3" />
                   </button>
                 </span>
               )}
@@ -495,7 +507,7 @@ function Courses() {
                 <span className="badge badge-primary gap-1 py-2 font-medium">
                   Format: {courseFormat === 'playlist' ? 'Playlists' : 'Videos'}
                   <button onClick={() => setCourseFormat("all")} className="cursor-pointer hover:opacity-80">
-                    <FiX className="size-3" />
+                    <X className="size-3" />
                   </button>
                 </span>
               )}
@@ -504,7 +516,7 @@ function Courses() {
                 <span className="badge badge-primary gap-1 py-2 font-medium">
                   Platform: {coursePlatform}
                   <button onClick={() => setCoursePlatform("all")} className="cursor-pointer hover:opacity-80">
-                    <FiX className="size-3" />
+                    <X className="size-3" />
                   </button>
                 </span>
               )}
@@ -513,7 +525,7 @@ function Courses() {
                 <span className="badge badge-primary gap-1 py-2 font-medium">
                   Language: {repoLanguage}
                   <button onClick={() => setRepoLanguage("all")} className="cursor-pointer hover:opacity-80">
-                    <FiX className="size-3" />
+                    <X className="size-3" />
                   </button>
                 </span>
               )}
@@ -527,35 +539,53 @@ function Courses() {
             </div>
           )}
 
+          {/* Skeleton Loaders (No whole-page spinners) */}
           {loading ? (
-            <div className="flex flex-col justify-center items-center py-24 gap-3">
-              <span className="loading loading-spinner loading-lg text-primary"></span>
-              <p className="text-sm text-base-content/60">Fetching verified courses and repositories...</p>
+            <div className="space-y-4">
+              {[1, 2, 3, 4].map((n) => (
+                <div
+                  key={n}
+                  className="card bg-base-100 border border-base-300 p-4 rounded-2xl flex flex-col md:flex-row gap-4 animate-pulse"
+                >
+                  <div className="skeleton w-full md:w-64 h-36 rounded-xl shrink-0" />
+                  <div className="flex-1 space-y-3 py-2">
+                    <div className="skeleton h-5 w-3/4 rounded-md" />
+                    <div className="skeleton h-4 w-full rounded-md" />
+                    <div className="skeleton h-4 w-1/2 rounded-md" />
+                    <div className="skeleton h-7 w-24 rounded-md mt-4" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
-            <div className="space-y-8">
+            <div className="space-y-10">
               {/* 1. Main Results Section */}
               <section>
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                  <h2 className="text-xl font-bold tracking-tight">
+                  <h2 className="text-xl font-bold tracking-tight text-base-content">
                     {topicInfo?.name} {isRepoTab ? "Repositories" : "Courses"}
                   </h2>
-                  <span className="text-xs text-base-content/60 font-semibold bg-base-200 px-2.5 py-1 rounded-md border border-base-300">
-                    {totalMainItems} {isRepoTab ? "repos" : "courses"} matching
+                  <span className="text-xs text-base-content/60 font-mono font-medium bg-base-200 px-2.5 py-1 rounded-md border border-base-300">
+                    {totalMainItems} {isRepoTab ? "repos" : "courses"}
                   </span>
                 </div>
 
                 {totalMainItems === 0 ? (
-                  <div className="text-center p-12 bg-base-200 rounded-2xl border border-base-300 space-y-2">
-                    <p className="font-semibold text-base-content/80 text-base">
-                      No {isRepoTab ? "repositories" : "courses"} match your current filters.
-                    </p>
-                    <p className="text-xs text-base-content/60">
-                      Try clearing some filters or add your own using the "Can't find your course?" button.
-                    </p>
+                  <div className="alert alert-neutral border border-base-300 rounded-2xl p-6 text-left flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="size-5 text-primary shrink-0 mt-0.5" strokeWidth={1.5} />
+                      <div>
+                        <h4 className="font-bold text-sm text-base-content">
+                          No {isRepoTab ? "repositories" : "courses"} match your current filters.
+                        </h4>
+                        <p className="text-xs text-base-content/70 mt-0.5">
+                          Try adjusting search terms or add one via the "Can't find your course?" button.
+                        </p>
+                      </div>
+                    </div>
                     {hasActiveFilters && (
-                      <button onClick={clearAllFilters} className="btn btn-sm btn-primary mt-2">
-                        Reset all filters
+                      <button onClick={clearAllFilters} className="btn btn-sm btn-outline">
+                        Reset filters
                       </button>
                     )}
                   </div>
@@ -589,21 +619,22 @@ function Courses() {
                 <section className="pt-8 border-t border-base-300">
                   <div className="flex items-center justify-between gap-2 mb-4">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-lg font-bold text-base-content/90">
+                      <h3 className="text-lg font-bold text-base-content">
                         From Parent: {topicInfo.parent.replace(/-/g, ' ')}
                       </h3>
-                      <span className="badge badge-sm badge-outline">Broader Topic</span>
+                      <span className="badge badge-sm badge-outline font-mono text-[11px]">Broader</span>
                     </div>
                     <Link
                       to={`/courses/${topicInfo.parent}`}
                       className="text-xs text-primary font-semibold hover:underline flex items-center gap-1"
                     >
-                      View all <FiChevronRight className="size-3" />
+                      <span>View all</span>
+                      <ChevronRight className="size-3" />
                     </Link>
                   </div>
 
                   <div className="space-y-4">
-                    {filteredBroader.slice(0, 4).map(item => (
+                    {filteredBroader.slice(0, 3).map(item => (
                       <CourseCard key={item._id} course={item} />
                     ))}
                   </div>
@@ -614,14 +645,14 @@ function Courses() {
               {filteredSimilar.length > 0 && (
                 <section className="pt-8 border-t border-base-300">
                   <div className="flex items-center gap-2 mb-4">
-                    <h3 className="text-lg font-bold text-base-content/90">
+                    <h3 className="text-lg font-bold text-base-content">
                       Related Recommendations
                     </h3>
-                    <span className="badge badge-sm badge-secondary font-medium">Explore Similar</span>
+                    <span className="badge badge-sm badge-secondary text-[11px] font-medium">Similar</span>
                   </div>
 
                   <div className="space-y-4">
-                    {filteredSimilar.slice(0, 4).map(item => (
+                    {filteredSimilar.slice(0, 3).map(item => (
                       <CourseCard key={item._id} course={item} />
                     ))}
                   </div>
@@ -637,11 +668,11 @@ function Courses() {
       <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden md:block">
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="btn btn-primary shadow-2xl rounded-l-2xl rounded-r-none gap-2 px-4 py-3 hover:translate-x-[-4px] transition-transform flex items-center border-r-0 cursor-pointer"
+          className="btn btn-primary shadow-xl rounded-l-2xl rounded-r-none gap-2 px-4 py-3 hover:translate-x-[-3px] transition-transform flex items-center border-r-0 cursor-pointer"
           aria-label="Can't find your course? Add it here"
         >
-          <FiPlus className="size-5" />
-          <span className="font-semibold text-sm">Can't find your course?</span>
+          <Plus className="size-4" strokeWidth={2} />
+          <span className="font-semibold text-xs tracking-tight">Can't find your course?</span>
         </button>
       </div>
 
@@ -649,15 +680,15 @@ function Courses() {
       <div className="fixed bottom-6 right-6 z-40 block md:hidden">
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="btn btn-primary shadow-2xl rounded-full gap-2 px-4 py-3 hover:scale-105 transition-transform flex items-center cursor-pointer"
+          className="btn btn-primary shadow-xl rounded-full gap-2 px-4 py-3 hover:scale-105 transition-transform flex items-center cursor-pointer"
           aria-label="Can't find your course? Add it here"
         >
-          <FiPlus className="size-5" />
+          <Plus className="size-4" strokeWidth={2} />
           <span className="font-semibold text-xs">Can't find your course?</span>
         </button>
       </div>
 
-      {/* Add Resource Modal */}
+      {/* Add Resource Modal / Drawer */}
       <AddResourceModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
