@@ -8,7 +8,7 @@ let calculatedBase = "";
 if (rawBase) {
   calculatedBase = rawBase.endsWith("/api/v1") ? rawBase : (rawBase.endsWith("/api") ? `${rawBase}/v1` : `${rawBase}/api/v1`);
 } else {
-  calculatedBase = import.meta.env.MODE === "development" ? "http://localhost:3000/api/v1" : "https://skill-pick.onrender.com/api/v1";
+  calculatedBase = import.meta.env.MODE === "development" ? "http://localhost:3000/api/v1" : "https://skill-pick-se.onrender.com/api/v1";
 }
 
 export const BASE_URL = calculatedBase;

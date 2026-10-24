@@ -33,6 +33,7 @@ const allowedOrigins = [
     'http://127.0.0.1:5173',
     'http://localhost:3000',
     'https://skill-pick-frontend.onrender.com',
+    'https://skill-pick-se.onrender.com',
     'https://skill-pick.onrender.com',
     'https://skill-pick-server.onrender.com',
     'https://skill-pick-3-bnio.onrender.com'
