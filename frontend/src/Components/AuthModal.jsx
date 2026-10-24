@@ -1,8 +1,17 @@
-import React from "react";
-import { SignInButton, SignUpButton } from "@clerk/clerk-react";
+import React, { useEffect } from "react";
+import { SignInButton, SignUpButton, useUser } from "@clerk/clerk-react";
 import { X, LogIn, UserPlus } from "lucide-react";
 
 const AuthModal = ({ onClose }) => {
+  const { isSignedIn } = useUser();
+
+  // Automatically close modal when user successfully signs in
+  useEffect(() => {
+    if (isSignedIn) {
+      onClose();
+    }
+  }, [isSignedIn, onClose]);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
       <div 
@@ -20,8 +29,8 @@ const AuthModal = ({ onClose }) => {
         </button>
         
         <div className="space-y-2">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
-            SP
+          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-sm overflow-hidden p-1.5 border border-primary/20">
+            <img src="/logo.png" alt="SkillPick" className="w-full h-full object-contain" />
           </div>
           <h2 id="auth-modal-title" className="text-xl font-bold tracking-tight text-base-content">
             Join the SkillPick community
@@ -33,13 +42,13 @@ const AuthModal = ({ onClose }) => {
         
         <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-base-300">
           <SignInButton mode="modal" afterSignInUrl={typeof window !== "undefined" ? window.location.href : "/"}>
-            <button className="btn btn-primary btn-sm flex-1 font-semibold gap-1.5 rounded-xl">
+            <button className="btn btn-primary btn-sm flex-1 font-semibold gap-1.5 rounded-xl cursor-pointer">
               <LogIn className="size-4" strokeWidth={1.5} />
               <span>Log In</span>
             </button>
           </SignInButton>
           <SignUpButton mode="modal" afterSignUpUrl={typeof window !== "undefined" ? window.location.href : "/"}>
-            <button className="btn btn-outline btn-sm flex-1 font-semibold gap-1.5 rounded-xl">
+            <button className="btn btn-outline btn-sm flex-1 font-semibold gap-1.5 rounded-xl cursor-pointer">
               <UserPlus className="size-4" strokeWidth={1.5} />
               <span>Create Account</span>
             </button>

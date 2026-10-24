@@ -38,7 +38,7 @@ function Navbar() {
             className="flex items-center gap-2.5 group text-base font-semibold tracking-tight text-base-content hover:text-primary transition-colors"
           >
             <img 
-              src="/favicon.ico" 
+              src="/logo.png" 
               alt="SkillPick Logo" 
               className="w-7 h-7 rounded-lg object-contain shrink-0" 
             />

@@ -21,10 +21,12 @@ import {
 } from '../operations/apiConnectors';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
+import { useThemeStore } from '../store/useThemeStore';
 
 const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" }) => {
   const { getToken } = useAuth();
   const { isSignedIn } = useUser();
+  const { theme } = useThemeStore();
 
   const [activeTab, setActiveTab] = useState("course"); // "course" | "github"
   
@@ -358,7 +360,7 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
   if (!isOpen) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-xs transition-opacity duration-200">
+    <div data-theme={theme} className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-xs transition-opacity duration-200">
       {/* Backdrop click to close */}
       <div className="absolute inset-0" onClick={onClose} aria-label="Close backdrop" />
 

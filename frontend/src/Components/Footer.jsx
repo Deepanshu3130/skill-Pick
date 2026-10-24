@@ -14,7 +14,7 @@ function Footer() {
           <div className="md:col-span-6 space-y-3">
             <Link to="/" className="inline-flex items-center gap-2.5">
               <img 
-                src="/favicon.ico" 
+                src="/logo.png" 
                 alt="SkillPick Logo" 
                 className="w-6 h-6 rounded-md object-contain shrink-0" 
               />

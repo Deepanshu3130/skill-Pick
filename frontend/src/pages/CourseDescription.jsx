@@ -25,6 +25,12 @@ function CourseDescription() {
   const [loading, setLoading] = useState(true);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [joining, setJoining] = useState(false);
+
+  useEffect(() => {
+    if (isSignedIn && showAuthModal) {
+      setShowAuthModal(false);
+    }
+  }, [isSignedIn, showAuthModal]);
   const navigate = useNavigate();
 
   useEffect(() => {

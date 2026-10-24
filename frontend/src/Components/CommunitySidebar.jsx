@@ -1,8 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useCommunityChatStore } from '../store/useCommunityChatStore';
-import { MessageSquare, Search } from "lucide-react";
+import { MessageSquare, Search, Hash } from "lucide-react";
 import { useAuth } from "@clerk/clerk-react";
 import SidebarSkeleton from './skeletons/SideSkeleton';
+
+/**
+ * Formats a raw channel name into a clean, modern developer room name.
+ * e.g., "react-tuto-3a4f" -> "# React Tuto"
+ */
+export function formatRoomName(rawName) {
+  if (!rawName) return "Study Room";
+  if (rawName.startsWith("#")) return rawName;
+  // Strip trailing random 4-char hex hash like "-3a4f" if present
+  let clean = rawName.replace(/-[a-f0-9]{4}$/i, '');
+  // Replace hyphens and underscores with spaces
+  clean = clean.replace(/[-_]+/g, ' ').trim();
+  // Capitalize each word
+  clean = clean.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  return `# ${clean}`;
+}
 
 function CommunitySidebar() {
   const { getJoinedCommunities, joinedCommunity, selectedCommunity, setSelectedCommunity, isCommunityLoading } = useCommunityChatStore();
@@ -19,9 +35,15 @@ function CommunitySidebar() {
 
   if (isCommunityLoading) return <SidebarSkeleton />;
 
-  const filteredCommunities = (joinedCommunity || []).filter(c => 
-    (c.channelName || "").toLowerCase().includes(filterText.toLowerCase())
-  );
+  // Sort so newly added/joined rooms are at the very top
+  const sortedCommunities = [...(joinedCommunity || [])].reverse();
+
+  const filteredCommunities = sortedCommunities.filter(c => {
+    const formatted = formatRoomName(c.channelName || "");
+    const raw = (c.channelName || "").toLowerCase();
+    const query = filterText.toLowerCase();
+    return raw.includes(query) || formatted.toLowerCase().includes(query);
+  });
 
   return (
     <aside className="h-full w-full flex flex-col bg-base-100">
@@ -30,7 +52,7 @@ function CommunitySidebar() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <MessageSquare className="size-4 text-primary" strokeWidth={1.5} />
-            <span className="font-bold text-xs uppercase tracking-wider text-base-content">
+            <span className="font-bold text-xs uppercase tracking-wider text-base-content font-mono">
               Joined Rooms ({joinedCommunity?.length || 0})
             </span>
           </div>
@@ -43,7 +65,7 @@ function CommunitySidebar() {
             placeholder="Filter rooms..."
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
-            className="input input-xs input-bordered w-full pr-7 rounded-lg text-xs"
+            className="input input-xs input-bordered w-full pr-7 rounded-lg text-xs font-mono"
           />
           <Search className="size-3 text-base-content/40 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
@@ -61,6 +83,8 @@ function CommunitySidebar() {
         ) : (
           filteredCommunities.map((community) => {
             const isSelected = selectedCommunity?._id === community._id;
+            const displayName = formatRoomName(community.channelName);
+
             return (
               <button
                 key={community._id}
@@ -71,18 +95,22 @@ function CommunitySidebar() {
                 `}
               >
                 <div className="avatar shrink-0">
-                  <div className="size-10 rounded-xl bg-base-300 border border-base-300">
-                    <img
-                      src={community.channelImg || "/group-avatar.png"}
-                      alt={community.channelName}
-                      onError={(e) => { e.target.src = '/avatar.png'; }}
-                    />
+                  <div className="size-10 rounded-xl bg-base-300 border border-base-300 overflow-hidden flex items-center justify-center">
+                    {community.channelImg ? (
+                      <img
+                        src={community.channelImg}
+                        alt={displayName}
+                        onError={(e) => { e.target.src = '/avatar.png'; }}
+                      />
+                    ) : (
+                      <Hash className="size-5 text-primary opacity-70" strokeWidth={1.5} />
+                    )}
                   </div>
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <h4 className="font-semibold text-xs text-base-content truncate">
-                    {community.channelName}
+                  <h4 className="font-semibold text-xs text-base-content truncate font-mono">
+                    {displayName}
                   </h4>
                   <p className="text-[11px] text-base-content/60 truncate mt-0.5">
                     Click to enter room chat

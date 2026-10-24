@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-// Safely get theme from localStorage, or detect system preference
+// Safely get theme from localStorage, defaulting strictly to dark mode
 const getInitialTheme = () => {
   try {
     const saved = localStorage.getItem('skillpick-theme');
@@ -9,10 +9,7 @@ const getInitialTheme = () => {
     console.warn('Could not read theme from localStorage:', err);
   }
 
-  // Fallback default theme is black & blue dark mode
-  if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-    return 'light';
-  }
+  // Default theme is always dark mode
   return 'dark';
 };
 

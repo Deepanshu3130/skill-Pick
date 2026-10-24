@@ -19,6 +19,7 @@ import PrivateRoutes from './Components/PrivateRoutes';
 import Footer from './Components/Footer';
 import ScrollProgress from './Components/motion/ScrollProgress';
 import PageFade from './Components/motion/PageFade';
+import CustomCursor from './Components/motion/CustomCursor';
 
 let socket1 = null;
 
@@ -26,6 +27,12 @@ function App() {
   const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
   const { isSignedIn, user } = useUser();
   const { getToken } = useAuth();
+  const { theme } = useThemeStore();
+
+  // Sync DaisyUI data-theme attribute on root html element
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   useEffect(() => {
     let isMounted = true;
@@ -81,10 +88,9 @@ function App() {
     };
   }, [isSignedIn, user, getToken]);
 
-  const { theme } = useThemeStore();
-
   return (
     <div data-theme={theme} className="relative flex flex-col min-h-screen">
+      <CustomCursor />
       <ScrollProgress />
       <Navbar />
       <PageFade className="flex-1 flex flex-col">

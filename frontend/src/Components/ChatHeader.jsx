@@ -2,6 +2,7 @@ import React from "react";
 import { X, ArrowLeft } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
 import { useCommunityChatStore } from "../store/useCommunityChatStore";
+import { formatRoomName } from "./CommunitySidebar";
 
 const ChatHeader = () => {
   const { selectedUser, setSelctedUser } = useChatStore();
@@ -9,7 +10,7 @@ const ChatHeader = () => {
 
   const isCommunityChat = !!selectedCommunity;
   const chatTitle = isCommunityChat 
-    ? selectedCommunity.channelName 
+    ? formatRoomName(selectedCommunity.channelName) 
     : selectedUser 
       ? `${selectedUser.firstName || ''} ${selectedUser.lastName || ''}`.trim() || "User"
       : "Select a chat";

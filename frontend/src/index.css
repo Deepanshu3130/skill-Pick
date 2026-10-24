@@ -7,7 +7,6 @@
    ========================================================================= */
 
 /* Light Theme (Crisp Black & Blue on Clean White) */
-:root,
 [data-theme="light"] {
   color-scheme: light;
   --color-base-100: oklch(100% 0 0);
@@ -48,6 +47,7 @@
 }
 
 /* Dark Theme (Pure Jet Black & Electric Blue) */
+:root,
 [data-theme="dark"] {
   color-scheme: dark;
   --color-base-100: oklch(10% 0.004 250); /* #06070a pure deep black */

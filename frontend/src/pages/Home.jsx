@@ -7,7 +7,7 @@ import {
   Video 
 } from 'lucide-react';
 import SearchAutocomplete from '../Components/SearchAutocomplete';
-import WarningModal from '../Components/WarningModal';
+
 import AddResourceModal from '../Components/AddResourceModal';
 import HeadlineReveal from '../Components/motion/HeadlineReveal';
 import Marquee from '../Components/motion/Marquee';
@@ -117,16 +117,12 @@ const BUILT_WITH_TECH = [
 
 const Home = () => {
   const navigate = useNavigate();
-  const [showWarningModal, setShowWarningModal] = useState(false);
+  
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    const hasSeenModal = sessionStorage.getItem("hasSeenModal");
-    if (!hasSeenModal) {
-      setShowWarningModal(true);
-      sessionStorage.setItem("hasSeenModal", "true");
-    }
+    
 
     // Fetch real platform stats
     const fetchStats = async () => {
@@ -322,11 +318,6 @@ const Home = () => {
         onClose={() => setIsAddModalOpen(false)}
         currentTopic="web-development"
       />
-
-      {/* Modal Check */}
-      {showWarningModal && (
-        <WarningModal onClose={() => setShowWarningModal(false)} />
-      )}
     </div>
   );
 };

@@ -49,7 +49,7 @@ exports.joinChannel = async (req, res) => {
         channel = new Channel({
           courseId,
           roomId: courseRoomId,
-          channelName: `${shortName}-${courseId.toString().slice(-4)}`,
+          channelName: course.title ? `# ${course.title.slice(0, 36).trim()}` : `# Room-${courseId.toString().slice(-4)}`,
           users: [userId],
           channelImg: course.imageUrl
         });
@@ -92,7 +92,7 @@ exports.joinChannel = async (req, res) => {
         const userId = user._id; // Get actual MongoDB user ID
 
         // Find all channels where the user is present
-        const userChannels = await Channel.find({ users: userId });
+        const userChannels = await Channel.find({ users: userId }).sort({ updatedAt: -1, _id: -1 });
 
         if (userChannels.length === 0) {
             return res.status(404).json({ success: false, message: "User is not part of any channel" });
