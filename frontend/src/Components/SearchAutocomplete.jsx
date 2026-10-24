@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import axios from 'axios';
+import { API_ROOT } from '../operations/apiConnectors';
 
 // Helper to bold the matching query characters
 function highlightMatch(text, match) {
