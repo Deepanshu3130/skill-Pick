@@ -77,11 +77,14 @@ function PlatformPage() {
 
   // Pagination calculation
   const totalItems = filteredCourses.length;
-  const startIndex = (currentPage - 1) * pageSize;
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+  const validPage = Math.min(Math.max(1, currentPage), totalPages);
+  const startIndex = (validPage - 1) * pageSize;
   const paginatedCourses = filteredCourses.slice(startIndex, startIndex + pageSize);
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+    const targetPage = Math.min(Math.max(1, newPage), totalPages);
+    setCurrentPage(targetPage);
     window.scrollTo({ top: 200, behavior: 'smooth' });
   };
 
@@ -187,7 +190,7 @@ function PlatformPage() {
 
               {/* Pagination */}
               <Pagination
-                currentPage={currentPage}
+                currentPage={validPage}
                 totalItems={totalItems}
                 pageSize={pageSize}
                 onPageChange={handlePageChange}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   X, 
   Search, 
@@ -354,7 +355,9 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
     }
   };
 
-  return (
+  if (!isOpen) return null;
+
+  const modalContent = (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-xs transition-opacity duration-200">
       {/* Backdrop click to close */}
       <div className="absolute inset-0" onClick={onClose} aria-label="Close backdrop" />
@@ -749,6 +752,8 @@ const AddResourceModal = ({ isOpen, onClose, currentTopic = "web-development" })
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(modalContent, document.body) : modalContent;
 };
 
 export default AddResourceModal;

@@ -90,10 +90,10 @@ function Courses() {
     fetchResources();
   }, [query]);
 
-  // Reset page when filters change
+  // Reset page when filters or query change
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeTab, searchKeyword, courseFormat, coursePlatform, courseSort, repoLanguage, repoSort, pageSize]);
+  }, [query, activeTab, searchKeyword, courseFormat, coursePlatform, courseSort, repoLanguage, repoSort, pageSize]);
 
   // Dynamic Languages from Repositories
   const availableLanguages = useMemo(() => {
@@ -233,11 +233,14 @@ function Courses() {
 
   // Pagination Calculations on Main Results
   const totalMainItems = filteredMain.length;
-  const startIndex = (currentPage - 1) * pageSize;
+  const totalPages = Math.max(1, Math.ceil(totalMainItems / pageSize));
+  const validPage = Math.min(Math.max(1, currentPage), totalPages);
+  const startIndex = (validPage - 1) * pageSize;
   const paginatedMainItems = filteredMain.slice(startIndex, startIndex + pageSize);
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+    const targetPage = Math.min(Math.max(1, newPage), totalPages);
+    setCurrentPage(targetPage);
     const feedElement = document.getElementById('results-feed-top');
     if (feedElement) {
       feedElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -624,7 +627,7 @@ function Courses() {
 
                     {/* Pagination Controls */}
                     <Pagination
-                      currentPage={currentPage}
+                      currentPage={validPage}
                       totalItems={totalMainItems}
                       pageSize={pageSize}
                       onPageChange={handlePageChange}

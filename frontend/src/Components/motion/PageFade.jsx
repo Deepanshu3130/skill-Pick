@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 export function PageFade({ children, className = "" }) {
   const location = useLocation();
   const [visible, setVisible] = useState(true);
+  const [animating, setAnimating] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -22,15 +23,28 @@ export function PageFade({ children, className = "" }) {
 
     // Trigger brief entrance on route change
     setVisible(false);
-    const timer = setTimeout(() => {
+    setAnimating(true);
+    const enterTimer = setTimeout(() => {
       setVisible(true);
     }, 20);
 
-    return () => clearTimeout(timer);
+    // After animation completes, clear transform and will-change to release position:fixed and sticky children
+    const doneTimer = setTimeout(() => {
+      setAnimating(false);
+    }, 280);
+
+    return () => {
+      clearTimeout(enterTimer);
+      clearTimeout(doneTimer);
+    };
   }, [location.pathname, reducedMotion]);
 
-  if (reducedMotion) {
-    return <div className={`w-full ${className}`}>{children}</div>;
+  if (reducedMotion || !animating) {
+    return (
+      <div className={`w-full ${className}`}>
+        {children}
+      </div>
+    );
   }
 
   return (

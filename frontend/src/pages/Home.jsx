@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import SearchAutocomplete from '../Components/SearchAutocomplete';
 import WarningModal from '../Components/WarningModal';
+import AddResourceModal from '../Components/AddResourceModal';
 import HeadlineReveal from '../Components/motion/HeadlineReveal';
 import Marquee from '../Components/motion/Marquee';
 import ScrollTimeline from '../Components/motion/ScrollTimeline';
@@ -117,6 +118,7 @@ const BUILT_WITH_TECH = [
 const Home = () => {
   const navigate = useNavigate();
   const [showWarningModal, setShowWarningModal] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
@@ -142,7 +144,7 @@ const Home = () => {
     : POPULAR_TOPICS.map(t => ({ text: t.name, href: `/courses/${t.slug}` }));
 
   return (
-    <div className="min-h-screen bg-base-100 flex flex-col overflow-x-hidden selection:bg-primary/20 selection:text-primary">
+    <div className="min-h-screen bg-base-100 flex flex-col selection:bg-primary/20 selection:text-primary">
       
       {/* 1. Hero Section */}
       <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 border-b border-base-300 bg-base-100">
@@ -156,16 +158,20 @@ const Home = () => {
           
           {/* Eyebrow Label */}
           <div className="flex justify-center">
-            <span className="motion-eyebrow">
+            <span className="motion-eyebrow text-primary">
               00 // OPEN STUDENT LEARNING STACK
             </span>
           </div>
 
-          {/* HeadlineReveal: Masked slide-up on each line */}
+          {/* HeadlineReveal: Masked slide-up (Blue & White in dark mode, Black & Blue in light mode) */}
           <HeadlineReveal
             lines={[
-              "Learning is not just watching videos.",
-              "It is code, practice, and community."
+              <span key="1">
+                Learning is not just <span className="text-primary">watching videos.</span>
+              </span>,
+              <span key="2">
+                It is <span className="text-primary">code</span>, practice, and <span className="text-primary">community.</span>
+              </span>
             ]}
             className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-base-content leading-[1.12] max-w-4xl mx-auto"
           />
@@ -301,14 +307,21 @@ const Home = () => {
               </p>
             </div>
             <ButtonArrow
-              to="/courses/react"
-              className="shrink-0 px-5"
+              onClick={() => setIsAddModalOpen(true)}
+              className="shrink-0 px-5 cursor-pointer"
             >
               Add Resource
             </ButtonArrow>
           </div>
         </div>
       </section>
+
+      {/* Add Resource Modal / Drawer */}
+      <AddResourceModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        currentTopic="web-development"
+      />
 
       {/* Modal Check */}
       {showWarningModal && (

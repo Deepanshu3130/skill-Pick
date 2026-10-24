@@ -169,53 +169,54 @@ export function ScrollTimeline({
       className={`py-20 md:py-28 border-b border-base-300 relative ${className}`}
     >
       <div className="w-11/12 max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-start">
           
-          {/* Left Column: Sticky on Desktop */}
-          <div className="md:col-span-5 text-left relative">
-            <div className="md:sticky md:top-28 space-y-4">
-              <span className="motion-eyebrow">{eyebrow}</span>
-              
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-base-content leading-[1.08]">
-                {heading}
-              </h2>
+          {/* Left Column: Sticky on Desktop (Screen fixed while right section scrolls) */}
+          <div className="md:col-span-5 text-left md:sticky md:top-32 self-start space-y-4">
+            <span className="motion-eyebrow text-primary">{eyebrow}</span>
+            
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-base-content leading-[1.08]">
+              {heading}
+            </h2>
 
-              <p className="text-sm sm:text-base text-base-content/70 max-w-[36ch] leading-relaxed">
-                {intro}
-              </p>
-            </div>
+            <p className="text-sm sm:text-base text-base-content/70 max-w-[36ch] leading-relaxed">
+              {intro}
+            </p>
           </div>
 
           {/* Right Column: Scroll-Driven Interactive Timeline */}
           <div className="md:col-span-7 relative pl-8 md:pl-12 text-left">
             
-            {/* Background Muted Vertical Line (aria-hidden) */}
+            {/* Dedicated Line Container: point rides exact edge and collapses at bounds */}
             <div
               aria-hidden="true"
-              className="absolute left-2.5 md:left-3 top-3 bottom-6 w-[2px] bg-base-300/60"
-            />
+              className="absolute left-2.5 md:left-3 top-2 bottom-8 w-[2px]"
+            >
+              {/* Background Muted Track */}
+              <div className="w-full h-full bg-base-300/60 rounded-full" />
 
-            {/* Filled Progress Line (aria-hidden) driven by CSS variable */}
-            <div
-              aria-hidden="true"
-              className="absolute left-2.5 md:left-3 top-3 bottom-6 w-[2px] bg-primary origin-top transition-transform duration-75"
-              style={{
-                transform: `scaleY(${reducedMotion ? 1 : progressVal})`
-              }}
-            />
-
-            {/* Moving Point riding the leading edge of progress line (aria-hidden) */}
-            {!reducedMotion && (
+              {/* Progress Fill Line */}
               <div
-                aria-hidden="true"
-                className="absolute left-2.5 md:left-3 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-primary bg-base-100 flex items-center justify-center transition-all duration-75 z-20 pointer-events-none"
+                className="absolute top-0 left-0 w-full bg-primary origin-top rounded-full transition-[height] duration-75 ease-out"
                 style={{
-                  top: `calc(${progressVal * 100}% + 12px)`
+                  height: `${(reducedMotion ? 1 : progressVal) * 100}%`
                 }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              </div>
-            )}
+              />
+
+              {/* Moving Point riding leading edge - collapses when outside or at bounds */}
+              {!reducedMotion && (
+                <div
+                  className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-primary bg-base-100 flex items-center justify-center z-20 pointer-events-none transition-all duration-150 ${
+                    progressVal <= 0.02 || progressVal >= 0.98 ? 'scale-0 opacity-0' : 'scale-100 opacity-100'
+                  }`}
+                  style={{
+                    top: `${Math.min(100, Math.max(0, progressVal * 100))}%`
+                  }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                </div>
+              )}
+            </div>
 
             {/* Steps Ordered List (Semantic ol/li) */}
             <ol className="space-y-24 md:space-y-32">
