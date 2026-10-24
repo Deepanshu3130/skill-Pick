@@ -52,7 +52,7 @@ function Navbar() {
               buttonText="Search"
               showButton={false}
               className="w-full"
-              inputClassName="input-sm text-xs bg-base-200 border-base-300 focus:bg-base-100"
+              inputClassName="text-xs"
             />
           </div>
         )}

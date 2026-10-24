@@ -162,8 +162,12 @@ const SearchAutocomplete = ({
 
   return (
     <div ref={containerRef} className={`relative w-full ${className}`}>
-      <form onSubmit={handleSubmit} className="join w-full shadow-xs">
-        <div className="relative flex-1">
+      <form 
+        onSubmit={handleSubmit} 
+        className="flex items-center w-full bg-base-100 border border-base-300 hover:border-base-content/30 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 rounded-xl overflow-hidden shadow-xs transition-all"
+      >
+        <div className="relative flex-1 flex items-center pl-3.5">
+          <Search className="size-4 sm:size-5 text-base-content/40 shrink-0 mr-2.5" strokeWidth={1.5} />
           <input
             type="text"
             placeholder={placeholder}
@@ -173,18 +177,20 @@ const SearchAutocomplete = ({
               if (suggestions.length > 0) setIsOpen(true);
             }}
             onKeyDown={handleKeyDown}
-            className={`input input-bordered join-item w-full text-base-content placeholder:text-base-content/50 focus:outline-hidden ${inputClassName}`}
+            className={`w-full py-2.5 sm:py-3 pr-8 bg-transparent text-xs sm:text-sm text-base-content placeholder:text-base-content/50 focus:outline-hidden ${inputClassName}`}
             autoComplete="off"
             aria-autocomplete="list"
             aria-expanded={isOpen}
           />
           {loading && (
-            <span className="loading loading-spinner loading-xs absolute right-3 top-1/2 -translate-y-1/2 text-primary" />
+            <span className="loading loading-spinner loading-xs absolute right-3 text-primary" />
           )}
         </div>
         {showButton && (
-          <button type="submit" className="btn btn-primary join-item px-5 text-sm font-semibold gap-2">
-            <Search className="size-4" strokeWidth={2} />
+          <button 
+            type="submit" 
+            className="btn btn-primary rounded-none rounded-r-xl h-full min-h-[44px] px-5 text-xs sm:text-sm font-semibold shrink-0"
+          >
             <span>{buttonText}</span>
           </button>
         )}
