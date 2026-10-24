@@ -189,14 +189,14 @@ const SearchAutocomplete = ({
         {showButton && (
           <button 
             type="submit" 
-            className="btn btn-primary rounded-none rounded-r-xl h-full min-h-[44px] px-5 text-xs sm:text-sm font-semibold shrink-0"
+            className="btn btn-primary rounded-none rounded-r-xl h-full min-h-[44px] px-5 text-xs sm:text-sm font-semibold shrink-0 cursor-pointer"
           >
             <span>{buttonText}</span>
           </button>
         )}
       </form>
 
-      {/* Autocomplete Dropdown - daisyUI Menu */}
+      {/* Autocomplete Dropdown - Clean Main Data / Heading Only */}
       {isOpen && suggestions.length > 0 && (
         <ul 
           className="menu menu-sm absolute z-50 left-0 right-0 mt-1.5 bg-base-100 border border-base-300 rounded-box shadow-xl max-h-72 overflow-y-auto p-1.5 space-y-0.5"
@@ -204,10 +204,6 @@ const SearchAutocomplete = ({
         >
           {suggestions.map((topic, index) => {
             const isSelected = index === selectedIndex;
-            const matchingAlias = topic.aliases?.find(a => 
-              a.toLowerCase().includes(query.trim().toLowerCase()) &&
-              a.toLowerCase() !== topic.name.toLowerCase()
-            );
 
             return (
               <li
@@ -219,32 +215,14 @@ const SearchAutocomplete = ({
                   type="button"
                   onClick={() => handleSelect(topic)}
                   onMouseEnter={() => setSelectedIndex(index)}
-                  className={`flex items-center justify-between py-2 px-3 rounded-lg text-left transition-colors ${
+                  className={`flex items-center py-2.5 px-3.5 rounded-lg text-left transition-colors cursor-pointer ${
                     isSelected
                       ? "bg-primary text-primary-content font-medium"
                       : "hover:bg-base-200 text-base-content"
                   }`}
                 >
-                  <div className="min-w-0 pr-2">
-                    <div className="text-sm font-semibold truncate">
-                      {highlightMatch(topic.name, query)}
-                    </div>
-                    {matchingAlias && (
-                      <span className={`text-xs block truncate ${isSelected ? "text-primary-content/80" : "text-base-content/60"}`}>
-                        alias: {highlightMatch(matchingAlias, query)}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-1.5 shrink-0">
-                    {topic.parent && (
-                      <span className={`badge badge-xs ${isSelected ? "badge-neutral" : "badge-outline opacity-70"}`}>
-                        {topic.parent}
-                      </span>
-                    )}
-                    <span className={`text-[11px] font-mono ${isSelected ? "text-primary-content/90" : "text-base-content/50"}`}>
-                      /{topic.slug}
-                    </span>
+                  <div className="text-sm font-semibold truncate">
+                    {highlightMatch(topic.name, query)}
                   </div>
                 </button>
               </li>
