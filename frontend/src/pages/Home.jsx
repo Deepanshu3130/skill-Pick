@@ -1,453 +1,290 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FiSearch, FiUsers, FiMessageSquare, FiBookOpen, FiAward, FiArrowRight, FiCheckCircle } from 'react-icons/fi';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/autoplay';
-import  { useState } from "react";
-import { Autoplay, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import ActiveUsers from '../Components/ActiveUsers';
-import 'swiper/css/navigation';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import WarningModal from '../Components/WarningModal';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { 
+  Search, 
+  BookOpen, 
+  MessageSquare, 
+  GitBranch, 
+  ArrowRight, 
+  Code, 
+  Terminal, 
+  Database, 
+  Layers 
+} from 'lucide-react';
 import SearchAutocomplete from '../Components/SearchAutocomplete';
- 
+import WarningModal from '../Components/WarningModal';
+
+const POPULAR_TOPICS = [
+  { name: "React", slug: "react" },
+  { name: "DSA", slug: "dsa" },
+  { name: "Python", slug: "python" },
+  { name: "Web Development", slug: "web-development" },
+  { name: "System Design", slug: "system-design" },
+  { name: "Node.js", slug: "nodejs" },
+  { name: "Next.js", slug: "nextjs" },
+  { name: "Docker", slug: "docker" },
+  { name: "Machine Learning", slug: "machine-learning" },
+];
+
+const PLATFORMS = [
+  {
+    name: "YouTube",
+    title: "Curated Playlists & Courses",
+    desc: "Structured, high-yield video courses and hands-on playlists from industry practitioners.",
+    route: "/Platform/YouTube",
+    icon: BookOpen
+  },
+  {
+    name: "GitHub",
+    title: "Open Source Roadmaps & Repos",
+    desc: "Starred project implementations, developer roadmaps, and real codebases to study and fork.",
+    route: "/Platform/GitHub",
+    icon: GitBranch
+  },
+  {
+    name: "Community",
+    title: "Student-Submitted Links",
+    desc: "Verified learning materials, notes, and tutorials suggested directly by active learners.",
+    route: "/Platform/Community",
+    icon: MessageSquare
+  }
+];
+
+const FEATURED_PATHS = [
+  {
+    topic: "Web Development",
+    slug: "web-development",
+    desc: "Full-stack foundations covering modern HTML, CSS, JavaScript, React, and server-side runtimes.",
+    icon: Code,
+    tags: ["react", "nextjs", "nodejs"]
+  },
+  {
+    topic: "Data Structures & Algorithms",
+    slug: "dsa",
+    desc: "Problem-solving patterns, array algorithms, trees, dynamic programming, and interview prep.",
+    icon: Terminal,
+    tags: ["dsa", "c-plus-plus", "python"]
+  },
+  {
+    topic: "System Design & DevOps",
+    slug: "system-design",
+    desc: "Distributed architecture, caching, microservices, containerization with Docker and Kubernetes.",
+    icon: Layers,
+    tags: ["system-design", "docker", "devops"]
+  }
+];
+
 const Home = () => {
   const navigate = useNavigate();
-  const [input, setInput] = useState("");
-  const [showWarningModal, setShowWarningModal] = useState(false);  
+  const [showWarningModal, setShowWarningModal] = useState(false);
+
   useEffect(() => {
     const hasSeenModal = sessionStorage.getItem("hasSeenModal");
-
     if (!hasSeenModal) {
       setShowWarningModal(true);
       sessionStorage.setItem("hasSeenModal", "true");
     }
   }, []);
-  const features = [
-    {
-      icon: <FiSearch className="text-3xl" />,
-      title: "Unified Course Discovery",
-      description: "One search to find the best courses from all major platforms"
-    },
-    {
-      icon: <FiUsers className="text-3xl" />,
-      title: "Learning Circles",
-      description: "Join topic-specific communities of passionate learners"
-    },
-    {
-      icon: <FiMessageSquare className="text-3xl" />,
-      title: "Peer Networking",
-      description: "Connect directly with others on the same learning path"
-    },
-    {
-      icon: <FiBookOpen className="text-3xl" />,
-      title: "Progress Tracking",
-      description: "Central dashboard for all your learning activities"
-    },
-    {
-      icon: <FiAward className="text-3xl" />,
-      title: "Skill Validation",
-      description: "Earn verifiable credentials for completed courses"
-    }
-  ];
 
-  const platformStats = [
-    {
-      name: "YouTube",
-      courses: "Curated Playlists",
-      highlight: "High-quality video courses and full tutorials",
-      logo: "/youtube-logo.jpg"
-    },
-    {
-      name: "GitHub",
-      courses: "Open Source Repos",
-      highlight: "Top starred repositories, code examples, and roadmaps",
-      logo: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-    },
-    {
-      name: "Community",
-      courses: "Learner Curated",
-      highlight: "Verified links and community recommended resources",
-      logo: "/avatar.png"
-    }
-  ];
-  // // const platformLogos = [
-  // //   { name: "Udemy", logo: "/udemy-logo.png" },
-  // //   { name: "Coursera", logo: "/coursera-logo.webp" },
-  // //   { name: "YouTube", logo: "/youtube-logo.jpg" },
-   
-  // ];
-  const handlePlatform = (input) => {
-     navigate(`/Platform/${input}`);
-  }
-  const learningOutcomes = [
-    {
-      metric: "87%",
-      title: "Completion Rate",
-      description: "Higher than industry average thanks to our community support system"
-    },
-    {
-      metric: "4.8/5",
-      title: "Average Rating",
-      description: "Courses curated and vetted by our team of learning experts"
-    },
-    {
-      metric: "3x",
-      title: "Faster Skill Acquisition",
-      description: "Learners report faster progress with our guided pathways"
-    }
-  ];
-  const handleCourse = (input) => {
-    // Handle course selection logic here
-    navigate(`/courses/${input}`);
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    navigate(`/courses/${input}`);
-  };
   return (
-    <div className="bg-base-100 w-full">
+    <div className="min-h-screen bg-base-100 flex flex-col">
+      {/* 1. Hero Section - Search as the focal point */}
+      <section className="pt-28 pb-16 md:pt-36 md:pb-20 border-b border-base-300 bg-base-200/50">
+        <div className="w-11/12 max-w-4xl mx-auto px-4 text-left">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-base-200 border border-base-300 text-xs font-medium text-base-content/80 mb-6">
+            <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
+            <span>Open, student-driven developer community</span>
+          </div>
 
+          {/* Heading */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-base-content leading-tight mb-4">
+            Find a course, join its room, <br className="hidden sm:inline" />
+            ask your doubt.
+          </h1>
 
-      {/* Hero Section */}
-      <section className="hero bg-gradient-to-br from-primary/10 via-base-100 to-secondary/10 min-h-[80vh]  mt-4 lg:mt-0">
-        <div className="hero-content flex-col lg:flex-row-reverse max-w-7xl mx-auto px-6 py-12 gap-12 sm-min-w-[320px]">
-          
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="lg:w-1/2 relative"
-          >
-            <div className="mockup-browser border bg-base-200 shadow-xl  ">
-              <div className="mockup-browser-toolbar">
-                <div className="input bg-base-200">skill-pick.in</div>
-              </div>
-              <img src='/hero.png '
-                alt="Hero"
-                className="w-full  object-cover rounded-lg lg:hidden max-h-[500px] "
-              />
-             <div className="hidden lg:block w-full h-full">
-             <Swiper
-                modules={[Autoplay, Pagination]}
-                autoplay={{ delay: 3000, disableOnInteraction: false }}
-                pagination={{ clickable: true }}
-                breakpoints={{
-                      320: {
-                        slidesPerView: 1,
-                        spaceBetween: 10,
-                      },
-                      640: {
-                        slidesPerView: 1,
-                        spaceBetween: 15,
-                      },
-                      1024: {
-                        slidesPerView: 1,
-                        spaceBetween: 20,
-                      },
-                    }}
-                    className="w-full aspect-[16/9] max-h-[400px] "
+          <p className="text-base sm:text-lg text-base-content/70 leading-relaxed max-w-2xl mb-8">
+            SkillPick curates top YouTube courses and GitHub repositories by topic. 
+            Every resource is connected to a live room so you can study together, share code, and unblock errors.
+          </p>
+
+          {/* Search Bar - Hero Component */}
+          <div className="w-full max-w-2xl bg-base-100 p-2 rounded-2xl border border-base-300 shadow-md">
+            <SearchAutocomplete
+              placeholder="What skill do you want to learn? (e.g. react, dsa, rust)..."
+              buttonText="Search"
+              showButton={true}
+              inputClassName="input-md text-sm border-0 focus:outline-hidden bg-transparent"
+            />
+          </div>
+
+          {/* Popular Topics Row */}
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <span className="text-xs font-semibold text-base-content/60 mr-1">Popular:</span>
+            {POPULAR_TOPICS.map((topic) => (
+              <Link
+                key={topic.slug}
+                to={`/courses/${topic.slug}`}
+                className="badge badge-sm badge-outline hover:badge-primary font-mono text-xs py-2 px-2.5 transition-colors"
               >
-                <SwiperSlide>
-                  <img src="/hero2.png" alt="Slide 1" className="w-full h-full object-cover rounded-lg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img src="/hero3.png" alt="Slide 2" className="w-full h-full object-cover rounded-lg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img src="/hero4.png" alt="Slide 3" className="w-full h-full object-cover rounded-lg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img src="/hero5.png" alt="Slide 3" className="w-full h-full object-cover rounded-lg" />
-                </SwiperSlide>
-              </Swiper>
-
-             </div>
-            </div>
-            <div className="absolute -bottom-6 -left-6 bg-primary text-primary-content p-4 rounded-xl shadow-lg border border-primary/20">
-              <div className="flex items-center gap-3">
-                <FiUsers className="text-2xl" />
-                <div>
-                <ActiveUsers></ActiveUsers>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-          
-          <div className="lg:w-1/2">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl font-bold mb-6 leading-tight"
-            >
-              The <span className="text-primary">Smart Way</span> to Master New Skills
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl mb-8 text-base-content/80"
-            >
-              Discover, compare, and track the best courses from top platforms while connecting with a community of learners.
-            </motion.p>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="w-full max-w-xl mb-8"
-            >
-              <SearchAutocomplete className="w-full" />
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-wrap items-center gap-3"
-            >
-              <span className="text-sm text-base-content/60">Trending:</span>
-              <button onClick={() => handleCourse("web-development")} className="badge badge-lg badge-outline hover:badge-primary transition-all">Web Development</button>
-              <button onClick={() => handleCourse("frontend-development")} className="badge badge-lg badge-outline hover:badge-primary transition-all">Frontend</button>
-              <button onClick={() => handleCourse("react")} className="badge badge-lg badge-outline hover:badge-primary transition-all">React</button>
-              <button onClick={() => handleCourse("nodejs")} className="badge badge-lg badge-outline hover:badge-primary transition-all">Node.js</button>
-              <button onClick={() => handleCourse("python")} className="badge badge-lg badge-outline hover:badge-primary transition-all">Python</button>
-              <button onClick={() => handleCourse("dsa")} className="badge badge-lg badge-outline hover:badge-primary transition-all">DSA</button>
-              <button onClick={() => handleCourse("machine-learning")} className="badge badge-lg badge-outline hover:badge-primary transition-all">Machine Learning</button>
-              <button onClick={() => handleCourse("mern-stack")} className="badge badge-lg badge-outline hover:badge-primary transition-all">MERN Stack</button>
-            </motion.div>
+                /{topic.slug}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Platform Logos */}
-      <section className="py-20 bg-base-200/50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-bold mb-4"
-            >
-              One Platform, <span className="text-primary">Endless Learning</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="text-xl text-base-content/80 max-w-3xl mx-auto"
-            >
-              We bring together the best courses from top platforms so you don't have to search multiple sites
-            </motion.p>
+      {/* 2. How It Works - Honest 3-step explanation */}
+      <section className="py-16 md:py-20 border-b border-base-300">
+        <div className="w-11/12 max-w-6xl mx-auto px-4">
+          <div className="max-w-xl text-left mb-12">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-primary mb-2">Workflow</h2>
+            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-base-content">
+              How SkillPick works
+            </h3>
+            <p className="text-sm text-base-content/70 mt-2">
+              A straightforward path from searching a skill to solving blockers with peers.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {platformStats.map((platform, index) => (
-              <motion.div
-                key={platform.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="card bg-base-100 shadow-sm hover:shadow-md transition-all"
-              >
-                <div className="card-body items-center text-center p-6">
-                  <img 
-                    src={platform.logo} 
-                    alt={platform.name} 
-                    className="h-16 object-contain mb-4"
-                  />
-                  <h3 className="card-title text-2xl mb-2">{platform.name}</h3>
-                  <p className="text-lg font-semibold text-primary mb-2">{platform.courses} courses</p>
-                  <p className="text-base-content/70 mb-4">{platform.highlight}</p>
-                  <div className="card-actions justify-center">
-                    <button className="btn btn-ghost btn-sm text-primary"
-                    onClick={()=>handlePlatform(platform.name)}>
-                      Explore 
-                    </button>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="card bg-base-200 border border-base-300 p-6 rounded-2xl text-left">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-mono font-bold text-sm mb-4">
+                01
+              </div>
+              <h4 className="text-base font-bold text-base-content mb-1.5">Search by Topic or Query</h4>
+              <p className="text-xs sm:text-sm text-base-content/70 leading-relaxed">
+                Type any programming concept, creator, or technology. Our two-layer index matches verified topics or scans courses and repositories.
+              </p>
+            </div>
+
+            <div className="card bg-base-200 border border-base-300 p-6 rounded-2xl text-left">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-mono font-bold text-sm mb-4">
+                02
+              </div>
+              <h4 className="text-base font-bold text-base-content mb-1.5">Learn from Verified Materials</h4>
+              <p className="text-xs sm:text-sm text-base-content/70 leading-relaxed">
+                Access official YouTube course playlists and starred GitHub repositories directly. No paywalls, no scraped previews, and no hidden subscriptions.
+              </p>
+            </div>
+
+            <div className="card bg-base-200 border border-base-300 p-6 rounded-2xl text-left">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-mono font-bold text-sm mb-4">
+                03
+              </div>
+              <h4 className="text-base font-bold text-base-content mb-1.5">Discuss in Study Rooms</h4>
+              <p className="text-xs sm:text-sm text-base-content/70 leading-relaxed">
+                Every course is tied to a real-time room. Ask questions on specific timestamps, share Git repos, and exchange direct messages with active learners.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Browse By Platform */}
+      <section className="py-16 md:py-20 border-b border-base-300 bg-base-200/30">
+        <div className="w-11/12 max-w-6xl mx-auto px-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-10 text-left">
+            <div>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-primary mb-2">Sources</h2>
+              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-base-content">
+                Browse by content type
+              </h3>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {PLATFORMS.map((platform) => {
+              const Icon = platform.icon;
+              return (
+                <Link
+                  key={platform.name}
+                  to={platform.route}
+                  className="card bg-base-100 hover:bg-base-200/80 border border-base-300 p-6 rounded-2xl transition-all group text-left"
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-2.5 rounded-xl bg-base-200 group-hover:bg-primary group-hover:text-primary-content transition-colors">
+                      <Icon className="size-5" strokeWidth={1.5} />
+                    </div>
+                    <span className="badge badge-sm badge-neutral font-mono text-[11px]">
+                      {platform.name}
+                    </span>
+                  </div>
+
+                  <h4 className="text-base font-bold text-base-content group-hover:text-primary transition-colors mb-1.5">
+                    {platform.title}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-base-content/70 leading-relaxed mb-4">
+                    {platform.desc}
+                  </p>
+
+                  <div className="mt-auto flex items-center gap-1.5 text-xs font-semibold text-primary">
+                    <span>Explore resources</span>
+                    <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Featured Learning Paths */}
+      <section className="py-16 md:py-20">
+        <div className="w-11/12 max-w-6xl mx-auto px-4">
+          <div className="text-left mb-10">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-primary mb-2">Curriculum</h2>
+            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-base-content">
+              Featured skill paths
+            </h3>
+            <p className="text-sm text-base-content/70 mt-1">
+              Popular sequences curated by students for interview readiness and production skills.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {FEATURED_PATHS.map((path) => {
+              const Icon = path.icon;
+              return (
+                <div
+                  key={path.slug}
+                  className="card bg-base-200 border border-base-300 p-6 rounded-2xl flex flex-col justify-between text-left"
+                >
+                  <div>
+                    <div className="flex items-center gap-2.5 mb-3 text-primary">
+                      <Icon className="size-5" strokeWidth={1.5} />
+                      <h4 className="text-base font-bold text-base-content">{path.topic}</h4>
+                    </div>
+                    <p className="text-xs sm:text-sm text-base-content/70 leading-relaxed mb-4">
+                      {path.desc}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-base-300 flex items-center justify-between">
+                    <div className="flex gap-1">
+                      {path.tags.map((t) => (
+                        <span key={t} className="badge badge-xs badge-outline font-mono">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    <Link
+                      to={`/courses/${path.slug}`}
+                      className="btn btn-xs btn-primary gap-1"
+                    >
+                      <span>Explore</span>
+                      <ArrowRight className="size-3" />
+                    </Link>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-lg text-primary max-w-3xl mx-auto"
-            >
-             we are working with more platforms to bring you the best learning experience possible.
-            </motion.p>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-bold mb-4"
-            >
-              Your Complete <span className="text-primary">Learning Ecosystem</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="text-xl text-base-content/80 max-w-3xl mx-auto"
-            >
-              We combine course discovery with community support for better learning outcomes
-            </motion.p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="card bg-base-100 shadow-sm  border border-base-200/50 hover:scale-105 hover:shadow-md hover:border-primary transition-all duration-300"
-              >
-                <div className="card-body items-center text-center p-6">
-                  <div className="bg-primary/10 p-4 rounded-full mb-4 text-primary">
-                    {feature.icon}
-                  </div>
-                  <h3 className="card-title text-lg">{feature.title}</h3>
-                  <p className="text-base-content/70">{feature.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-  
-      <section className="py-20 bg-base-100 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-bold mb-4"
-            >
-              Measurable <span className="text-primary">Learning Outcomes</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="text-xl text-base-content/80 max-w-3xl mx-auto"
-            >
-              Our platform is designed to help you achieve real results
-            </motion.p>
-          </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {learningOutcomes.map((outcome, index) => (
-              <motion.div
-                key={outcome.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="card bg-base-100 shadow-sm border border-base-200/50 hover:scale-105 hover:shadow-md hover:border-primary transition-all duration-300"
-              >
-                <div className="card-body">
-                  <div className="text-5xl font-bold text-primary mb-4">{outcome.metric}</div>
-                  <h3 className="card-title mb-2">{outcome.title}</h3>
-                  <p className="text-base-content/70">{outcome.description}</p>
-                </div>
-              </motion.div>
-            ))}
-        </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 bg-gradient-to-br from-primary to-secondary text-primary-content">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-bold mb-6"
-          >
-            Ready to Transform Your Learning Journey?
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-xl mb-8 opacity-90 max-w-2xl mx-auto"
-          >
-            Join our community of 25,000+ learners and discover the smarter way to build in-demand skills.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="flex flex-col sm:flex-row justify-center gap-4"
-          >
-            <button 
-               
-              className="btn btn-accent btn-lg shadow-md"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            >
-              Start Learning Free
-            </button>
-            <Link 
-              to="/aboutUs" 
-              className="btn btn-outline btn-lg btn-accent text-primary-content hover:text-primary-content"
-            >
-              How It Works
-            </Link>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            viewport={{ once: true }}
-            className="mt-8 flex flex-wrap justify-center gap-4 text-sm opacity-80"
-          >
-            <div className="flex items-center gap-2">
-              <FiCheckCircle /> No credit card required
-            </div>
-            <div className="flex items-center gap-2">
-              <FiCheckCircle /> 100% satisfaction guarantee
-            </div>
-            <div className="flex items-center gap-2">
-              <FiCheckCircle /> Cancel anytime
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* Modal Check */}
       {showWarningModal && (
         <WarningModal onClose={() => setShowWarningModal(false)} />
       )}

@@ -1,10 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiSearch } from 'react-icons/fi';
+import { Search } from 'lucide-react';
 import axios from 'axios';
 
+// Helper to bold the matching query characters
+function highlightMatch(text, match) {
+  if (!text || !match || !match.trim()) return text;
+  try {
+    const escaped = match.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped})`, 'gi');
+    const parts = text.split(regex);
+    return parts.map((part, i) =>
+      part.toLowerCase() === match.trim().toLowerCase() ? (
+        <strong key={i} className="font-bold text-primary underline decoration-primary/30">
+          {part}
+        </strong>
+      ) : (
+        part
+      )
+    );
+  } catch {
+    return text;
+  }
+}
+
 const SearchAutocomplete = ({ 
-  placeholder = "What skill do you want to master today?", 
+  placeholder = "Search topics, courses, repos (e.g. react, dsa, python)...", 
   className = "", 
   inputClassName = "",
   buttonText = "Search",
@@ -141,7 +162,7 @@ const SearchAutocomplete = ({
 
   return (
     <div ref={containerRef} className={`relative w-full ${className}`}>
-      <form onSubmit={handleSubmit} className="join w-full">
+      <form onSubmit={handleSubmit} className="join w-full shadow-xs">
         <div className="relative flex-1">
           <input
             type="text"
@@ -152,7 +173,7 @@ const SearchAutocomplete = ({
               if (suggestions.length > 0) setIsOpen(true);
             }}
             onKeyDown={handleKeyDown}
-            className={`input input-bordered join-item w-full focus:outline-none text-base-content placeholder:text-base-content/60 ${inputClassName}`}
+            className={`input input-bordered join-item w-full text-base-content placeholder:text-base-content/50 focus:outline-hidden ${inputClassName}`}
             autoComplete="off"
             aria-autocomplete="list"
             aria-expanded={isOpen}
@@ -162,21 +183,21 @@ const SearchAutocomplete = ({
           )}
         </div>
         {showButton && (
-          <button type="submit" className="btn btn-primary join-item">
-            <FiSearch className="mr-2" /> {buttonText}
+          <button type="submit" className="btn btn-primary join-item px-5 text-sm font-semibold gap-2">
+            <Search className="size-4" strokeWidth={2} />
+            <span>{buttonText}</span>
           </button>
         )}
       </form>
 
-      {/* Autocomplete Dropdown */}
+      {/* Autocomplete Dropdown - daisyUI Menu */}
       {isOpen && suggestions.length > 0 && (
         <ul 
-          className="absolute z-50 left-0 right-0 mt-1 bg-base-100 border border-base-300 rounded-box shadow-2xl max-h-72 overflow-y-auto divide-y divide-base-200"
+          className="menu menu-sm absolute z-50 left-0 right-0 mt-1.5 bg-base-100 border border-base-300 rounded-box shadow-xl max-h-72 overflow-y-auto p-1.5 space-y-0.5"
           role="listbox"
         >
           {suggestions.map((topic, index) => {
             const isSelected = index === selectedIndex;
-            // Check if user's search matches an alias
             const matchingAlias = topic.aliases?.find(a => 
               a.toLowerCase().includes(query.trim().toLowerCase()) &&
               a.toLowerCase() !== topic.name.toLowerCase()
@@ -185,35 +206,41 @@ const SearchAutocomplete = ({
             return (
               <li
                 key={topic._id || topic.slug}
-                onClick={() => handleSelect(topic)}
-                onMouseEnter={() => setSelectedIndex(index)}
-                className={`p-3 cursor-pointer transition-colors flex items-center justify-between text-left ${
-                  isSelected ? "bg-primary text-primary-content" : "hover:bg-base-200"
-                }`}
                 role="option"
                 aria-selected={isSelected}
               >
-                <div>
-                  <div className="font-semibold text-sm sm:text-base">
-                    {topic.name}
+                <button
+                  type="button"
+                  onClick={() => handleSelect(topic)}
+                  onMouseEnter={() => setSelectedIndex(index)}
+                  className={`flex items-center justify-between py-2 px-3 rounded-lg text-left transition-colors ${
+                    isSelected
+                      ? "bg-primary text-primary-content font-medium"
+                      : "hover:bg-base-200 text-base-content"
+                  }`}
+                >
+                  <div className="min-w-0 pr-2">
+                    <div className="text-sm font-semibold truncate">
+                      {highlightMatch(topic.name, query)}
+                    </div>
+                    {matchingAlias && (
+                      <span className={`text-xs block truncate ${isSelected ? "text-primary-content/80" : "text-base-content/60"}`}>
+                        alias: {highlightMatch(matchingAlias, query)}
+                      </span>
+                    )}
                   </div>
-                  {matchingAlias && (
-                    <span className={`text-xs ${isSelected ? "text-primary-content/80" : "text-base-content/60"}`}>
-                      Also known as: <em>{matchingAlias}</em>
-                    </span>
-                  )}
-                </div>
 
-                <div className="flex items-center gap-2">
-                  {topic.parent && (
-                    <span className={`badge badge-sm ${isSelected ? "badge-neutral" : "badge-outline opacity-70"}`}>
-                      in {topic.parent}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    {topic.parent && (
+                      <span className={`badge badge-xs ${isSelected ? "badge-neutral" : "badge-outline opacity-70"}`}>
+                        {topic.parent}
+                      </span>
+                    )}
+                    <span className={`text-[11px] font-mono ${isSelected ? "text-primary-content/90" : "text-base-content/50"}`}>
+                      /{topic.slug}
                     </span>
-                  )}
-                  <span className={`text-xs opacity-60 font-mono ${isSelected ? "text-primary-content" : ""}`}>
-                    /{topic.slug}
-                  </span>
-                </div>
+                  </div>
+                </button>
               </li>
             );
           })}
