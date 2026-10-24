@@ -1,16 +1,25 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-exports.connect = ()=>{
-    mongoose.connect(process.env.dataBase_url ,{
-        useNewUrlParser:true,
-        useUnifiedTopology:true
+
+exports.connect = () => {
+    const rawUrl = 
+        process.env.dataBase_url || 
+        process.env.DATABASE_URL || 
+        process.env.MONGODB_URI || 
+        process.env.MONGO_URI;
+
+    const dbUrl = rawUrl ? rawUrl.trim() : null;
+
+    if (!dbUrl) {
+        console.error('❌ Missing database connection string in environment variables (dataBase_url, DATABASE_URL, or MONGODB_URI).');
+        return;
+    }
+
+    mongoose.connect(dbUrl)
+    .then(() => {
+        console.log('✅ Database connected successfully');
     })
-    .then(()=>{
-        console.log('Database connected');
-    })
-    .catch((error)=>{
-        console.log('Error connecting to the database');
-        console.log(error.message);
-        process.exit(1);
-    })
-}
+    .catch((error) => {
+        console.error('❌ Error connecting to the database:', error.message);
+    });
+};
