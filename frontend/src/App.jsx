@@ -20,11 +20,13 @@ import Footer from './Components/Footer';
 import ScrollProgress from './Components/motion/ScrollProgress';
 import PageFade from './Components/motion/PageFade';
 import CustomCursor from './Components/motion/CustomCursor';
+import { SOCKET_URL } from './operations/apiConnectors';
 
 let socket1 = null;
 
 function App() {
-  const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
+  // Socket server URL derived from active API base
+  const BASE_URL = SOCKET_URL;
   const { isSignedIn, user } = useUser();
   const { getToken } = useAuth();
   const { theme } = useThemeStore();

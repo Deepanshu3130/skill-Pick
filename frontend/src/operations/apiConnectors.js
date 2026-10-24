@@ -2,9 +2,18 @@
 import { useChatStore } from "../store/useChatStore";
 import toast from "react-hot-toast";
 
-const rawBase = import.meta.env.VITE_BASE_URL ? import.meta.env.VITE_BASE_URL.trim() : "";
-const BASE_URL = rawBase || (import.meta.env.MODE === "development" ? "http://localhost:3000/api/v1" : "/api/v1");
-const API_ROOT = BASE_URL.replace(/\/v1$/, "");
+const rawBase = import.meta.env.VITE_BASE_URL ? import.meta.env.VITE_BASE_URL.trim().replace(/\/+$/, '') : "";
+
+let calculatedBase = "";
+if (rawBase) {
+  calculatedBase = rawBase.endsWith("/api/v1") ? rawBase : (rawBase.endsWith("/api") ? `${rawBase}/v1` : `${rawBase}/api/v1`);
+} else {
+  calculatedBase = import.meta.env.MODE === "development" ? "http://localhost:3000/api/v1" : "https://skill-pick.onrender.com/api/v1";
+}
+
+export const BASE_URL = calculatedBase;
+export const API_ROOT = BASE_URL.replace(/\/v1$/, "");
+export const SOCKET_URL = BASE_URL.replace(/\/api(\/v1)?\/?$/, "");
 export const getUsers = async(token)=>{
     
     

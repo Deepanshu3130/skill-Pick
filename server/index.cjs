@@ -32,23 +32,38 @@ const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'http://localhost:3000',
-    'https://skill-pick-frontend.onrender.com/'
+    'https://skill-pick-frontend.onrender.com',
+    'https://skill-pick.onrender.com',
+    'https://skill-pick-server.onrender.com',
+    'https://skill-pick-3-bnio.onrender.com'
 ];
 
 if (process.env.FRONTEND_URL) {
-    allowedOrigins.push(process.env.FRONTEND_URL);
+    allowedOrigins.push(process.env.FRONTEND_URL.trim().replace(/\/+$/, ''));
 }
 
-app.use(cors({
+const corsOptions = {
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin) || origin.startsWith('http://localhost:') || origin.includes('onrender.com')) {
-            callback(null, true);
-        } else {
-            callback(null, true);
+        if (!origin) return callback(null, true);
+        const normalized = origin.trim().replace(/\/+$/, '');
+        if (
+            allowedOrigins.includes(normalized) ||
+            normalized.startsWith('http://localhost:') ||
+            normalized.startsWith('http://127.0.0.1:') ||
+            normalized.endsWith('.onrender.com') ||
+            normalized.includes('onrender.com')
+        ) {
+            return callback(null, true);
         }
+        return callback(null, true); // Fallback to allow cross-origin
     },
-    credentials: true
-}));
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(
     fileUpload({

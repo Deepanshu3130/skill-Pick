@@ -42,8 +42,7 @@ const SearchAutocomplete = ({
   const abortControllerRef = useRef(null);
   const debounceTimerRef = useRef(null);
 
-  const rawBase = import.meta.env.VITE_BASE_URL ? import.meta.env.VITE_BASE_URL.trim() : "";
-  const API_BASE = (rawBase ? rawBase.replace(/\/v1$/, "") : "") || (import.meta.env.MODE === "development" ? "http://localhost:3000/api" : "/api");
+  const API_BASE = API_ROOT;
 
   // Debounced search with AbortController
   useEffect(() => {
