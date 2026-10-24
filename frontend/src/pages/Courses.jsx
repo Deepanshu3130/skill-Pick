@@ -125,13 +125,25 @@ function Courses() {
     };
   }, [coursesData.main]);
 
+  // Helper to distinguish Community-submitted courses from official auto-fetched YouTube courses
+  const isCommunityResource = (item) => {
+    if (!item) return false;
+    if (item.addedBy) return true;
+    if (item.source && ['manual', 'search-picked', 'search'].includes(item.source)) return true;
+    const plat = (item.platform || '').toLowerCase();
+    return plat !== 'youtube' && plat !== 'github';
+  };
+
   // Dynamic Platform counts from Courses
   const platformCounts = useMemo(() => {
     let youtube = 0;
     let community = 0;
     (coursesData.main || []).forEach(course => {
-      if (course.platform?.toLowerCase() === 'youtube') youtube++;
-      else community++;
+      if (isCommunityResource(course)) {
+        community++;
+      } else {
+        youtube++;
+      }
     });
     return {
       all: (coursesData.main || []).length,
@@ -164,7 +176,11 @@ function Courses() {
       }
 
       // Courses: Platform Filter
-      if (coursePlatform !== "all") {
+      if (coursePlatform === "YouTube") {
+        filtered = filtered.filter(item => !isCommunityResource(item));
+      } else if (coursePlatform === "Community") {
+        filtered = filtered.filter(item => isCommunityResource(item));
+      } else if (coursePlatform !== "all") {
         filtered = filtered.filter(item => item.platform?.toLowerCase() === coursePlatform.toLowerCase());
       }
 
@@ -392,6 +408,11 @@ function Courses() {
                       </button>
                     ))}
                   </div>
+                  {platformCounts.community === 0 && (
+                    <p className="text-[10px] text-base-content/50 mt-1.5 px-1 leading-normal">
+                      No community submissions for this topic yet.
+                    </p>
+                  )}
                 </div>
 
                 {/* Sort Filter */}
@@ -576,10 +597,14 @@ function Courses() {
                       <AlertCircle className="size-5 text-primary shrink-0 mt-0.5" strokeWidth={1.5} />
                       <div>
                         <h4 className="font-bold text-sm text-base-content">
-                          No {isRepoTab ? "repositories" : "courses"} match your current filters.
+                          {!isRepoTab && coursePlatform === "Community" && platformCounts.community === 0
+                            ? "No community-added courses for this topic yet."
+                            : `No ${isRepoTab ? "repositories" : "courses"} match your current filters.`}
                         </h4>
                         <p className="text-xs text-base-content/70 mt-0.5">
-                          Try adjusting search terms or add one via the "Can't find your course?" button.
+                          {!isRepoTab && coursePlatform === "Community" && platformCounts.community === 0
+                            ? "Learners can submit tutorials, Udemy, or Coursera links via the 'Can't find your course?' button below."
+                            : 'Try adjusting search terms or add one via the "Can\'t find your course?" button.'}
                         </p>
                       </div>
                     </div>

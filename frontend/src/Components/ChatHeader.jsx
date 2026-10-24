@@ -40,8 +40,8 @@ const ChatHeader = () => {
           <ArrowLeft className="size-4" strokeWidth={1.5} />
         </button>
 
-        {/* Avatar with Status */}
-        <div className="avatar shrink-0 relative">
+        {/* Avatar */}
+        <div className="avatar shrink-0">
           <div className="size-9 rounded-xl bg-base-300 border border-base-300 overflow-hidden">
             <img 
               src={chatProfilePic} 
@@ -49,7 +49,6 @@ const ChatHeader = () => {
               onError={(e) => { e.target.src = '/avatar.png'; }}
             />
           </div>
-          <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-success rounded-full border-2 border-base-100" />
         </div>
 
         {/* Info */}
@@ -58,7 +57,7 @@ const ChatHeader = () => {
             {chatTitle}
           </h3>
           <p className="text-[11px] text-base-content/60 truncate font-mono">
-            {isCommunityChat ? "Course Study Room" : "Online"}
+            {isCommunityChat ? "Course Study Room" : "Direct Message"}
           </p>
         </div>
       </div>
