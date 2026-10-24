@@ -12,6 +12,7 @@ import HeadlineReveal from '../Components/motion/HeadlineReveal';
 import Marquee from '../Components/motion/Marquee';
 import ScrollTimeline from '../Components/motion/ScrollTimeline';
 import StatsRow from '../Components/motion/StatsRow';
+import ButtonArrow from '../Components/motion/ButtonArrow';
 import { getHomeStats } from '../operations/apiConnectors';
 
 const POPULAR_TOPICS = [
@@ -299,13 +300,12 @@ const Home = () => {
                 Paste any YouTube link, Udemy course, or GitHub repository. Our pipeline auto-tags it to the topic hierarchy and generates an instant study room.
               </p>
             </div>
-            <Link
+            <ButtonArrow
               to="/courses/react"
-              className="btn btn-primary btn-sm shrink-0 gap-1.5 font-medium px-5"
+              className="shrink-0 px-5"
             >
-              <span>Add Resource</span>
-              <ArrowRight className="size-3.5" />
-            </Link>
+              Add Resource
+            </ButtonArrow>
           </div>
         </div>
       </section>
