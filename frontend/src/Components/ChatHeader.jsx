@@ -1,4 +1,5 @@
-import { X } from "lucide-react";
+import React from "react";
+import { X, ArrowLeft } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
 import { useCommunityChatStore } from "../store/useCommunityChatStore";
 
@@ -6,21 +7,19 @@ const ChatHeader = () => {
   const { selectedUser, setSelctedUser } = useChatStore();
   const { selectedCommunity, setSelectedCommunity } = useCommunityChatStore();
 
-
   const isCommunityChat = !!selectedCommunity;
   const chatTitle = isCommunityChat 
     ? selectedCommunity.channelName 
     : selectedUser 
-      ? `${selectedUser.firstName} ${selectedUser.lastName}` 
+      ? `${selectedUser.firstName || ''} ${selectedUser.lastName || ''}`.trim() || "User"
       : "Select a chat";
 
   const chatProfilePic = isCommunityChat 
-    ? selectedCommunity.channelImg || "/community-placeholder.png" 
+    ? selectedCommunity.channelImg || "/group-avatar.png" 
     : selectedUser 
       ? selectedUser.profilePicture || "/avatar.png" 
       : "/avatar.png";
 
-  // Close chat function
   const closeChat = () => {
     if (isCommunityChat) {
       setSelectedCommunity(null);
@@ -30,27 +29,48 @@ const ChatHeader = () => {
   };
 
   return (
-    <div className="p-2.5 border-b border-base-300">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          {/* Avatar */}
-          <div className="avatar">
-            <div className="size-10 rounded-full relative">
-              <img src={chatProfilePic} alt={chatTitle} />
-            </div>
-          </div>
+    <div className="p-3.5 border-b border-base-300 bg-base-100 flex items-center justify-between">
+      <div className="flex items-center gap-3 min-w-0">
+        {/* Mobile Back Button */}
+        <button
+          onClick={closeChat}
+          className="btn btn-ghost btn-xs btn-square md:hidden shrink-0"
+          aria-label="Back to contacts"
+        >
+          <ArrowLeft className="size-4" strokeWidth={1.5} />
+        </button>
 
-          {/* Chat info */}
-          <div>
-            <h3 className="font-medium">{chatTitle}</h3>
+        {/* Avatar with Status */}
+        <div className="avatar shrink-0 relative">
+          <div className="size-9 rounded-xl bg-base-300 border border-base-300 overflow-hidden">
+            <img 
+              src={chatProfilePic} 
+              alt={chatTitle} 
+              onError={(e) => { e.target.src = '/avatar.png'; }}
+            />
           </div>
+          <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-success rounded-full border-2 border-base-100" />
         </div>
 
-        {/* Close button */}
-        <button onClick={closeChat}>
-          <X />
-        </button>
+        {/* Info */}
+        <div className="min-w-0">
+          <h3 className="font-bold text-xs sm:text-sm text-base-content truncate">
+            {chatTitle}
+          </h3>
+          <p className="text-[11px] text-base-content/60 truncate font-mono">
+            {isCommunityChat ? "Course Study Room" : "Online"}
+          </p>
+        </div>
       </div>
+
+      {/* Desktop Close button */}
+      <button 
+        onClick={closeChat}
+        className="btn btn-ghost btn-xs btn-square text-base-content/60 hover:text-base-content hidden sm:inline-flex"
+        aria-label="Close chat pane"
+      >
+        <X className="size-4" strokeWidth={1.5} />
+      </button>
     </div>
   );
 };
