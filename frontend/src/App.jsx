@@ -14,6 +14,7 @@ import CourseDescription from './pages/CourseDescription';
 import ChatHome from './pages/ChatHome';
 import AboutUs from './pages/AboutUs';
 import PlatfromPage from './pages/PlatformPage';
+import Explore from './pages/Explore';
 import PrivateRoutes from './Components/PrivateRoutes';
 import Footer from './Components/Footer';
 import ScrollProgress from './Components/motion/ScrollProgress';
@@ -101,6 +102,7 @@ function App() {
             }
           />
           <Route path='/aboutUs' element={<AboutUs />} />
+          <Route path="/explore" element={<Explore />} />
           <Route path='/Platform/:platform' element={<PlatfromPage />} />
         </Routes>
       </PageFade>

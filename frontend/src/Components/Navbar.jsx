@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
-import { MessageSquare, Info, Sun, Moon, LogIn } from "lucide-react";
+import { MessageSquare, Info, Compass, Sun, Moon, LogIn, Menu } from "lucide-react";
 import { useThemeStore } from "../store/useThemeStore";
 import { Link, useLocation } from "react-router-dom";
 import SearchAutocomplete from "./SearchAutocomplete";
+import NumberedMenuOverlay from "./motion/NumberedMenuOverlay";
 
 function Navbar() {
   const { theme, toggleTheme } = useThemeStore();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isHomePage = location.pathname === "/";
 
@@ -61,6 +63,14 @@ function Navbar() {
 
         {/* Right: Nav Actions */}
         <div className="navbar-end w-auto flex items-center gap-1 sm:gap-2">
+          <Link
+            to="/explore"
+            className="btn btn-ghost btn-sm gap-1.5 text-xs font-medium text-base-content/80 hover:text-base-content"
+          >
+            <Compass className="size-4" strokeWidth={1.5} />
+            <span className="hidden sm:inline">Explore</span>
+          </Link>
+
           <SignedIn>
             <Link
               to="/ChatHome"
@@ -94,6 +104,15 @@ function Navbar() {
             )}
           </button>
 
+          {/* Mobile Menu Hamburger (Visible on small screens) */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="btn btn-ghost btn-sm btn-square md:hidden text-base-content/80 hover:text-base-content"
+            aria-label="Open navigation menu"
+          >
+            <Menu className="size-5" />
+          </button>
+
           {/* User Auth Section */}
           <div className="flex items-center ml-1">
             <SignedOut>
@@ -112,6 +131,19 @@ function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Numbered Menu Overlay for Mobile */}
+      <NumberedMenuOverlay
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        links={[
+          { number: "01", label: "Home", to: "/" },
+          { number: "02", label: "Explore Topics", to: "/explore" },
+          { number: "03", label: "Study Rooms", to: "/ChatHome" },
+          { number: "04", label: "About SkillPick", to: "/aboutUs" },
+          { number: "05", label: "Interface Settings", to: "/settings" }
+        ]}
+      />
     </header>
   );
 }
