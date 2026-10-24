@@ -475,3 +475,16 @@ export const reportResource = async (id, token) => {
     return false;
   }
 };
+
+export const getHomeStats = async () => {
+  try {
+    const response = await axios.get(`${API_ROOT}/home-stats`);
+    if (response.data?.success) {
+      return response.data;
+    }
+    return null;
+  } catch (error) {
+    console.warn("Could not fetch home stats:", error.message);
+    return null;
+  }
+};

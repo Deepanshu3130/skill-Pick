@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { 
   Search, 
   BookOpen, 
@@ -10,18 +9,16 @@ import {
   Code, 
   Terminal, 
   Layers, 
-  CheckCircle2, 
   Sparkles, 
-  Video, 
-  Radio, 
-  Network, 
-  Cpu, 
-  Database,
-  ArrowUpRight,
-  ShieldCheck
+  Video 
 } from 'lucide-react';
 import SearchAutocomplete from '../Components/SearchAutocomplete';
 import WarningModal from '../Components/WarningModal';
+import HeadlineReveal from '../Components/motion/HeadlineReveal';
+import Marquee from '../Components/motion/Marquee';
+import ScrollTimeline from '../Components/motion/ScrollTimeline';
+import StatsRow from '../Components/motion/StatsRow';
+import { getHomeStats } from '../operations/apiConnectors';
 
 const POPULAR_TOPICS = [
   { name: "React", slug: "react" },
@@ -34,38 +31,34 @@ const POPULAR_TOPICS = [
   { name: "Machine Learning", slug: "machine-learning" },
 ];
 
-const ARCHITECTURE_LAYERS = [
+const TIMELINE_STEPS = [
   {
-    num: "01",
-    code: "SIGNAL",
-    title: "Dual Ingestion Pipeline",
-    desc: "Ingests structured video playlists from YouTube Data API v3 and starred repositories from GitHub REST API. Zero paywalls, zero scraping.",
-    icon: Radio,
-    badge: "API Ingestion"
+    number: "01",
+    title: "Search by Topic or Query",
+    label: "30 SECONDS",
+    description: "Type any programming concept, technology, or framework. The dual-layer search matches verified topic hubs or scans resources instantly.",
+    tags: ["AUTOCOMPLETE", "FUZZY SEARCH", "TOPIC INDEX"]
   },
   {
-    num: "02",
-    code: "TAXONOMY",
-    title: "Hierarchical Knowledge Graph",
-    desc: "Every skill maps to parent and child domains with automatic keyword tagging, alias resolution, and related topic co-occurrence graphs.",
-    icon: Network,
-    badge: "Auto-Tagging"
+    number: "02",
+    title: "Pick a Course or Repo",
+    label: "1 MINUTE",
+    description: "Access structured YouTube courses and cloneable GitHub repositories. No paywalls, no scraped previews, and no spam.",
+    tags: ["YOUTUBE PLAYLISTS", "GITHUB REPOS", "16:9 PREVIEWS"]
   },
   {
-    num: "03",
-    code: "SURFACE",
-    title: "High-Yield Learning Hubs",
-    desc: "Clean 16:9 player links, verified lecture counts, duration badges, and cloneable repositories filtered by language and popularity.",
-    icon: Cpu,
-    badge: "16:9 Player & Repos"
+    number: "03",
+    title: "Join its Room & Study",
+    label: "INSTANT",
+    description: "Every resource connects directly to a live room. Ask questions, exchange code snippets, and solve bugs together with fellow learners.",
+    tags: ["LIVE CHAT", "DIRECT MESSAGES", "PEER DISCUSSION"]
   },
   {
-    num: "04",
-    code: "REFLEX",
-    title: "Real-Time Study Rooms",
-    desc: "Every course is wired to an active peer room. Ask timestamp-linked questions, exchange code snippets, and solve bugs together.",
-    icon: MessageSquare,
-    badge: "Live Doubts"
+    number: "04",
+    title: "Add What's Missing",
+    label: "2 MINUTES",
+    description: "Found a great course elsewhere? Submit any external tutorial, Udemy course, or GitHub repo. It auto-tags to the topic and generates an instant room.",
+    tags: ["COMMUNITY SUBMISSIONS", "AUTO-TAGGING", "INSTANT ROOM"]
   }
 ];
 
@@ -76,7 +69,6 @@ const PLATFORMS = [
     desc: "Curated end-to-end courses and playlists from proven developer practitioners, structured by difficulty and duration.",
     route: "/Platform/YouTube",
     icon: Video,
-    accent: "text-red-500",
     badge: "Free Courses"
   },
   {
@@ -85,7 +77,6 @@ const PLATFORMS = [
     desc: "Production repos, developer roadmaps, and starter architectures to clone, inspect, and practice what you watch.",
     route: "/Platform/GitHub",
     icon: GitBranch,
-    accent: "text-purple-500",
     badge: "Code & Repos"
   },
   {
@@ -94,7 +85,6 @@ const PLATFORMS = [
     desc: "External course links, Udemy/Coursera tutorials, and documentation verified and voted by active learners.",
     route: "/Platform/Community",
     icon: MessageSquare,
-    accent: "text-emerald-500",
     badge: "Community Added"
   }
 ];
@@ -126,9 +116,22 @@ const FEATURED_PATHS = [
   }
 ];
 
+const BUILT_WITH_TECH = [
+  { text: "React 19" },
+  { text: "Node.js" },
+  { text: "Express" },
+  { text: "MongoDB Atlas" },
+  { text: "Socket.IO" },
+  { text: "YouTube Data API v3" },
+  { text: "GitHub REST API" },
+  { text: "Tailwind CSS v4" },
+  { text: "daisyUI v5" }
+];
+
 const Home = () => {
   const navigate = useNavigate();
   const [showWarningModal, setShowWarningModal] = useState(false);
+  const [stats, setStats] = useState(null);
 
   useEffect(() => {
     const hasSeenModal = sessionStorage.getItem("hasSeenModal");
@@ -136,60 +139,58 @@ const Home = () => {
       setShowWarningModal(true);
       sessionStorage.setItem("hasSeenModal", "true");
     }
+
+    // Fetch real platform stats
+    const fetchStats = async () => {
+      const data = await getHomeStats();
+      if (data?.success) {
+        setStats(data);
+      }
+    };
+    fetchStats();
   }, []);
+
+  // Marquee 1 Items: real popular topics from API, falling back to seeded topics
+  const topicMarqueeItems = (stats?.popularTopics && stats.popularTopics.length > 0)
+    ? stats.popularTopics.map(t => ({ text: t.name, href: `/courses/${t.slug}` }))
+    : POPULAR_TOPICS.map(t => ({ text: t.name, href: `/courses/${t.slug}` }));
 
   return (
     <div className="min-h-screen bg-base-100 flex flex-col overflow-x-hidden selection:bg-primary/20 selection:text-primary">
       
-      {/* 1. Hero Section - Statement-First Architectural Header */}
-      <section className="relative pt-28 pb-20 md:pt-36 md:pb-28 border-b border-base-300 bg-base-100">
+      {/* 1. Hero Section */}
+      <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 border-b border-base-300 bg-base-100">
         {/* Subtle grid pattern background */}
         <div 
-          className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20 bg-[radial-gradient(circle,#94a3b8_1px,transparent_1px)] [background-size:24px_24px]" 
+          className="absolute inset-0 pointer-events-none opacity-30 dark:opacity-15 bg-[radial-gradient(circle,#94a3b8_1px,transparent_1px)] [background-size:24px_24px]" 
           aria-hidden="true"
         />
 
         <div className="relative w-11/12 max-w-5xl mx-auto px-4 text-center space-y-7">
           
-          {/* Technical Kicker Badge */}
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-base-200/80 border border-base-300 text-[11px] font-mono uppercase tracking-wider text-base-content/80"
-          >
-            <span className="w-2 h-2 rounded-full bg-primary inline-block" />
-            <span>Architecture // Student-Curated Developer Stack</span>
-          </motion.div>
+          {/* Eyebrow Label */}
+          <div className="flex justify-center">
+            <span className="motion-eyebrow">
+              00 // OPEN STUDENT LEARNING STACK
+            </span>
+          </div>
 
-          {/* Statement Headline */}
-          <motion.h1 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
+          {/* HeadlineReveal: Masked slide-up on each line */}
+          <HeadlineReveal
+            lines={[
+              "Learning is not just watching videos.",
+              "It is code, practice, and community."
+            ]}
             className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-base-content leading-[1.12] max-w-4xl mx-auto"
-          >
-            Learning is not just watching videos. <br className="hidden sm:inline" />
-            <span className="text-primary font-black">It is code, practice, and community.</span>
-          </motion.h1>
+          />
 
           {/* Subtitle */}
-          <motion.p 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.15 }}
-            className="text-sm sm:text-base md:text-lg text-base-content/75 leading-relaxed max-w-2xl mx-auto"
-          >
+          <p className="text-sm sm:text-base md:text-lg text-base-content/75 leading-relaxed max-w-2xl mx-auto">
             SkillPick integrates structured YouTube courses, starred GitHub repositories, and real-time study rooms into a single cohesive learning system.
-          </motion.p>
+          </p>
 
-          {/* Command-line Style Search Bar */}
-          <motion.div 
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="w-full max-w-2xl mx-auto pt-2"
-          >
+          {/* Search Bar - Untouched Logic, Hero Focal Point */}
+          <div className="w-full max-w-2xl mx-auto pt-2">
             <SearchAutocomplete
               placeholder="Search by skill, language, or concept (e.g. react, dsa, rust)..."
               buttonText="Search"
@@ -215,121 +216,38 @@ const Home = () => {
                 </button>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Popular Topics Ribbon */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.25 }}
-            className="flex flex-wrap items-center justify-center gap-2 pt-1"
-          >
-            <span className="text-xs font-semibold text-base-content/60 font-mono">Topics:</span>
-            {POPULAR_TOPICS.map((topic) => (
-              <Link
-                key={topic.slug}
-                to={`/courses/${topic.slug}`}
-                className="badge badge-sm badge-outline hover:badge-primary font-mono text-xs py-2 px-2.5 transition-all hover:scale-105"
-              >
-                /{topic.slug}
-              </Link>
-            ))}
-          </motion.div>
+          {/* Real Data StatsRow (Counts up once over 800ms when visible; hides if data missing) */}
+          {stats && <StatsRow stats={stats} />}
 
         </div>
       </section>
 
-      {/* 2. Technical Metrics Banner (Bento Dividers) */}
-      <section className="border-b border-base-300 bg-base-200/40">
-        <div className="w-11/12 max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-base-300 text-left">
-            <div className="p-6 sm:p-8 space-y-1">
-              <span className="text-[11px] font-mono uppercase text-primary font-bold">01 // CONTENT</span>
-              <h3 className="text-base sm:text-lg font-bold text-base-content">100% Free Resources</h3>
-              <p className="text-xs text-base-content/65">Full YouTube series without paywalls.</p>
-            </div>
+      {/* 2. Marquee 1: Popular Topics Right Now (Direction Left) */}
+      <Marquee
+        label="POPULAR TOPICS RIGHT NOW"
+        items={topicMarqueeItems}
+        direction="left"
+        speed={45}
+        pauseOnHover={true}
+      />
 
-            <div className="p-6 sm:p-8 space-y-1">
-              <span className="text-[11px] font-mono uppercase text-primary font-bold">02 // CODE</span>
-              <h3 className="text-base sm:text-lg font-bold text-base-content">GitHub Star Repos</h3>
-              <p className="text-xs text-base-content/65">Starred codebases and starter templates.</p>
-            </div>
+      {/* 3. ScrollTimeline: How it works */}
+      <ScrollTimeline
+        eyebrow="HOW IT WORKS"
+        heading="From search to unblocked in minutes."
+        intro="A straightforward path from discovering a course to solving errors with peers in real-time rooms."
+        steps={TIMELINE_STEPS}
+      />
 
-            <div className="p-6 sm:p-8 space-y-1">
-              <span className="text-[11px] font-mono uppercase text-primary font-bold">03 // REFLEX</span>
-              <h3 className="text-base sm:text-lg font-bold text-base-content">Topic Study Rooms</h3>
-              <p className="text-xs text-base-content/65">Ask doubts tied directly to courses.</p>
-            </div>
-
-            <div className="p-6 sm:p-8 space-y-1">
-              <span className="text-[11px] font-mono uppercase text-primary font-bold">04 // VERIFICATION</span>
-              <h3 className="text-base sm:text-lg font-bold text-base-content">Official API Feeds</h3>
-              <p className="text-xs text-base-content/65">Zero scraped previews or ads.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. The 4-Layer Learning Stack (Brainfullstack Inspired) */}
-      <section className="py-20 md:py-28 border-b border-base-300 bg-base-100">
-        <div className="w-11/12 max-w-6xl mx-auto px-4 text-left">
-          
-          <div className="max-w-2xl mb-14 space-y-2">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-primary">
-              [ THE ARCHITECTURE ]
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-base-content">
-              Learning, all the way down.
-            </h2>
-            <p className="text-sm sm:text-base text-base-content/75 leading-relaxed">
-              We own and connect every layer between finding a topic and solving coding blockers with peers.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {ARCHITECTURE_LAYERS.map((layer) => {
-              const Icon = layer.icon;
-              return (
-                <div 
-                  key={layer.code}
-                  className="card bg-base-200/50 hover:bg-base-200/90 border border-base-300 p-7 sm:p-8 rounded-2xl transition-all duration-200 hover:border-primary/40 space-y-4"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-mono font-bold text-sm">
-                        {layer.num}
-                      </div>
-                      <span className="text-xs font-mono font-bold uppercase tracking-wider text-base-content/60">
-                        // {layer.code}
-                      </span>
-                    </div>
-                    <span className="badge badge-sm badge-neutral font-mono text-[11px]">
-                      {layer.badge}
-                    </span>
-                  </div>
-
-                  <h3 className="text-lg font-bold text-base-content">
-                    {layer.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-base-content/70 leading-relaxed">
-                    {layer.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-
-        </div>
-      </section>
-
-      {/* 4. Browse By Platform Sources */}
+      {/* 4. Platforms & Curriculum Tracks */}
       <section className="py-20 md:py-28 border-b border-base-300 bg-base-200/30">
         <div className="w-11/12 max-w-6xl mx-auto px-4 text-left">
           
           <div className="max-w-2xl mb-12 space-y-2">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-primary">
-              [ SOURCES ]
+            <span className="motion-eyebrow">
+              SOURCES
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-base-content">
               Curated by content type
@@ -339,7 +257,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
             {PLATFORMS.map((platform) => {
               const Icon = platform.icon;
               return (
@@ -375,16 +293,10 @@ const Home = () => {
             })}
           </div>
 
-        </div>
-      </section>
-
-      {/* 5. Featured Curriculum Paths */}
-      <section className="py-20 md:py-28 border-b border-base-300 bg-base-100">
-        <div className="w-11/12 max-w-6xl mx-auto px-4 text-left">
-          
-          <div className="max-w-2xl mb-12 space-y-2">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-primary">
-              [ CURRICULUM ]
+          {/* Curriculum Tracks */}
+          <div className="max-w-2xl mb-10 space-y-2">
+            <span className="motion-eyebrow">
+              CURRICULUM
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-base-content">
               Structured learning tracks
@@ -400,10 +312,9 @@ const Home = () => {
               return (
                 <div
                   key={path.slug}
-                  className="card bg-base-200/50 hover:bg-base-200/90 border border-base-300 p-7 rounded-2xl flex flex-col justify-between transition-all duration-200 hover:border-primary/40"
+                  className="card bg-base-100 hover:bg-base-200/80 border border-base-300 p-7 rounded-2xl flex flex-col justify-between transition-all duration-200 hover:border-primary/40"
                 >
                   <div>
-                    {/* Header Row: Icon + Badge */}
                     <div className="flex items-center justify-between gap-2 mb-4">
                       <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                         <Icon className="size-5" strokeWidth={1.5} />
@@ -413,7 +324,6 @@ const Home = () => {
                       </span>
                     </div>
 
-                    {/* Title with full width */}
                     <h3 className="text-base sm:text-lg font-bold text-base-content mb-2 leading-snug">
                       {path.topic}
                     </h3>
@@ -422,7 +332,6 @@ const Home = () => {
                     </p>
                   </div>
 
-                  {/* Footer Row: Tags + Explore */}
                   <div className="pt-4 border-t border-base-300/80 flex items-center justify-between gap-2">
                     <div className="flex flex-wrap gap-1.5">
                       {path.tags.map((t) => (
@@ -448,14 +357,23 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 6. The Missing Course Protocol - Technical Bottom Banner */}
+      {/* 5. Marquee 2: Built With (Direction Right) */}
+      <Marquee
+        label="BUILT WITH"
+        items={BUILT_WITH_TECH}
+        direction="right"
+        speed={55}
+        pauseOnHover={true}
+      />
+
+      {/* 6. Community Protocol Callout */}
       <section className="py-16 bg-base-200/50">
         <div className="w-11/12 max-w-4xl mx-auto px-4">
           <div className="card bg-base-100 border border-base-300 p-8 sm:p-10 rounded-2xl shadow-xs text-left flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div className="space-y-2 max-w-xl">
-              <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-primary uppercase tracking-wider">
-                <Sparkles className="size-3.5" /> [ COMMUNITY PROTOCOL ]
-              </div>
+              <span className="motion-eyebrow">
+                COMMUNITY PROTOCOL
+              </span>
               <h3 className="text-xl sm:text-2xl font-bold text-base-content tracking-tight">
                 Found a course that isn't on SkillPick?
               </h3>

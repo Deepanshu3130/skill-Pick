@@ -16,6 +16,8 @@ import AboutUs from './pages/AboutUs';
 import PlatfromPage from './pages/PlatformPage';
 import PrivateRoutes from './Components/PrivateRoutes';
 import Footer from './Components/Footer';
+import ScrollProgress from './Components/motion/ScrollProgress';
+import PageFade from './Components/motion/PageFade';
 
 let socket1 = null;
 
@@ -81,24 +83,27 @@ function App() {
   const { theme } = useThemeStore();
 
   return (
-    <div data-theme={theme}>
+    <div data-theme={theme} className="relative flex flex-col min-h-screen">
+      <ScrollProgress />
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/courses/:query" element={<Courses />} />
-        <Route path='/course/:id' element={<CourseDescription />} />
-        <Route 
-          path='/chatHome'
-          element={
-            <PrivateRoutes>
-              <ChatHome />
-            </PrivateRoutes>
-          }
-        />
-        <Route path='/aboutUs' element={<AboutUs />} />
-        <Route path='/Platform/:platform' element={<PlatfromPage />} />
-      </Routes>
+      <PageFade className="flex-1 flex flex-col">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/courses/:query" element={<Courses />} />
+          <Route path='/course/:id' element={<CourseDescription />} />
+          <Route 
+            path='/chatHome'
+            element={
+              <PrivateRoutes>
+                <ChatHome />
+              </PrivateRoutes>
+            }
+          />
+          <Route path='/aboutUs' element={<AboutUs />} />
+          <Route path='/Platform/:platform' element={<PlatfromPage />} />
+        </Routes>
+      </PageFade>
       <Footer />
     </div>
   );
