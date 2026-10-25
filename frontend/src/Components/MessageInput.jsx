@@ -8,6 +8,8 @@ import { useCommunityChatStore } from '../store/useCommunityChatStore';
 function MessageInput() {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [isSending, setIsSending] = useState(false);
+  const isSendingRef = useRef(false);
   const fileInputRef = useRef(null);
   const { sendMessage, selectedUser } = useChatStore();
   const { sendCommunityMessage, selectedCommunity } = useCommunityChatStore();
@@ -38,20 +40,32 @@ function MessageInput() {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!text.trim() && !imagePreview) return;
+    if (isSendingRef.current) return;
+    const trimmedText = text.trim();
+    const currentImage = imagePreview;
+    if (!trimmedText && !currentImage) return;
+
+    isSendingRef.current = true;
+    setIsSending(true);
+
+    setText("");
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
 
     try {
       const token = await getToken();
       if (isCommunityChat && selectedCommunity) {
-        await sendCommunityMessage(text, imagePreview, token);
+        await sendCommunityMessage(trimmedText, currentImage, token);
       } else if (selectedUser) {
-        await sendMessage(text, imagePreview, token);
+        await sendMessage(trimmedText, currentImage, token);
       }
-      setText("");
-      setImagePreview(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       console.error("Failed to send message:", error);
+      setText(trimmedText);
+      setImagePreview(currentImage);
+    } finally {
+      isSendingRef.current = false;
+      setIsSending(false);
     }
   };
 
@@ -109,10 +123,14 @@ function MessageInput() {
         <button
           type="submit"
           className="btn btn-sm sm:btn-md btn-primary btn-square rounded-xl"
-          disabled={!text.trim() && !imagePreview}
+          disabled={isSending || (!text.trim() && !imagePreview)}
           aria-label="Send message"
         >
-          <Send className="size-4" strokeWidth={1.5} />
+          {isSending ? (
+            <span className="loading loading-spinner loading-xs" />
+          ) : (
+            <Send className="size-4" strokeWidth={1.5} />
+          )}
         </button>
       </form>
     </div>
