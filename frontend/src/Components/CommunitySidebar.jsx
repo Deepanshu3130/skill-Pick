@@ -36,7 +36,12 @@ function CommunitySidebar() {
   if (isCommunityLoading) return <SidebarSkeleton />;
 
   // Sort so newly added/joined rooms are at the very top
-  const sortedCommunities = [...(joinedCommunity || [])].reverse();
+  const sortedCommunities = [...(joinedCommunity || [])].sort((a, b) => {
+    const timeA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+    const timeB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+    if (timeB !== timeA) return timeB - timeA;
+    return (b._id || "").localeCompare(a._id || "");
+  });
 
   const filteredCommunities = sortedCommunities.filter(c => {
     const formatted = formatRoomName(c.channelName || "");

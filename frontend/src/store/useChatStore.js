@@ -47,7 +47,10 @@ export const useChatStore = create((set, get) => ({
         try{
             const response = await sendMessage(text,img,token,selectedUser)
               console.log(response) ;
-              set({messages: [...messages, response.data.newMessage]});
+              const savedMsg = response?.data?.newMessage || response?.data?.data?.newMessage;
+              if (savedMsg) {
+                set({messages: [...get().messages, savedMsg]});
+              }
         }catch(error){
             toast.error(error);
 
@@ -64,8 +67,23 @@ export const useChatStore = create((set, get) => ({
     
         const socket = getSocket();
     
-        socket.on("newMessage", (newMessage) => {
-          const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
+        socket.on("newMessage", (rawMessage) => {
+          if (!rawMessage) return;
+          const inner = rawMessage.message && typeof rawMessage.message === 'object' ? rawMessage.message : null;
+          const newMessage = {
+            ...rawMessage,
+            ...(inner || {}),
+            _id: inner?._id || rawMessage._id,
+            text: inner?.text ?? rawMessage.text ?? "",
+            image: inner?.image ?? rawMessage.image ?? "",
+            senderId: inner?.senderId || rawMessage.senderId,
+            senderClerkId: inner?.senderClerkId || rawMessage.senderClerkId,
+            createdAt: inner?.createdAt || rawMessage.createdAt || new Date().toISOString()
+          };
+
+          const isMessageSentFromSelectedUser = 
+            newMessage.senderId === selectedUser._id || 
+            newMessage.senderClerkId === selectedUser.clerkId;
           if (!isMessageSentFromSelectedUser) return;
     
           set({

@@ -91,14 +91,14 @@ function ChatContainer() {
                       : 'bg-base-200 text-base-content border border-base-300'
                   }`}
                 >
-                  {message.image && (
+                  {(message.image || message.message?.image) && (
                     <img
-                      src={message.image}
+                      src={message.image || message.message?.image}
                       alt="Attachment"
                       className="max-w-full rounded-lg mb-2 max-h-48 object-contain"
                     />
                   )}
-                  {message.text && <div>{message.text}</div>}
+                  {(message.text || message.message?.text || message.content) && <div>{message.text || message.message?.text || message.content}</div>}
                 </div>
               </div>
             );

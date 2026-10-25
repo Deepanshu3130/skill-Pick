@@ -102,10 +102,15 @@ io.on("connection", (socket) => {
             return;
         }
 
+        const rawMsg = messageData.message || messageData;
+        const plainMsg = typeof rawMsg.toObject === 'function' ? rawMsg.toObject() : rawMsg;
+
         const enrichedMessage = {
-            ...messageData,
-            senderClerkId: userId,
-            createdAt: new Date()
+            ...plainMsg,
+            communityId: messageData.communityId,
+            channelId: plainMsg.channelId || messageData.channelId || messageData.communityId,
+            senderClerkId: plainMsg.senderClerkId || userId,
+            createdAt: plainMsg.createdAt || new Date()
         };
 
         io.to(messageData.communityId).emit("newCommunityMessage", enrichedMessage);

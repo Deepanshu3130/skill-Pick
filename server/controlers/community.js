@@ -92,7 +92,7 @@ exports.joinChannel = async (req, res) => {
         const userId = user._id; // Get actual MongoDB user ID
 
         // Find all channels where the user is present
-        const userChannels = await Channel.find({ users: userId }).sort({ updatedAt: -1, _id: -1 });
+        const userChannels = await Channel.find({ users: userId }).sort({ updatedAt: -1, createdAt: -1, _id: -1 });
 
         if (userChannels.length === 0) {
             return res.status(404).json({ success: false, message: "User is not part of any channel" });
@@ -151,10 +151,24 @@ exports.sendMessageToChannel = async (req, res) => {
             select: 'firstName lastName'
         });
 
-        io.to(channelId).emit("newCommunityMessage", {
-            ...populatedMessage.toObject(), // Convert to plain object
+        const roomToEmit = new Set([channelId.toString()]);
+        const channelDoc = await Channel.findById(channelId);
+        if (channelDoc && channelDoc.roomId) {
+            roomToEmit.add(channelDoc.roomId.toString());
+        }
+
+        const plainMessage = {
+            ...(populatedMessage.toObject ? populatedMessage.toObject() : populatedMessage),
+            channelId: channelId.toString(),
             createdAt: newMessage.createdAt
-        });
+        };
+
+        for (const r of roomToEmit) {
+            io.to(r).emit("newCommunityMessage", {
+                ...plainMessage,
+                communityId: r
+            });
+        }
 
         return res.status(200).json({
             success: true,

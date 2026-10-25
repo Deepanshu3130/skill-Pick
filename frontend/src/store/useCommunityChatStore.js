@@ -14,7 +14,9 @@ export const useCommunityChatStore = create((set, get) => ({
         set({ isCommunityLoading: true });
         try {
             const response = await getJoinedCommunities(token);
-            set({ joinedCommunity: response.data.channels });
+            const channels = response.data.channels || [];
+            channels.sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+            set({ joinedCommunity: channels });
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to fetch community channels");
         } finally {
@@ -45,17 +47,28 @@ export const useCommunityChatStore = create((set, get) => ({
                 token,
                 selectedCommunity 
             );
+
+            const savedMsg = response?.data?.data?.newMessage || response?.data?.newMessage;
+            if (savedMsg) {
+                set(state => {
+                    const exists = state.communityMessages.some(m => m._id && savedMsg._id && m._id === savedMsg._id);
+                    if (!exists) {
+                        return { communityMessages: [...state.communityMessages, savedMsg] };
+                    }
+                    return state;
+                });
+            }
             
             const socket = getSocket();
-            if (socket) {
+            if (socket && savedMsg) {
                 const targetRoom = selectedCommunity.roomId || selectedCommunity._id;
                 socket.emit("sendCommunityMessage", {
                     communityId: targetRoom,
-                    message: response.data.data.newMessage 
+                    message: savedMsg 
                 });
             }
     
-            return response.data.data.newMessage;
+            return savedMsg;
         } catch (error) {
             console.error("Error sending community message:", error);
             toast.error(error.message);
@@ -80,20 +93,38 @@ export const useCommunityChatStore = create((set, get) => ({
             socket.emit("joinCommunity", selectedCommunity._id);
         }
     
-        socket.on("newCommunityMessage", (newMessage) => {
+        socket.on("newCommunityMessage", (incoming) => {
+            if (!incoming) return;
+            const inner = incoming.message && typeof incoming.message === 'object' ? incoming.message : null;
+            const normalized = {
+                ...incoming,
+                ...(inner || {}),
+                _id: inner?._id || incoming._id,
+                text: inner?.text ?? incoming.text ?? "",
+                image: inner?.image ?? incoming.image ?? "",
+                senderId: inner?.senderId || incoming.senderId,
+                senderClerkId: inner?.senderClerkId || incoming.senderClerkId,
+                channelId: inner?.channelId || incoming.channelId || incoming.communityId,
+                communityId: incoming.communityId || inner?.communityId,
+                createdAt: inner?.createdAt || incoming.createdAt || new Date().toISOString()
+            };
+
             set(state => {
                 const messageExists = state.communityMessages.some(
-                    msg => msg._id === newMessage._id
+                    msg => (msg._id && normalized._id && msg._id === normalized._id) ||
+                           (msg.createdAt && normalized.createdAt && msg.createdAt === normalized.createdAt && msg.text === normalized.text)
                 );
                 
                 const matchesChannel = 
-                    newMessage.channelId === selectedCommunity._id || 
-                    newMessage.channelId === selectedCommunity.roomId ||
-                    newMessage.communityId === primaryRoom;
+                    normalized.channelId === selectedCommunity._id || 
+                    normalized.channelId === selectedCommunity.roomId ||
+                    normalized.communityId === primaryRoom ||
+                    normalized.communityId === selectedCommunity._id ||
+                    normalized.communityId === selectedCommunity.roomId;
 
                 if (!messageExists && matchesChannel) {
                     return {
-                        communityMessages: [...state.communityMessages, newMessage]
+                        communityMessages: [...state.communityMessages, normalized]
                     };  
                 }
                 return state;
